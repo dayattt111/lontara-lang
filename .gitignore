@@ -11,6 +11,7 @@ wasm
 *.test
 *.out
 *.pprof
+*.prof
 cpu.out
 mem.out
 profile.pprof
