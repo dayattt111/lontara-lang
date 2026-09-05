@@ -171,8 +171,8 @@ func TestEOFIdentifiersAndNumbers(t *testing.T) {
 		expectedType    token.TokenType
 		expectedLiteral string
 	}{
-		{"tongeng", token.TRUE, "tongeng"},
-		{"banna", token.FALSE, "banna"},
+		{"tongeng", token.TONGENG, "tongeng"},
+		{"banna", token.BANNA, "banna"},
 		{"10", token.INT, "10"},
 		{"5", token.INT, "5"},
 		{"ᨈᨑᨚᨕᨗ", token.TAROI, "ᨈᨑᨚᨕᨗ"},
