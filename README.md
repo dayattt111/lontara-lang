@@ -142,7 +142,9 @@ Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/PE
 │   ├── KAMUS.md             # Dokumentasi tabel huruf Lontara & registri kata kunci
 │   ├── KONTRIBUSI.md        # Panduan alur kerja untuk kontributor
 │   ├── PENGGUNAAN.md        # Panduan detail instalasi, setup PATH, dan CLI
-│   └── SINTAKS.md           # Spesifikasi sintaksis dan manual kata kunci
+│   ├── ROADMAP.md           # Peta jalan pengembangan jangka pendek & panjang
+│   ├── SINTAKS.md           # Spesifikasi sintaksis dan manual kata kunci
+│   └── WASM.md              # Panduan arsitektur & kompilasi WebAssembly
 ├── examples/
 │   ├── halo_dunia.bugis     # Contoh berkas sintaks Bugis Latin
 │   └── halo_dunia.lontara   # Contoh berkas sintaks Aksara Lontara Unicode
@@ -184,6 +186,8 @@ Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[do
 | **[docs/KAMUS.md](docs/KAMUS.md)** | Dokumentasi tabel huruf Aksara Lontara Unicode dan pendaftaran kata kunci |
 | **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)** | Panduan instalasi, konfigurasi `PATH`, dan penggunaan perintah CLI |
 | **[docs/ARSITEKTUR.md](docs/ARSITEKTUR.md)** | Detail rancangan mesin interpreter (Lexer, Parser, AST, Evaluator) |
+| **[docs/ROADMAP.md](docs/ROADMAP.md)** | Peta jalan fitur & tahapan pengembangan `lontara-lang` |
+| **[docs/WASM.md](docs/WASM.md)** | Panduan kompilator WebAssembly & integrasi Web Playground |
 | **[docs/KONTRIBUSI.md](docs/KONTRIBUSI.md)** | Panduan kontribusi kode, alur Git branch, dan standar pengujian |
 
 ---

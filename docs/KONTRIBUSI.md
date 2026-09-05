@@ -65,3 +65,6 @@ Jika Anda ingin berkontribusi menambah kata kunci Bugis/Lontara baru atau meleng
 - Gunakan format standar Go dengan menjalankan `go fmt ./...`.
 - Setiap penambahan fitur, kata kunci, atau perbaikan bug wajib menyertakan unit test di berkas `*_test.go` terkait.
 - Semua pengujian harus lulus saat menjalankan `go test -count=1 ./...`.
+
+
+*Pengen deh logo lontara-lang bisa masuk di vscode-material-icon-theme.
