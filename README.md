@@ -92,13 +92,42 @@ rekko (hasil >= 15) {
 
 ### Instalasi CLI
 
-Gunakan perintah `go install` untuk memasang biner CLI `lontara` ke dalam sistem Anda:
+Untuk pengguna lain yang ingin mencoba `lontara` dari repositori GitHub:
 
 ```bash
 go install github.com/dayattt111/lontara-lang/cmd/lontara@latest
 ```
 
-Pastikan `$GOPATH/bin` atau `$HOME/go/bin` telah terdaftar dalam variabel lingkungan `PATH` Anda.
+Untuk pengembanan lokal dalam repositori ini:
+
+```bash
+go install ./cmd/lontara
+```
+
+*Catatan: Jika muncul error `lontara: command not found`, pastikan `$GOPATH/bin` atau `~/go/bin` terdaftar dalam variabel `PATH` shell Anda:*
+```bash
+export PATH=$PATH:$(go env GOPATH)/bin
+```
+
+### Menjalankan Berkas Kode (`.bugis` / `.lontara`)
+
+Anda dapat mengeksekusi berkas sumber secara langsung atau melalui sub-perintah `run`:
+
+```bash
+# Eksekusi langsung
+lontara test.bugis
+lontara test.lontara
+
+# Eksekusi dengan sub-perintah run
+lontara run test.bugis
+lontara run test.lontara
+```
+
+Jika ingin menjalankan tanpa melakukan `go install` (saat pengembangan repositori):
+
+```bash
+go run ./cmd/lontara examples/halo_dunia.bugis
+```
 
 ### Mode Interaktif (REPL)
 
@@ -116,19 +145,7 @@ lontara> paui("Salam!");
 Salam!
 ```
 
-### Menjalankan Berkas Kode
-
-Untuk mengeksekusi berkas sumber `.lontara` atau `.bugis`:
-
-```bash
-lontara run examples/halo_dunia.bugis
-```
-
-atau secara langsung:
-
-```bash
-lontara examples/halo_dunia.lontara
-```
+Dokumentasi lengkap penanganan masalah dan instalasi dapat dibaca di **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)**.
 
 ---
 
@@ -145,6 +162,7 @@ Struktur repositori `lontara-lang` disusun modular mengikuti konvensi proyek Go:
 │   └── wasm/                # Entry point untuk kompilasi WebAssembly (main.go)
 ├── docs/
 │   ├── ARSITEKTUR.md        # Dokumentasi arsitektur internal interpreter
+│   ├── PENGGUNAAN.md        # Panduan detail instalasi, PATH, dan CLI runner
 │   └── SINTAKS.md           # Spesifikasi sintaksis dan manual tata bahasa
 ├── examples/
 │   ├── halo_dunia.bugis     # Contoh program dalam versi Bugis Latin
