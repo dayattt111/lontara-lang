@@ -1,0 +1,35 @@
+# --- Biner & Hasil Kompilasi (Compiled Binaries) ---
+lontara
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+wasm
+
+# --- Pengujian & Profiling (Go Test & Pprof Artifacts) ---
+*.test
+*.out
+*.pprof
+cpu.out
+mem.out
+profile.pprof
+
+# --- Konfigurasi Lingkungan & Rahasia (Environment & Secrets) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# --- File Temporer & Editor/IDE ---
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.tmp
+tmp/
+scratch/
