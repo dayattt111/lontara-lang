@@ -1,7 +1,7 @@
 # lontara-lang
 
 <p align="center">
-    <img src="public/lontara.svg" alt="Lontara-Lang Logo" width="400">  
+    <img src="public/lontara.svg" alt="Lontara-Lang Logo By Muhammad Amin Hidayat(Gen AI)" width="400">  
 </p>
 
 ![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue?style=flat-square)
