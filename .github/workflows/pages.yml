@@ -26,12 +26,17 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.23'
 
       - name: Build WASM & Prepare Pages Site
         run: |
           mkdir -p _site
-          WASM_EXEC=$(find "$(go env GOROOT)" -name "wasm_exec.js" | head -n 1)
+          WASM_EXEC=$(find /opt/hostedtoolcache/go "$(go env GOROOT 2>/dev/null)" /usr/local/go -name "wasm_exec.js" 2>/dev/null | head -n 1)
+          if [ -z "$WASM_EXEC" ]; then
+            echo "Error: file wasm_exec.js tidak ditemukan!"
+            exit 1
+          fi
+          echo "Disalin dari: $WASM_EXEC"
           cp "$WASM_EXEC" _site/
           GOOS=js GOARCH=wasm go build -o _site/lontara.wasm ./cmd/wasm
           cp examples/playground.html _site/index.html
