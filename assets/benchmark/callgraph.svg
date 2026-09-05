@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" width="100%" height="100%">
+    <style>
+        .title { font: bold 16px 'Segoe UI', Ubuntu, sans-serif; fill: #f8fafc; }
+        .subtitle { font: 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
+        .node-box { rx: 8px; ry: 8px; stroke-width: 2px; transition: all 0.2s; }
+        .node-title { font: bold 12px 'Fira Code', Consolas, monospace; fill: #ffffff; }
+        .node-sub { font: 11px 'Segoe UI', sans-serif; fill: #cbd5e1; }
+        .arrow { stroke: #38bdf8; stroke-width: 2px; fill: none; stroke-dasharray: 4,4; animation: dash 20s linear infinite; }
+        .arrow-line { stroke: #38bdf8; stroke-width: 2px; fill: none; }
+        .badge { font: bold 10px sans-serif; fill: #0f172a; }
+    </style>
+
+    <!-- Background Container -->
+    <rect width="900" height="440" rx="12" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+
+    <!-- Header Section -->
+    <g transform="translate(25, 30)">
+        <text class="title" x="0" y="0">🕸️ Call Graph Interaktif (Alur Pemanggilan Fungsi)</text>
+        <text class="subtitle" x="0" y="20">Pemetaan Node Pemanggilan Fungsi Interpreter Lontara-Lang (pProf Profiling)</text>
+    </g>
+
+    <!-- Connecting Arrows -->
+    <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+        </marker>
+    </defs>
+
+    <!-- Paths from Root Entry Point -->
+    <path class="arrow-line" d="M 450 115 L 180 170" marker-end="url(#arrowhead)"/>
+    <path class="arrow-line" d="M 450 115 L 450 170" marker-end="url(#arrowhead)"/>
+    <path class="arrow-line" d="M 450 115 L 720 170" marker-end="url(#arrowhead)"/>
+
+    <!-- Paths from Evaluator to Sub-nodes -->
+    <path class="arrow-line" d="M 720 230 L 450 290" marker-end="url(#arrowhead)"/>
+    <path class="arrow-line" d="M 720 230 L 720 290" marker-end="url(#arrowhead)"/>
+    <path class="arrow-line" d="M 450 350 L 720 350" marker-end="url(#arrowhead)"/>
+
+    <!-- Root Node: Entry Point -->
+    <g transform="translate(365, 65)">
+        <rect class="node-box" width="170" height="50" fill="#1e1b4b" stroke="#6366f1"/>
+        <text class="node-title" x="15" y="22">cmd/lontara</text>
+        <text class="node-sub" x="15" y="38">main.main()</text>
+    </g>
+
+    <!-- Stage 1: Lexer -->
+    <g transform="translate(80, 170)">
+        <rect class="node-box" width="200" height="60" fill="#064e3b" stroke="#10b981"/>
+        <text class="node-title" x="15" y="24">pkg/lexer</text>
+        <text class="node-sub" x="15" y="42">NextToken() [UTF-8]</text>
+    </g>
+
+    <!-- Stage 2: Parser -->
+    <g transform="translate(350, 170)">
+        <rect class="node-box" width="200" height="60" fill="#78350f" stroke="#f59e0b"/>
+        <text class="node-title" x="15" y="24">pkg/parser</text>
+        <text class="node-sub" x="15" y="42">ParseProgram() [Pratt AST]</text>
+    </g>
+
+    <!-- Stage 3: Evaluator -->
+    <g transform="translate(620, 170)">
+        <rect class="node-box" width="200" height="60" fill="#881337" stroke="#f43f5e"/>
+        <text class="node-title" x="15" y="24">pkg/evaluator</text>
+        <text class="node-sub" x="15" y="42">Eval(Node, Env)</text>
+    </g>
+
+    <!-- Sub-node: Loop Engine -->
+    <g transform="translate(350, 290)">
+        <rect class="node-box" width="200" height="60" fill="#431407" stroke="#ea580c"/>
+        <text class="node-title" x="15" y="24">evalSikiExpression</text>
+        <text class="node-sub" x="15" y="42">Perulangan (siki / ᨔᨗᨀᨗ)</text>
+    </g>
+
+    <!-- Sub-node: Infix Operator -->
+    <g transform="translate(620, 290)">
+        <rect class="node-box" width="200" height="60" fill="#581c87" stroke="#a855f7"/>
+        <text class="node-title" x="15" y="24">evalInfixExpression</text>
+        <text class="node-sub" x="15" y="42">Aritmetika &amp; Pembanding</text>
+    </g>
+
+    <!-- Sub-node: Environment Lookup -->
+    <g transform="translate(620, 370)">
+        <rect class="node-box" width="200" height="50" fill="#172554" stroke="#3b82f6"/>
+        <text class="node-title" x="15" y="22">pkg/object</text>
+        <text class="node-sub" x="15" y="38">Environment.Get/Set</text>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(25, 410)">
+        <text class="subtitle" x="0" y="0">Metrik Profiling: 28,251 iterasi/detik | Memori: 7.3 KB/op | 0 External Dependencies</text>
+    </g>
+</svg>

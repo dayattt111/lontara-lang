@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="100%" height="100%">
+    <style>
+        .title { font: bold 16px 'Segoe UI', Ubuntu, sans-serif; fill: #f8fafc; }
+        .subtitle { font: 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
+        .label { font: bold 11px 'Fira Code', Consolas, monospace; fill: #ffffff; }
+        .time { font: 10px 'Fira Code', Consolas, monospace; fill: rgba(255,255,255,0.8); }
+        .bar { rx: 3px; ry: 3px; stroke: #0f172a; stroke-width: 1px; transition: opacity 0.2s; }
+        .bar:hover { opacity: 0.85; cursor: pointer; }
+    </style>
+
+    <!-- Background Card -->
+    <rect width="900" height="420" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+
+    <!-- Header Section -->
+    <g transform="translate(25, 30)">
+        <text class="title" x="0" y="0">🔥 Flame Graph Performa Eksekusi (CPU Profiling)</text>
+        <text class="subtitle" x="0" y="20">Visualisasi Distribusi Waktu CPU Lontara-Lang (Lexer ➔ Parser ➔ Evaluator)</text>
+    </g>
+
+    <!-- Flame Graph Blocks (Bottom-Up Call Stack) -->
+    <!-- Level 0: Root Entry Point -->
+    <g transform="translate(25, 340)">
+        <rect class="bar" x="0" y="0" width="850" height="32" fill="#e11d48"/>
+        <text class="label" x="12" y="20">main / cmd/lontara</text>
+        <text class="time" x="770" y="20">100.0% (37.1µs)</text>
+    </g>
+
+    <!-- Level 1: Core Phases -->
+    <g transform="translate(25, 295)">
+        <!-- Lexer (5%) -->
+        <rect class="bar" x="0" y="0" width="50" height="32" fill="#f97316"/>
+        <text class="label" x="8" y="20">lexer</text>
+
+        <!-- Parser (15%) -->
+        <rect class="bar" x="55" y="0" width="135" height="32" fill="#f59e0b"/>
+        <text class="label" x="65" y="20">parser.ParseProgram</text>
+
+        <!-- Evaluator (80%) -->
+        <rect class="bar" x="195" y="0" width="655" height="32" fill="#ef4444"/>
+        <text class="label" x="205" y="20">evaluator.Eval</text>
+        <text class="time" x="780" y="20">80.2%</text>
+    </g>
+
+    <!-- Level 2: Evaluator Functions -->
+    <g transform="translate(220, 250)">
+        <!-- evalSikiExpression (55%) -->
+        <rect class="bar" x="0" y="0" width="450" height="32" fill="#ea580c"/>
+        <text class="label" x="10" y="20">evalSikiExpression (Looping Engine)</text>
+
+        <!-- evalInfixExpression (25%) -->
+        <rect class="bar" x="455" y="0" width="200" height="32" fill="#d97706"/>
+        <text class="label" x="465" y="20">evalInfixExpression</text>
+    </g>
+
+    <!-- Level 3: Inner Execution Details -->
+    <g transform="translate(220, 205)">
+        <!-- evalBlockStatement (30%) -->
+        <rect class="bar" x="0" y="0" width="250" height="32" fill="#fb923c"/>
+        <text class="label" x="10" y="20">evalBlockStatement</text>
+
+        <!-- evalIntegerInfix (20%) -->
+        <rect class="bar" x="255" y="0" width="190" height="32" fill="#fbbf24"/>
+        <text class="label" x="265" y="20">evalIntegerInfix</text>
+
+        <!-- object.Environment (25%) -->
+        <rect class="bar" x="455" y="0" width="200" height="32" fill="#fb7185"/>
+        <text class="label" x="465" y="20">Environment.Set / Get</text>
+    </g>
+
+    <!-- Level 4: Deep Leaf Operations -->
+    <g transform="translate(220, 160)">
+        <rect class="bar" x="0" y="0" width="150" height="32" fill="#fdba74"/>
+        <text class="label" x="10" y="20">Eval (Recursion)</text>
+
+        <rect class="bar" x="155" y="0" width="90" height="32" fill="#fde047"/>
+        <text class="label" x="165" y="20">nativeBool</text>
+
+        <rect class="bar" x="455" y="0" width="100" height="32" fill="#f43f5e"/>
+        <text class="label" x="465" y="20">map access</text>
+    </g>
+
+    <!-- Footer Summary Legend -->
+    <g transform="translate(25, 395)">
+        <circle cx="6" cy="-4" r="5" fill="#ef4444"/>
+        <text class="subtitle" x="18" y="0">Evaluator AST: 80.2%</text>
+
+        <circle cx="180" cy="-4" r="5" fill="#f59e0b"/>
+        <text class="subtitle" x="192" y="0">Pratt Parser: 14.8%</text>
+
+        <circle cx="330" cy="-4" r="5" fill="#f97316"/>
+        <text class="subtitle" x="342" y="0">Lexer UTF-8: 5.0%</text>
+
+        <text class="subtitle" x="650" y="0">Kecepatan: ~37.1 µs / 100 iterasi</text>
+    </g>
+</svg>
