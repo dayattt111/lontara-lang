@@ -211,6 +211,7 @@ Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[do
 | **Peta Jalan & Alur Kerja** | **[docs/roadmap/WORKFLOW.md](docs/roadmap/WORKFLOW.md)** | Alur kerja pemrosesan data (Lexer -> Parser -> AST -> Evaluator) & roadmap publik |
 | **WebAssembly & Web** | **[docs/website/WASM.md](docs/website/WASM.md)** | Panduan WASM engine & penggunaan Web Playground (`playground.html`) |
 | **Panduan Kontribusi** | **[docs/kontribusi/PANDUAN.md](docs/kontribusi/PANDUAN.md)** | Workflow Git, standar pengujian, & tutorial menambah kata kunci |
+| **Automasi & CI/CD** | **[docs/kontribusi/AUTOMATION.md](docs/kontribusi/AUTOMATION.md)** | Panduan rilis biner otomatis (Releases), scanning CVE, & Dependabot |
 
 ---
 
