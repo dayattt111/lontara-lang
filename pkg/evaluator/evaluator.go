@@ -1,7 +1,10 @@
 package evaluator
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"unicode/utf8"
 
 	"github.com/dayattt111/lontara-lang/pkg/ast"
 	"github.com/dayattt111/lontara-lang/pkg/object"
@@ -12,6 +15,36 @@ var (
 	TRUE  = &object.Boolean{Value: true}
 	FALSE = &object.Boolean{Value: false}
 )
+
+func builtinPanjang(args ...object.Object) object.Object {
+	if len(args) != 1 {
+		return newError("salawuk panganggara: diharapkan 1 argumen, didapat=%d", len(args))
+	}
+	switch arg := args[0].(type) {
+	case *object.String:
+		return &object.Integer{Value: int64(utf8.RuneCountInString(arg.Value))}
+	default:
+		return newError("argumen untuk 'panjang' tenasialai, didapat=%s", args[0].Type())
+	}
+}
+
+func builtinBaca(args ...object.Object) object.Object {
+	if len(args) != 0 {
+		return newError("salawuk panganggara: 'baca' teppu marisi argumen")
+	}
+	scanner := bufio.NewScanner(os.Stdin)
+	if scanner.Scan() {
+		return &object.String{Value: scanner.Text()}
+	}
+	return &object.String{Value: ""}
+}
+
+func builtinTipe(args ...object.Object) object.Object {
+	if len(args) != 1 {
+		return newError("salawuk panganggara: diharapkan 1 argumen, didapat=%d", len(args))
+	}
+	return &object.String{Value: string(args[0].Type())}
+}
 
 // builtins mendaftarkan fungsi bawaan seperti paui (cetak ke konsol)
 var builtins = map[string]*object.Builtin{
@@ -32,6 +65,12 @@ var builtins = map[string]*object.Builtin{
 			return NULL
 		},
 	},
+	"panjang": {Fn: builtinPanjang},
+	"ᨄᨍ":      {Fn: builtinPanjang},
+	"baca":    {Fn: builtinBaca},
+	"ᨅᨌ":      {Fn: builtinBaca},
+	"tipe":    {Fn: builtinTipe},
+	"ᨈᨗᨄᨙ":    {Fn: builtinTipe},
 }
 
 // Eval menelusuri AST dan mengembalikan objek hasil evaluasi

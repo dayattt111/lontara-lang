@@ -111,9 +111,33 @@ paui(hasil);
 ## 7. Fungsi Bawaan (Built-in)
 
 ### `paui` / `ᨄᨕᨘᨕᨗ`
-Menampilkan nilai argumen ke stdout.
+Menampilkan nilai argumen ke konsol terminal (stdout).
 
 ```lontara
 paui("Halo dunia");
 paui(100 + 200);
+```
+
+### `panjang` / `ᨄᨍ`
+Mengembalikan jumlah karakter (karakter UTF-8 / rune) dari tipe data string.
+
+```lontara
+taroi n = panjang("Lontara");
+paui(n); // Output: 7
+```
+
+### `baca` / `ᨅᨌ`
+Membaca satu baris teks masukan dari pengguna melalui konsol terminal (stdin).
+
+```lontara
+taroi masukan = baca();
+paui("Anda mengetik:", masukan);
+```
+
+### `tipe` / `ᨈᨗᨄᨙ`
+Mengembalikan nama tipe data objek dalam bentuk String (`INTEGER`, `STRING`, `BOOLEAN`, dll.).
+
+```lontara
+paui(tipe(123));     // Output: INTEGER
+paui(tipe("teks"));   // Output: STRING
 ```

@@ -1,0 +1,8 @@
+taroi teks = "Salama Lontara";
+
+paui("Teks:", teks);
+paui("Panjang teks:", panjang(teks));
+paui("Tipe data teks:", tipe(teks));
+
+taroi angka = 2026;
+paui("Tipe data angka:", tipe(angka));

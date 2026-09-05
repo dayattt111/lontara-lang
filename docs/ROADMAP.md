@@ -31,8 +31,8 @@ Dokumen ini memuat rencana pengembangan jangka pendek, menengah, dan panjang unt
   - Pembuatan Web Playground interaktif di browser.
 - [x] **Struktur Perulangan (Looping)**:
   - Penambahan kata kunci perulangan Bugis Latin & Aksara Lontara (`siki` / `ᨔᨗᨀᨗ`).
-- [ ] **Fungsi Bawaan (Built-in) Tambahan**:
-  - Penambahan fungsi pembacaan input konsol/pengukur panjang string.
+- [x] **Fungsi Bawaan (Built-in) Tambahan**:
+  - Penambahan fungsi pembacaan input konsol (`baca` / `ᨅᨌ`), pengukur panjang string (`panjang` / `ᨄᨍ`), dan cek tipe data (`tipe` / `ᨈᨗᨄᨙ`).
 - [ ] **Penyempurnaan Pesan Kesalahan (Error Reporting)**:
   - Menampilkan posisi baris dan kolom yang lebih terinci saat terjadi kesalahan sintaks (*parser error*) maupun kesalahan eksekusi (*runtime error*).
 

@@ -136,6 +136,40 @@ func TestSikiLooping(t *testing.T) {
 	}
 }
 
+func TestBuiltinFunctions(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{`panjang("")`, 0},
+		{`panjang("halo")`, 4},
+		{`panjang("ᨔᨒᨆ")`, 3},
+		{`ᨄᨍ("bugis")`, 5},
+		{`tipe(100)`, "INTEGER"},
+		{`tipe("teks")`, "STRING"},
+		{`tipe(tongeng)`, "BOOLEAN"},
+		{`ᨈᨗᨄᨙ("lontara")`, "STRING"},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+
+		switch expected := tt.expected.(type) {
+		case int:
+			testIntegerObject(t, evaluated, int64(expected))
+		case string:
+			str, ok := evaluated.(*object.String)
+			if !ok {
+				t.Errorf("object bukan *object.String. didapat=%T (%+v)", evaluated, evaluated)
+				continue
+			}
+			if str.Value != expected {
+				t.Errorf("string salah. diharapkan=%q, didapat=%q", expected, str.Value)
+			}
+		}
+	}
+}
+
 // Helper assertions
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	result, ok := obj.(*object.Integer)
