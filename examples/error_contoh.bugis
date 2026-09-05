@@ -1,0 +1,6 @@
+taroi x = 10;
+taroi y = 0;
+
+paui("Mencoba pembagian:");
+taroi hasil = x / y;
+paui(hasil);

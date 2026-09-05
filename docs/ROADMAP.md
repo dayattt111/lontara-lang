@@ -33,8 +33,8 @@ Dokumen ini memuat rencana pengembangan jangka pendek, menengah, dan panjang unt
   - Penambahan kata kunci perulangan Bugis Latin & Aksara Lontara (`siki` / `ᨔᨗᨀᨗ`).
 - [x] **Fungsi Bawaan (Built-in) Tambahan**:
   - Penambahan fungsi pembacaan input konsol (`baca` / `ᨅᨌ`), pengukur panjang string (`panjang` / `ᨄᨍ`), dan cek tipe data (`tipe` / `ᨈᨗᨄᨙ`).
-- [ ] **Penyempurnaan Pesan Kesalahan (Error Reporting)**:
-  - Menampilkan posisi baris dan kolom yang lebih terinci saat terjadi kesalahan sintaks (*parser error*) maupun kesalahan eksekusi (*runtime error*).
+- [x] **Penyempurnaan Pesan Kesalahan (Error Reporting)**:
+  - Menampilkan posisi baris dan kolom yang presisi saat terjadi kesalahan sintaks (*parser error*) maupun kesalahan eksekusi (*runtime error*).
 
 ---
 

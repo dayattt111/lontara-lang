@@ -8,6 +8,7 @@ import (
 
 	"github.com/dayattt111/lontara-lang/pkg/ast"
 	"github.com/dayattt111/lontara-lang/pkg/object"
+	"github.com/dayattt111/lontara-lang/pkg/token"
 )
 
 var (
@@ -18,19 +19,19 @@ var (
 
 func builtinPanjang(args ...object.Object) object.Object {
 	if len(args) != 1 {
-		return newError("salawuk panganggara: diharapkan 1 argumen, didapat=%d", len(args))
+		return newError(token.Token{}, "salawuk panganggara: diharapkan 1 argumen, didapat=%d", len(args))
 	}
 	switch arg := args[0].(type) {
 	case *object.String:
 		return &object.Integer{Value: int64(utf8.RuneCountInString(arg.Value))}
 	default:
-		return newError("argumen untuk 'panjang' tenasialai, didapat=%s", args[0].Type())
+		return newError(token.Token{}, "argumen untuk 'panjang' tenasialai, didapat=%s", args[0].Type())
 	}
 }
 
 func builtinBaca(args ...object.Object) object.Object {
 	if len(args) != 0 {
-		return newError("salawuk panganggara: 'baca' teppu marisi argumen")
+		return newError(token.Token{}, "salawuk panganggara: 'baca' teppu marisi argumen")
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 	if scanner.Scan() {
@@ -41,7 +42,7 @@ func builtinBaca(args ...object.Object) object.Object {
 
 func builtinTipe(args ...object.Object) object.Object {
 	if len(args) != 1 {
-		return newError("salawuk panganggara: diharapkan 1 argumen, didapat=%d", len(args))
+		return newError(token.Token{}, "salawuk panganggara: diharapkan 1 argumen, didapat=%d", len(args))
 	}
 	return &object.String{Value: string(args[0].Type())}
 }
@@ -117,7 +118,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) {
 			return right
 		}
-		return evalPrefixExpression(node.Operator, right)
+		return evalPrefixExpression(node, right)
 
 	case *ast.InfixExpression:
 		left := Eval(node.Left, env)
@@ -128,7 +129,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) {
 			return right
 		}
-		return evalInfixExpression(node.Operator, left, right)
+		return evalInfixExpression(node, left, right)
 
 	case *ast.RekkoExpression:
 		return evalRekkoExpression(node, env)
@@ -155,7 +156,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return args[0]
 		}
 
-		return applyFunction(function, args)
+		return applyFunction(node.Token, function, args)
 	}
 
 	return nil
@@ -202,14 +203,14 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	return FALSE
 }
 
-func evalPrefixExpression(operator string, right object.Object) object.Object {
-	switch operator {
+func evalPrefixExpression(node *ast.PrefixExpression, right object.Object) object.Object {
+	switch node.Operator {
 	case "!":
 		return evalBangOperatorExpression(right)
 	case "-":
-		return evalMinusPrefixOperatorExpression(right)
+		return evalMinusPrefixOperatorExpression(node, right)
 	default:
-		return newError("operator tenriisseng: %s%s", operator, right.Type())
+		return newError(node.Token, "operator tenriisseng: %s%s", node.Operator, right.Type())
 	}
 }
 
@@ -228,41 +229,41 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 	}
 }
 
-func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
+func evalMinusPrefixOperatorExpression(node *ast.PrefixExpression, right object.Object) object.Object {
 	if right == nil {
-		return newError("ekspresi kanan bernilai nil")
+		return newError(node.Token, "ekspresi kanan bernilai nil")
 	}
 
 	if right.Type() != object.INTEGER_OBJ {
-		return newError("operator tenriisseng: -%s", right.Type())
+		return newError(node.Token, "operator tenriisseng: -%s", right.Type())
 	}
 
 	value := right.(*object.Integer).Value
 	return &object.Integer{Value: -value}
 }
 
-func evalInfixExpression(operator string, left, right object.Object) object.Object {
+func evalInfixExpression(node *ast.InfixExpression, left, right object.Object) object.Object {
 	switch {
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
-		return evalIntegerInfixExpression(operator, left, right)
+		return evalIntegerInfixExpression(node, left, right)
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
-		return evalStringInfixExpression(operator, left, right)
-	case operator == "==":
+		return evalStringInfixExpression(node, left, right)
+	case node.Operator == "==":
 		return nativeBoolToBooleanObject(left == right)
-	case operator == "!=":
+	case node.Operator == "!=":
 		return nativeBoolToBooleanObject(left != right)
 	case left.Type() != right.Type():
-		return newError("tipe data tenasialai: %s %s %s", left.Type(), operator, right.Type())
+		return newError(node.Token, "tipe data tenasialai: %s %s %s", left.Type(), node.Operator, right.Type())
 	default:
-		return newError("operator tenriisseng: %s %s %s", left.Type(), operator, right.Type())
+		return newError(node.Token, "operator tenriisseng: %s %s %s", left.Type(), node.Operator, right.Type())
 	}
 }
 
-func evalIntegerInfixExpression(operator string, left, right object.Object) object.Object {
+func evalIntegerInfixExpression(node *ast.InfixExpression, left, right object.Object) object.Object {
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
 
-	switch operator {
+	switch node.Operator {
 	case "+":
 		return &object.Integer{Value: leftVal + rightVal}
 	case "-":
@@ -271,7 +272,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 		return &object.Integer{Value: leftVal * rightVal}
 	case "/":
 		if rightVal == 0 {
-			return newError("pambagean nol: tekkulle nibage nol")
+			return newError(node.Token, "pambagean nol: tekkulle nibage nol")
 		}
 		return &object.Integer{Value: leftVal / rightVal}
 	case "<":
@@ -287,13 +288,13 @@ func evalIntegerInfixExpression(operator string, left, right object.Object) obje
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("operator tenriisseng: %s %s %s", left.Type(), operator, right.Type())
+		return newError(node.Token, "operator tenriisseng: %s %s %s", left.Type(), node.Operator, right.Type())
 	}
 }
 
-func evalStringInfixExpression(operator string, left, right object.Object) object.Object {
-	if operator != "+" {
-		return newError("operator tenriisseng: %s %s %s", left.Type(), operator, right.Type())
+func evalStringInfixExpression(node *ast.InfixExpression, left, right object.Object) object.Object {
+	if node.Operator != "+" {
+		return newError(node.Token, "operator tenriisseng: %s %s %s", left.Type(), node.Operator, right.Type())
 	}
 
 	leftVal := left.(*object.String).Value
@@ -351,7 +352,7 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 		return builtin
 	}
 
-	return newError("variabel tekkedeteng (tenriisseng): " + node.Value)
+	return newError(node.Token, "variabel tekkedeteng (tenriisseng): "+node.Value)
 }
 
 func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Object {
@@ -368,7 +369,7 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 	return result
 }
 
-func applyFunction(fn object.Object, args []object.Object) object.Object {
+func applyFunction(tok token.Token, fn object.Object, args []object.Object) object.Object {
 	switch fn := fn.(type) {
 	case *object.Function:
 		extendedEnv := extendFunctionEnv(fn, args)
@@ -377,7 +378,7 @@ func applyFunction(fn object.Object, args []object.Object) object.Object {
 	case *object.Builtin:
 		return fn.Fn(args...)
 	default:
-		return newError("bannang fungsi: %s", fn.Type())
+		return newError(tok, "bannang fungsi: %s", fn.Type())
 	}
 }
 
@@ -411,8 +412,12 @@ func isTruthy(obj object.Object) bool {
 	}
 }
 
-func newError(format string, a ...interface{}) *object.Error {
-	return &object.Error{Message: fmt.Sprintf(format, a...)}
+func newError(tok token.Token, format string, a ...interface{}) *object.Error {
+	msg := fmt.Sprintf(format, a...)
+	if tok.Line > 0 {
+		return &object.Error{Message: fmt.Sprintf("[Baris %d, Kolom %d] %s", tok.Line, tok.Column, msg)}
+	}
+	return &object.Error{Message: msg}
 }
 
 func isError(obj object.Object) bool {

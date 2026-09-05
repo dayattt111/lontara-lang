@@ -59,7 +59,7 @@ func main() {
 	env := object.NewEnvironment()
 	evaluated := evaluator.Eval(program, env)
 	if evaluated != nil && evaluated.Type() == object.ERROR_OBJ {
-		fmt.Printf("Kesalahan Eksekusi: %s\n", evaluated.Inspect())
+		fmt.Println(evaluated.Inspect())
 		os.Exit(1)
 	}
 }
