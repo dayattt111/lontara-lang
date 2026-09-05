@@ -1,21 +1,26 @@
-# Peta Jalan Pengembangan (Roadmap)
+# Peta Jalan & Alur Kerja (Roadmap & Workflow)
 
-Dokumen ini memuat rencana milestone rilis proyek `lontara-lang`.
+Dokumen ini memuat alur pemrosesan sistem dan peta jalan fitur umum proyek `lontara-lang`.
 
 ---
 
-## 📌 Status Rilis & Tahapan (Milestones)
+## 📌 Peta Jalan Fitur Publik (Public Roadmap)
 
 ```text
-[v0.1.0 - Core Interpreter]  -->  [v0.2.0 - WASM & Loop]  -->  [v0.3.0 - Koleksi Data]  -->  [v1.0.0 - Ekosistem & Tooling]
-         (Selesai)                      (Selesai)                    (Dalam Proses)                 (Tujuan Akhir)
+[ Core Interpreter ]  -->  [ WebAssembly & Loop ]  -->  [ Tipe Data Koleksi ]  -->  [ Ekosistem & Tooling ]
 ```
 
 ---
 
-## Ringkasan Fase
+## 🛠️ Modul Utama
+- **[WORKFLOW.md](WORKFLOW.md)**: Penjelasan rincian alur kerja pemrosesan data (Lexer -> Parser -> AST -> Evaluator).
 
-- **[Fase 1 (v0.1.0 - Selesai)]**: Fondasi interpreter, Pratt Parser, dual syntax (Bugis Latin & Lontara), REPL, & CLI.
-- **[Fase 2 (v0.2.0 - Selesai)](FASE2.md)**: Perulangan `siki`, fungsi bawaan baru (`panjang`, `baca`, `tipe`), error reporting presisi, & WASM Web Playground.
-- **[Fase 3 (v0.3.0 - Dalam Proses)]**: Tipe data koleksi Array/List (`[1, 2, 3]`), Hash Map, & modul impor.
-- **[Fase 4 (v1.0.0 - Target)]**: Ekstensi VS Code (syntax highlighter) & paket rilis biner global.
+---
+
+## 🚀 Fitur yang Tersedia saat Ini
+- **Dual Syntax Support**: Menulis kode dalam Bugis Latin maupun Aksara Lontara Unicode (`U+1A00`–`U+1A1F`).
+- **Pratt Parser Engine**: Parsing ekspresi aritmetika, logika pembanding, variabel, dan percabangan (`rekko` / `sangadinna`).
+- **Struktur Perulangan (`siki` / `ᨔᨗᨀᨗ`)**: Looping berbasis kondisi.
+- **Pustaka Fungsi Bawaan**: `panjang` / `ᨄᨍ`, `baca` / `ᨅᨌ`, dan `tipe` / `ᨈᨗᨄᨙ`.
+- **Pesan Kesalahan Presisi**: Menampilkan lokasi baris dan kolom presisi saat terjadi kesalahan sintaks atau runtime.
+- **WebAssembly Engine & Playground**: Interpreter dapat dieksekusi di browser tanpa server backend.
