@@ -164,3 +164,34 @@ func TestNextTokenAksaraLontara(t *testing.T) {
 		}
 	}
 }
+
+func TestEOFIdentifiersAndNumbers(t *testing.T) {
+	testCases := []struct {
+		input           string
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{"tongeng", token.TRUE, "tongeng"},
+		{"banna", token.FALSE, "banna"},
+		{"10", token.INT, "10"},
+		{"5", token.INT, "5"},
+		{"ᨈᨑᨚᨕᨗ", token.TAROI, "ᨈᨑᨚᨕᨗ"},
+	}
+
+	for _, tt := range testCases {
+		l := New(tt.input)
+		tok := l.NextToken()
+
+		if tok.Type != tt.expectedType {
+			t.Errorf("input %q: tipe token salah. diharapkan=%q, didapat=%q", tt.input, tt.expectedType, tok.Type)
+		}
+		if tok.Literal != tt.expectedLiteral {
+			t.Errorf("input %q: literal salah. diharapkan=%q, didapat=%q", tt.input, tt.expectedLiteral, tok.Literal)
+		}
+
+		eofTok := l.NextToken()
+		if eofTok.Type != token.EOF {
+			t.Errorf("input %q: diharapkan EOF, didapat=%q", tt.input, eofTok.Type)
+		}
+	}
+}
