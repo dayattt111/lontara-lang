@@ -63,33 +63,54 @@ Seluruh huruf dan karakter Aksara Lontara pada rentang Unicode `U+1A00` sampai `
 
 ---
 
-## 3. Cara Menambah Kata Kunci Baru (`keywords.go`)
+## 3. Panduan Kontribusi Kamus (`pkg/dictionary`)
 
-Jika Anda ingin menambah kata kunci baru ke dalam bahasa (misalnya untuk *looping*, tipe data baru, atau operator):
+Bagi kontributor yang ingin membantu memperluas kamus kata kunci atau karakter Aksara Lontara:
 
+### Scenario A: Menambah Kata Kunci Pemrograman Baru
 1. Buka berkas **`pkg/dictionary/keywords.go`**.
-2. Tambahkan entri baru pada slice `RegisteredKeywords`:
+2. Tambahkan struct `Keyword` baru pada slice `RegisteredKeywords`:
 
 ```go
 var RegisteredKeywords = []Keyword{
     // ...
     {
         TokenType: "SIKI",        // Tipe token baru
-        Latin:     "siki",        // Versi Bugis Latin
-        Lontara:   "ᨔᨗᨀᨗ",        // Versi Aksara Lontara Unicode
-        Meaning:   "Perulangan (while / for)",
+        Latin:     "siki",        // Kata kunci dalam Bugis Latin
+        Lontara:   "ᨔᨗᨀᨗ",        // Kata kunci dalam Aksara Lontara
+        Meaning:   "Perulangan (for / while)",
     },
 }
 ```
 
-3. Daftarkan tipe token baru di `pkg/token/token.go` jika belum ada:
+3. Daftarkan konstanta token baru di `pkg/token/token.go`:
 ```go
 const SIKI = "SIKI"
 ```
 
-4. Jalankan pengujian untuk memastikan kata kunci baru dikenali otomatis oleh lexer dan token lookup:
+4. Uji perubahan Anda dengan pengujian otomatis:
 ```bash
 go test -v ./pkg/dictionary/... ./pkg/token/...
 ```
 
-Modul `pkg/token` secara otomatis menggunakan pencarian dari `pkg/dictionary.LookupKeyword()` sehingga Anda **tidak perlu** mengedit logika pencarian token secara manual.
+### Scenario B: Menambah Karakter atau Metadata Huruf Lontara
+1. Buka berkas **`pkg/dictionary/lontara.go`**.
+2. Tambahkan entri karakter baru pada slice `LontaraAlphabet`:
+
+```go
+{
+    Rune:        'ᨀ',
+    Hex:         "U+1A00",
+    Name:        "Ka",
+    Latin:       "ka",
+    Category:    "Inang Sure'",
+    Description: "Konsonan Ka",
+},
+```
+
+3. Jalankan pengujian:
+```bash
+go test -v ./pkg/dictionary/...
+```
+
+Modul `pkg/token` secara otomatis menggunakan pencarian dari `pkg/dictionary.LookupKeyword()` sehingga Anda **tidak perlu** mengedit logika pencarian token secara manual di file lexer/token lain.
