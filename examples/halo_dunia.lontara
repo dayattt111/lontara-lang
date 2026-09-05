@@ -1,0 +1,7 @@
+ᨈᨑᨚᨕᨗ pesang = "Halo, Dunia!";
+ᨄᨕᨘᨕᨗ(pesang);
+
+ᨈᨑᨚᨕᨗ angka = 10;
+ᨑᨙᨀᨚ (angka > 5) {
+    ᨄᨕᨘᨕᨗ("salama");
+}

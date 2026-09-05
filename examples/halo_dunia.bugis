@@ -1,0 +1,16 @@
+taroi pesang = "Halo, Dunia!";
+paui(pesang);
+
+taroi lima = 5;
+taroi sepulo = 10;
+
+taroi tambah = jamagau(x, y) {
+    lisu x + y;
+};
+
+taroi hasil = tambah(lima, sepulo);
+rekko (hasil >= 15) {
+    paui("Hasil pencumlahan sitinaja (>= 15)");
+} sangadinna {
+    paui("Hasil pencumlahan kurang");
+}
