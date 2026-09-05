@@ -78,39 +78,42 @@ rekko (hasil >= 15) {
 | `return` | `lisu` | `ᨒᨗᨔᨘ` | Pengembalian nilai dari fungsi |
 | `print` | `paui` | `ᨄᨕᨘᨕᨗ` | Cetak nilai ke konsol |
 
-Panduan sintaksis dan tata bahasa lengkap dapat dibaca di **[docs/SINTAKS.md](docs/SINTAKS.md)**.
+Panduan sintaksis dan tata bahasa lengkap dapat dibaca di **[docs/algorithm/](docs/algorithm/)**.
 
 ---
 
-## Instalasi dan Setup
+## Memulai Cepat untuk Pengguna Luar
 
-### Memasang Biner CLI (`lontara`)
+### 🌐 Opsi 1: Tanpa Install (Uji Coba Langsung di Peramban Web)
+Anda dapat langsung mencoba menulis dan mengeksekusi kode secara interaktif tanpa perlu memasang aplikasi apa pun:
+- Buka **[examples/playground.html](examples/playground.html)** di peramban web Anda.
 
-- **Pengguna Umum (via Go Install):**
-  ```bash
-  go install github.com/dayattt111/lontara-lang/cmd/lontara@latest
-  ```
+---
 
-- **Pengembang Lokal:**
-  ```bash
-  go install ./cmd/lontara
-  ```
+### 💻 Opsi 2: Memasang Biner CLI Global (`lontara`)
+
+Jika di komputer Anda sudah terpasang Go (v1.21+), Anda dapat memasang CLI `lontara` secara global tanpa perlu mengklon repositori:
+
+```bash
+go install github.com/dayattt111/lontara-lang/cmd/lontara@latest
+```
 
 *Catatan: Jika muncul error `lontara: command not found`, pastikan `$GOPATH/bin` terdaftar dalam variabel `PATH` Anda (`export PATH=$PATH:$(go env GOPATH)/bin`).*
 
-### Eksekusi Berkas Kode
+### Menjalankan Berkas Kode Pertamamu
 
-```bash
-# Eksekusi langsung berkas
-lontara examples/halo_dunia.bugis
-lontara examples/halo_dunia.lontara
+1. Buat berkas baru bernama `halo.bugis` dengan editor teks apapun:
+   ```lontara
+   taroi pesang = "Halo dari Lontara-Lang!";
+   paui(pesang);
+   ```
 
-# Atau menggunakan sub-perintah run
-lontara run examples/halo_dunia.bugis
-
-# Atau menggunakan go run (tanpa install)
-go run ./cmd/lontara examples/halo_dunia.bugis
-```
+2. Eksekusi berkas menggunakan CLI:
+   ```bash
+   lontara halo.bugis
+   # atau
+   lontara run halo.bugis
+   ```
 
 ### Mode Interaktif (REPL)
 
