@@ -139,6 +139,7 @@ Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/PE
 │   └── wasm/                # Biner kompilasi WebAssembly (main.go)
 ├── docs/
 │   ├── ARSITEKTUR.md        # Dokumentasi arsitektur mesin interpreter
+│   ├── KAMUS.md             # Dokumentasi tabel huruf Lontara & registri kata kunci
 │   ├── KONTRIBUSI.md        # Panduan alur kerja untuk kontributor
 │   ├── PENGGUNAAN.md        # Panduan detail instalasi, setup PATH, dan CLI
 │   └── SINTAKS.md           # Spesifikasi sintaksis dan manual kata kunci
@@ -148,12 +149,13 @@ Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/PE
 ├── go.mod                   # Berkas modul Go
 └── pkg/
     ├── ast/                 # Node Abstract Syntax Tree (AST)
+    ├── dictionary/          # Modul terisolasi kamus Aksara Lontara & pemetaan kata kunci
     ├── evaluator/           # Mesin penelusur AST dan evaluasi nilai
     ├── lexer/               # Analisis leksikal dan pembacaan token UTF-8
     ├── object/              # Tipe data runtime dan lingkup variabel (Environment)
     ├── parser/              # Parser sintaksis berbasis Pratt Parser
     ├── repl/                # Antarmuka REPL terminal interaktif
-    └── token/               # Definisi token dan kamus kata kunci
+    └── token/               # Definisi token dan pencarian kata kunci
 ```
 
 ---
@@ -179,6 +181,7 @@ Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[do
 | Dokumen | Deskripsi |
 | :--- | :--- |
 | **[docs/SINTAKS.md](docs/SINTAKS.md)** | Spesifikasi sintaksis, kata kunci, tipe data, dan kontrol alur |
+| **[docs/KAMUS.md](docs/KAMUS.md)** | Dokumentasi tabel huruf Aksara Lontara Unicode dan pendaftaran kata kunci |
 | **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)** | Panduan instalasi, konfigurasi `PATH`, dan penggunaan perintah CLI |
 | **[docs/ARSITEKTUR.md](docs/ARSITEKTUR.md)** | Detail rancangan mesin interpreter (Lexer, Parser, AST, Evaluator) |
 | **[docs/KONTRIBUSI.md](docs/KONTRIBUSI.md)** | Panduan kontribusi kode, alur Git branch, dan standar pengujian |
