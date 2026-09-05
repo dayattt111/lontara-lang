@@ -1,5 +1,7 @@
 # lontara-lang
 
+![Logo Lontara-lang](public/lontara.svg)
+
 ![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-orange?style=flat-square)
