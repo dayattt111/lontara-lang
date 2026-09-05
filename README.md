@@ -4,55 +4,32 @@
     <img src="assets/lontara.svg" alt="Lontara-Lang Logo By Muhammad Amin Hidayat(Gen AI)" width="400">
 </p>
 
-![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-orange?style=flat-square)
+<p align="center">
+    <img src="https://img.shields.io/badge/Go-1.21%2B-blue?style=flat-square" alt="Go Version">
+    <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
+    <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-orange?style=flat-square" alt="Platform">
+</p>
 
 **Bahasa Pemrograman Edukatif Berbasis Logika Bahasa Bugis dan Aksara Lontara.**
 
-`lontara-lang` adalah bahasa pemrograman yang dirancang untuk mengenalkan konsep-konsep dasar ilmu komputer dan logika algoritma melalui kosa kata bahasa Bugis dan dukungan native Aksara Lontara. Bahasa ini diimplementasikan menggunakan Go (Golang) murni tanpa ketergantungan pustaka eksternal (*zero external dependencies*).
+`lontara-lang` adalah bahasa pemrograman berjenis *tree-walking interpreter* yang dirancang untuk mengenalkan konsep ilmu komputer dan algoritma pemrograman melalui istilah lokal bahasa Bugis serta dukungan native Aksara Lontara Unicode (`U+1A00`–`U+1A1F`). Bahasa ini dikembangkan menggunakan Go (Golang) murni tanpa pustaka eksternal (*zero external dependencies*).
 
 ---
 
-## 1. Latar Belakang dan Filosofi
+## Inspirasi Proyek
 
-Pengembangan `lontara-lang` didorong oleh tiga pilar utama:
+Pengembangan `lontara-lang` terinspirasi dari proyek-proyek esolang edukatif Nusantara pendahulu yang mengenalkan bahasa pemrograman berbasis budaya daerah:
 
-1. **Edukasi Algoritma dan Pemrograman:** Memudahkan pengenalan pemrograman bagi pelajar di daerah Sulawesi Selatan dan masyarakat luas dengan menggunakan istilah lokal yang akrab dan mudah dipahami.
-2. **Preservasi Aksara dan Budaya Digital:** Mendukung penulisan kode menggunakan karakter Unicode Aksara Lontara (`U+1A00` sampai `U+1A1F`). Langkah ini bertujuan menjadikan teknologi digital sebagai media aktif pelestarian warisan budaya Nusantara.
-3. **Portabilitas dan Kemudahan Akses:** Dibangun di atas bahasa Go untuk menghasilkan static binary tunggal yang ringan, cepat, dan dapat dijalankan di berbagai sistem operasi tanpa konfigurasi lingkungan runtime yang rumit.
+- **[sunda-lang](https://github.com/randspace0/sunda-lang)** – Bahasa pemrograman berbasis sintaks bahasa Sunda.
+- **JawaScript** – Bahasa pemrograman berbasis sintaks bahasa Jawa.
 
----
-
-## 2. Inspirasi dan Ucapan Terima Kasih
-
-Proyek `lontara-lang` terinspirasi oleh karya-karya hebat dalam komunitas bahasa pemrograman esoteris (*esolang*) dan edukatif Nusantara pendahulu, seperti:
-
-- **JawaScript (`.jawa`)** – Bahasa pemrograman berbasis sintaks bahasa Jawa.
-- **SundaScript / Sundalang** – Bahasa pemrograman berbasis sintaks bahasa Sunda.
-
-Apresiasi tinggi disampaikan kepada para kreator proyek-proyek tersebut yang telah membuka jalan bagi integrasi bahasa daerah ke dalam dunia teknologi perangkat lunak.
+Apresiasi setinggi-tingginya untuk para pembuat proyek tersebut atas inspirasi pelestarian budaya digital di Nusantara.
 
 ---
 
-## 3. Tabel Pemetaan Sintaks
+## Uji Coba Pertama (Hello World)
 
-Berikut adalah tabel perbandingan sintaks kata kunci antara bahasa umum (JavaScript/Go/Python), versi Bugis Latin, dan versi Aksara Lontara:
-
-| Konsep Umum | Bugis Latin | Aksara Lontara | Keterangan |
-| :--- | :--- | :--- | :--- |
-| `let / var` | `taroi` | `ᨈᨑᨚᨕᨗ` | Deklarasi variabel |
-| `func` | `jamagau` | `ᨍᨆᨁᨕᨘ` | Deklarasi fungsi |
-| `if` | `rekko` | `ᨑᨙᨀᨚ` | Percabangan kondisi |
-| `else` | `sangadinna` | `ᨔᨂᨉᨗᨊ` | Kondisi alternatif |
-| `true` | `tongeng` | `ᨈᨚᨂᨙ` | Nilai kebenaran true |
-| `false` | `banna` | `ᨅᨊ` | Nilai kebenaran false |
-| `return` | `lisu` | `ᨒᨗᨔᨘ` | Pengembalian nilai dari fungsi |
-| `print` | `paui` | `ᨄᨕᨘᨕᨗ` | Mencetak ke konsol/stdout |
-
----
-
-## 4. Contoh Kode
+Anda dapat menulis program `lontara-lang` dalam format `.bugis` (versi Latin) atau `.lontara` (versi Aksara Lontara).
 
 ### Versi Bugis Latin (`examples/halo_dunia.bugis`)
 
@@ -89,128 +66,131 @@ rekko (hasil >= 15) {
 
 ---
 
-## 5. Panduan Instalasi dan Penggunaan
+## Sekilas Kata Kunci
 
-### Prasyarat
-- Go versi 1.21 atau yang lebih baru.
+| Konsep Umum | Bugis Latin | Aksara Lontara | Deskripsi |
+| :--- | :--- | :--- | :--- |
+| `let / var` | `taroi` | `ᨈᨑᨚᨕᨗ` | Deklarasi variabel |
+| `func` | `jamagau` | `ᨍᨆᨁᨕᨘ` | Deklarasi fungsi |
+| `if` | `rekko` | `ᨑᨙᨀᨚ` | Percabangan kondisi |
+| `else` | `sangadinna` | `ᨔᨂᨉᨗᨊ` | Blok alternatif percabangan |
+| `true` / `false` | `tongeng` / `banna` | `ᨈᨚᨂᨙ` / `ᨅᨊ` | Nilai boolean |
+| `return` | `lisu` | `ᨒᨗᨔᨘ` | Pengembalian nilai dari fungsi |
+| `print` | `paui` | `ᨄᨕᨘᨕᨗ` | Cetak nilai ke konsol |
 
-### Instalasi CLI
+Panduan sintaksis dan tata bahasa lengkap dapat dibaca di **[docs/SINTAKS.md](docs/SINTAKS.md)**.
 
-Untuk pengguna lain yang ingin mencoba `lontara` dari repositori GitHub:
+---
 
-```bash
-go install github.com/dayattt111/lontara-lang/cmd/lontara@latest
-```
+## Instalasi dan Setup
 
-Untuk pengembanan lokal dalam repositori ini:
+### Memasang Biner CLI (`lontara`)
 
-```bash
-go install ./cmd/lontara
-```
+- **Pengguna Umum (via Go Install):**
+  ```bash
+  go install github.com/dayattt111/lontara-lang/cmd/lontara@latest
+  ```
 
-*Catatan: Jika muncul error `lontara: command not found`, pastikan `$GOPATH/bin` atau `~/go/bin` terdaftar dalam variabel `PATH` shell Anda:*
-```bash
-export PATH=$PATH:$(go env GOPATH)/bin
-```
+- **Pengembang Lokal:**
+  ```bash
+  go install ./cmd/lontara
+  ```
 
-### Menjalankan Berkas Kode (`.bugis` / `.lontara`)
+*Catatan: Jika muncul error `lontara: command not found`, pastikan `$GOPATH/bin` terdaftar dalam variabel `PATH` Anda (`export PATH=$PATH:$(go env GOPATH)/bin`).*
 
-Anda dapat mengeksekusi berkas sumber secara langsung atau melalui sub-perintah `run`:
-
-```bash
-# Eksekusi langsung
-lontara test.bugis
-lontara test.lontara
-
-# Eksekusi dengan sub-perintah run
-lontara run test.bugis
-lontara run test.lontara
-```
-
-Jika ingin menjalankan tanpa melakukan `go install` (saat pengembangan repositori):
+### Eksekusi Berkas Kode
 
 ```bash
+# Eksekusi langsung berkas
+lontara examples/halo_dunia.bugis
+lontara examples/halo_dunia.lontara
+
+# Atau menggunakan sub-perintah run
+lontara run examples/halo_dunia.bugis
+
+# Atau menggunakan go run (tanpa install)
 go run ./cmd/lontara examples/halo_dunia.bugis
 ```
 
 ### Mode Interaktif (REPL)
-
-Jalankan perintah `lontara` tanpa argumen untuk masuk ke sesi REPL (*Read-Eval-Print Loop*):
 
 ```bash
 $ lontara
 Lontara Programming Language (v0.1.0)
 Ketik perintah atau ekspresi untuk mengevaluasi.
 lontara> taroi a = 10;
-lontara> taroi b = 20;
-lontara> a + b;
-30
-lontara> paui("Salam!");
-Salam!
+lontara> paui(a * 2);
+20
 ```
 
-Dokumentasi lengkap penanganan masalah dan instalasi dapat dibaca di **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)**.
+Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)**.
 
 ---
 
-## 6. Struktur Proyek
-
-Struktur repositori `lontara-lang` disusun modular mengikuti konvensi proyek Go:
+## Struktur Proyek
 
 ```text
 .
 ├── LICENSE                  # Lisensi proyek (MIT License)
 ├── README.md                # Dokumentasi utama repositori
+├── assets/                  # Berkas aset visual dan logo proyek
 ├── cmd/
-│   ├── lontara/             # Entry point untuk CLI runner dan REPL (main.go)
-│   └── wasm/                # Entry point untuk kompilasi WebAssembly (main.go)
+│   ├── lontara/             # Biner CLI runner dan REPL utama (main.go)
+│   └── wasm/                # Biner kompilasi WebAssembly (main.go)
 ├── docs/
-│   ├── ARSITEKTUR.md        # Dokumentasi arsitektur internal interpreter
-│   ├── PENGGUNAAN.md        # Panduan detail instalasi, PATH, dan CLI runner
-│   └── SINTAKS.md           # Spesifikasi sintaksis dan manual tata bahasa
+│   ├── ARSITEKTUR.md        # Dokumentasi arsitektur mesin interpreter
+│   ├── KONTRIBUSI.md        # Panduan alur kerja untuk kontributor
+│   ├── PENGGUNAAN.md        # Panduan detail instalasi, setup PATH, dan CLI
+│   └── SINTAKS.md           # Spesifikasi sintaksis dan manual kata kunci
 ├── examples/
-│   ├── halo_dunia.bugis     # Contoh program dalam versi Bugis Latin
-│   └── halo_dunia.lontara   # Contoh program dalam versi Aksara Lontara Unicode
+│   ├── halo_dunia.bugis     # Contoh berkas sintaks Bugis Latin
+│   └── halo_dunia.lontara   # Contoh berkas sintaks Aksara Lontara Unicode
 ├── go.mod                   # Berkas modul Go
 └── pkg/
-    ├── ast/                 # Node definisi Abstract Syntax Tree (AST)
-    ├── evaluator/           # Mesin penelusur AST dan evaluasi nilai runtime
+    ├── ast/                 # Node Abstract Syntax Tree (AST)
+    ├── evaluator/           # Mesin penelusur AST dan evaluasi nilai
     ├── lexer/               # Analisis leksikal dan pembacaan token UTF-8
-    ├── object/              # Sistem tipe data objek runtime dan lingkungan variabel
-    ├── parser/              # Parser sintaksis mengimplementasikan Pratt Parser
+    ├── object/              # Tipe data runtime dan lingkup variabel (Environment)
+    ├── parser/              # Parser sintaksis berbasis Pratt Parser
     ├── repl/                # Antarmuka REPL terminal interaktif
-    └── token/               # Definisi tipe token dan pemetaan kata kunci
+    └── token/               # Definisi token dan kamus kata kunci
 ```
 
 ---
 
-## 7. Roadmap Milestone
+## Arsitektur Interpreter Singkat
 
-- **Fase 1 (Tahap Saat Ini): CLI Core Engine**
-  - Implementasi interpreter murni (*tree-walking interpreter*) di terminal.
-  - Sesi REPL interaktif dan pemrosesan berkas (`.lontara` / `.bugis`).
-  - Dukungan tipe data dasar: Integer, String, Boolean, Null.
-  - Operator aritmetika dan pembanding (`+`, `-`, `*`, `/`, `<`, `>`, `<=`, `>=`, `==`, `!=`).
-  - Deklarasi variabel (`taroi`), fungsi anonim & rekursif (`jamagau`), pengembalian nilai (`lisu`).
-  - Percabangan kondisi (`rekko` ... `sangadinna`).
-  - Cetak keluaran bawaan (`paui` / `ᨄᨕᨘᨕᨗ`).
+`lontara-lang` menggunakan alur pemrosesan interpreter tradisional tanpa dependensi luar:
 
-- **Fase 2: WebAssembly Playground (Wasm Engine)**
-  - Kompilasi modul Wasm untuk mendukung *playground* interaktif berbasis web tanpa ketergantungan pada backend server.
+```text
+Teks Sumber (.bugis/.lontara) ──> Lexer (Token) ──> Parser (AST) ──> Evaluator (Object Value)
+```
 
-- **Fase 3: Ekosistem & Standard Library Lontara**
-  - Integrasi penuh kamus kata kunci berbasis Unicode Aksara Lontara.
-  - Pengembangan pustaka standar untuk manipulasi string, array, dan fungsi I/O tambahan.
+1. **Lexer:** Memecah teks masukan UTF-8 (termasuk Aksara Lontara) menjadi urutan token.
+2. **Parser:** Mengubah token menjadi struktur pohon AST menggunakan metode Pratt Parser.
+3. **Evaluator:** Menelusuri pohon AST secara rekursif dan mengembalikan objek nilai runtime.
+
+Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[docs/ARSITEKTUR.md](docs/ARSITEKTUR.md)**.
 
 ---
 
-## 8. Kontribusi dan Lisensi
+## Indeks Dokumentasi
 
-### Kontribusi
-Kontribusi dari komunitas sangat terbuka! Anda dapat berkontribusi melalui:
-- Pelaporan *bug* atau usulan fitur via **GitHub Issues**.
-- Pengiriman perbaikan atau fitur baru via **Pull Request**.
-- Penambahan contoh program atau penyempurnaan dokumentasi.
+| Dokumen | Deskripsi |
+| :--- | :--- |
+| **[docs/SINTAKS.md](docs/SINTAKS.md)** | Spesifikasi sintaksis, kata kunci, tipe data, dan kontrol alur |
+| **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)** | Panduan instalasi, konfigurasi `PATH`, dan penggunaan perintah CLI |
+| **[docs/ARSITEKTUR.md](docs/ARSITEKTUR.md)** | Detail rancangan mesin interpreter (Lexer, Parser, AST, Evaluator) |
+| **[docs/KONTRIBUSI.md](docs/KONTRIBUSI.md)** | Panduan kontribusi kode, alur Git branch, dan standar pengujian |
 
-### Lisensi
+---
+
+## Kontribusi
+
+Kontribusi dari komunitas sangat disukai! Silakan baca panduan lengkap alur kerja kontribusi pada **[docs/KONTRIBUSI.md](docs/KONTRIBUSI.md)** sebelum mengajukan Pull Request atau membuat Issue baru.
+
+---
+
+## Lisensi
+
 Proyek ini didistribusikan di bawah lisensi [MIT License](LICENSE).
