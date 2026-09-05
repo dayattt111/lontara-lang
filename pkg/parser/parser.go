@@ -67,6 +67,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.BANNA, p.parseBoolean)
 	p.registerPrefix(token.LPAREN, p.parseGroupedExpression)
 	p.registerPrefix(token.REKKO, p.parseRekkoExpression)
+	p.registerPrefix(token.SIKI, p.parseSikiExpression)
 	p.registerPrefix(token.JAMAGAU, p.parseJamagauLiteral)
 	p.registerPrefix(token.PAUI, p.parseIdentifier)
 
@@ -289,6 +290,29 @@ func (p *Parser) parseRekkoExpression() ast.Expression {
 
 		expression.Alternative = p.parseBlockStatement()
 	}
+
+	return expression
+}
+
+func (p *Parser) parseSikiExpression() ast.Expression {
+	expression := &ast.SikiExpression{Token: p.curToken}
+
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+
+	p.nextToken()
+	expression.Condition = p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+
+	expression.Body = p.parseBlockStatement()
 
 	return expression
 }

@@ -1,0 +1,10 @@
+taroi i = 1;
+taroi total = 0;
+
+siki (i <= 5) {
+    paui("Iterasi baris ke-", i);
+    taroi total = total + i;
+    taroi i = i + 1;
+}
+
+paui("Total akumulasi:", total);

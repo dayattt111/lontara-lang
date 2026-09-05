@@ -221,6 +221,25 @@ func (re *RekkoExpression) String() string {
 	return out.String()
 }
 
+// SikiExpression: Perulangan berbasis kondisi (siki (kondisi) { ... })
+type SikiExpression struct {
+	Token     token.Token // token.SIKI
+	Condition Expression
+	Body      *BlockStatement
+}
+
+func (se *SikiExpression) expressionNode()      {}
+func (se *SikiExpression) TokenLiteral() string { return se.Token.Literal }
+
+func (se *SikiExpression) String() string {
+	var out bytes.Buffer
+	out.WriteString("siki")
+	out.WriteString(se.Condition.String())
+	out.WriteString(" ")
+	out.WriteString(se.Body.String())
+	return out.String()
+}
+
 // JamagauLiteral: Definisi fungsi (misal: jamagau(x, y) { lisu x + y; })
 type JamagauLiteral struct {
 	Token      token.Token // token.JAMAGAU

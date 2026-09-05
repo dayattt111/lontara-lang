@@ -94,6 +94,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	case *ast.RekkoExpression:
 		return evalRekkoExpression(node, env)
 
+	case *ast.SikiExpression:
+		return evalSikiExpression(node, env)
+
 	case *ast.Identifier:
 		return evalIdentifier(node, env)
 
@@ -272,6 +275,32 @@ func evalRekkoExpression(ie *ast.RekkoExpression, env *object.Environment) objec
 	} else {
 		return NULL
 	}
+}
+
+func evalSikiExpression(se *ast.SikiExpression, env *object.Environment) object.Object {
+	var result object.Object = NULL
+
+	for {
+		condition := Eval(se.Condition, env)
+		if isError(condition) {
+			return condition
+		}
+
+		if !isTruthy(condition) {
+			break
+		}
+
+		result = Eval(se.Body, env)
+
+		if result != nil {
+			rt := result.Type()
+			if rt == object.RETURN_VALUE_OBJ || rt == object.ERROR_OBJ {
+				return result
+			}
+		}
+	}
+
+	return result
 }
 
 func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object {

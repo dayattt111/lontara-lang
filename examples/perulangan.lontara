@@ -1,0 +1,10 @@
+ᨈᨑᨚᨕᨗ i = 1;
+ᨈᨑᨚᨕᨗ total = 0;
+
+ᨔᨗᨀᨗ (i <= 5) {
+    ᨄᨕᨘᨕᨗ("Iterasi baris ke-", i);
+    ᨈᨑᨚᨕᨗ total = total + i;
+    ᨈᨑᨚᨕᨗ i = i + 1;
+}
+
+ᨄᨕᨘᨕᨗ("Total akumulasi:", total);

@@ -56,6 +56,7 @@ const (
 	BANNA      = "BANNA"      // false
 	PAUI       = "PAUI"       // cetak (print / println)
 	LISU       = "LISU"       // return
+	SIKI       = "SIKI"       // perulangan (while / loop)
 )
 
 // LookupIdent memeriksa apakah sebuah kata adalah keyword (terdaftar di pkg/dictionary) atau identifier biasa

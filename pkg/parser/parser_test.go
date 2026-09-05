@@ -74,6 +74,32 @@ func TestOperatorPrecedence(t *testing.T) {
 	}
 }
 
+func TestSikiExpression(t *testing.T) {
+	input := `siki (x < y) { x; }`
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Statements tidak memuat 1 statement. didapat=%d", len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] bukan *ast.ExpressionStatement. didapat=%T", program.Statements[0])
+	}
+
+	exp, ok := stmt.Expression.(*ast.SikiExpression)
+	if !ok {
+		t.Fatalf("stmt.Expression bukan *ast.SikiExpression. didapat=%T", stmt.Expression)
+	}
+
+	if exp.TokenLiteral() != "siki" {
+		t.Fatalf("exp.TokenLiteral() bukan 'siki'. didapat=%q", exp.TokenLiteral())
+	}
+}
+
 func checkParserErrors(t *testing.T, p *Parser) {
 	errors := p.Errors()
 	if len(errors) == 0 {

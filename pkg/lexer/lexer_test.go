@@ -175,6 +175,8 @@ func TestEOFIdentifiersAndNumbers(t *testing.T) {
 		{"banna", token.BANNA, "banna"},
 		{"10", token.INT, "10"},
 		{"5", token.INT, "5"},
+		{"siki", token.SIKI, "siki"},
+		{"ᨔᨗᨀᨗ", token.SIKI, "ᨔᨗᨀᨗ"},
 		{"ᨈᨑᨚᨕᨗ", token.TAROI, "ᨈᨑᨚᨕᨗ"},
 	}
 

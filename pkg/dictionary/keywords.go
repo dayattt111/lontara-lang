@@ -59,6 +59,12 @@ var RegisteredKeywords = []Keyword{
 		Lontara:   "ᨒᨗᨔᨘ",
 		Meaning:   "Pengembalian nilai dari fungsi (return)",
 	},
+	{
+		TokenType: "SIKI",
+		Latin:     "siki",
+		Lontara:   "ᨔᨗᨀᨗ",
+		Meaning:   "Perulangan berbasis kondisi (while / loop)",
+	},
 }
 
 var keywordsMap map[string]string

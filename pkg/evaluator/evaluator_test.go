@@ -116,6 +116,26 @@ func TestFunctionApplication(t *testing.T) {
 	}
 }
 
+func TestSikiLooping(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{
+			"taroi x = 0; siki (x < 5) { taroi x = x + 1; }; x;",
+			5,
+		},
+		{
+			"taroi i = 1; taroi total = 0; siki (i <= 4) { taroi total = total + i; taroi i = i + 1; }; total;",
+			10,
+		},
+	}
+
+	for _, tt := range tests {
+		testIntegerObject(t, testEval(tt.input), tt.expected)
+	}
+}
+
 // Helper assertions
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	result, ok := obj.(*object.Integer)
