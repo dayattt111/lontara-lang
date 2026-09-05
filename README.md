@@ -123,7 +123,7 @@ lontara> paui(a * 2);
 20
 ```
 
-Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)**.
+Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/language/CLI.md](docs/language/CLI.md)**.
 
 ---
 
@@ -137,17 +137,21 @@ Panduan lengkap mengenai setup dan penanganan masalah dapat dibaca di **[docs/PE
 ├── cmd/
 │   ├── lontara/             # Biner CLI runner dan REPL utama (main.go)
 │   └── wasm/                # Biner kompilasi WebAssembly (main.go)
-├── docs/
-│   ├── ARSITEKTUR.md        # Dokumentasi arsitektur mesin interpreter
-│   ├── KAMUS.md             # Dokumentasi tabel huruf Lontara & registri kata kunci
-│   ├── KONTRIBUSI.md        # Panduan alur kerja untuk kontributor
-│   ├── PENGGUNAAN.md        # Panduan detail instalasi, setup PATH, dan CLI
-│   ├── ROADMAP.md           # Peta jalan pengembangan jangka pendek & panjang
-│   ├── SINTAKS.md           # Spesifikasi sintaksis dan manual kata kunci
-│   └── WASM.md              # Panduan arsitektur & kompilasi WebAssembly
+├── docs/                    # Dokumentasi terstruktur proyek
+│   ├── algorithm/           # Tutorial & modul belajar algoritma sintaksis
+│   ├── architecture/        # Arsitektur mesin interpreter (Lexer, Parser, Evaluator)
+│   ├── dictionary/          # Registri kata kunci & tabel karakter Aksara Lontara
+│   ├── kontribusi/          # Panduan kontributor & tutorial penambahan kata kunci
+│   ├── language/            # Spesifikasi tata bahasa & panduan penggunaan CLI
+│   ├── roadmap/             # Peta jalan milestone & dokumentasi rilis Fase 2
+│   └── website/             # Panduan WebAssembly (WASM) & Web Playground
 ├── examples/
 │   ├── halo_dunia.bugis     # Contoh berkas sintaks Bugis Latin
-│   └── halo_dunia.lontara   # Contoh berkas sintaks Aksara Lontara Unicode
+│   ├── halo_dunia.lontara   # Contoh berkas sintaks Aksara Lontara Unicode
+│   ├── perulangan.bugis     # Contoh perulangan Bugis Latin
+│   ├── perulangan.lontara   # Contoh perulangan Aksara Lontara
+│   ├── fungsi_bawaan.bugis  # Contoh fungsi bawaan (panjang, tipe)
+│   └── playground.html      # Halaman Web Playground interaktif
 ├── go.mod                   # Berkas modul Go
 └── pkg/
     ├── ast/                 # Node Abstract Syntax Tree (AST)
@@ -174,27 +178,27 @@ Teks Sumber (.bugis/.lontara) ──> Lexer (Token) ──> Parser (AST) ──>
 2. **Parser:** Mengubah token menjadi struktur pohon AST menggunakan metode Pratt Parser.
 3. **Evaluator:** Menelusuri pohon AST secara rekursif dan mengembalikan objek nilai runtime.
 
-Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[docs/ARSITEKTUR.md](docs/ARSITEKTUR.md)**.
+Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[docs/architecture/README.md](docs/architecture/README.md)**.
 
 ---
 
-## Indeks Dokumentasi
+## Indeks Dokumentasi Terstruktur
 
-| Dokumen | Deskripsi |
-| :--- | :--- |
-| **[docs/SINTAKS.md](docs/SINTAKS.md)** | Spesifikasi sintaksis, kata kunci, tipe data, dan kontrol alur |
-| **[docs/KAMUS.md](docs/KAMUS.md)** | Dokumentasi tabel huruf Aksara Lontara Unicode dan pendaftaran kata kunci |
-| **[docs/PENGGUNAAN.md](docs/PENGGUNAAN.md)** | Panduan instalasi, konfigurasi `PATH`, dan penggunaan perintah CLI |
-| **[docs/ARSITEKTUR.md](docs/ARSITEKTUR.md)** | Detail rancangan mesin interpreter (Lexer, Parser, AST, Evaluator) |
-| **[docs/ROADMAP.md](docs/ROADMAP.md)** | Peta jalan fitur & tahapan pengembangan `lontara-lang` |
-| **[docs/WASM.md](docs/WASM.md)** | Panduan kompilator WebAssembly & integrasi Web Playground |
-| **[docs/KONTRIBUSI.md](docs/KONTRIBUSI.md)** | Panduan kontribusi kode, alur Git branch, dan standar pengujian |
+| Kategori | Dokumen | Deskripsi |
+| :--- | :--- | :--- |
+| **Model Belajar Algoritma** | **[docs/algorithm/](docs/algorithm/)** | Panduan bertahap (Print, Variabel, Percabangan, Perulangan, Fungsi, Built-in) |
+| **Spesifikasi & CLI** | **[docs/language/CLI.md](docs/language/CLI.md)** | Panduan instalasi `lontara`, setup `PATH`, CLI `run`, dan REPL |
+| **Arsitektur Interpreter** | **[docs/architecture/](docs/architecture/)** | Penjelasan Pratt Parser, AST, Runtime Evaluator, & Error Reporting |
+| **Kamus & Aksara Lontara** | **[docs/dictionary/](docs/dictionary/)** | Tabel huruf Lontara Unicode (`U+1A00`–`U+1A1F`) & registri kata kunci |
+| **Peta Jalan & Rilis** | **[docs/roadmap/FASE2.md](docs/roadmap/FASE2.md)** | Milestone rilis & laporan lengkap pencapaian Rilis Fase 2 (v0.2.0) |
+| **WebAssembly & Web** | **[docs/website/WASM.md](docs/website/WASM.md)** | Panduan WASM engine & penggunaan Web Playground (`playground.html`) |
+| **Panduan Kontribusi** | **[docs/kontribusi/PANDUAN.md](docs/kontribusi/PANDUAN.md)** | Workflow Git, standar pengujian, & tutorial menambah kata kunci |
 
 ---
 
 ## Kontribusi
 
-Kontribusi dari komunitas sangat disukai! Silakan baca panduan lengkap alur kerja kontribusi pada **[docs/KONTRIBUSI.md](docs/KONTRIBUSI.md)** sebelum mengajukan Pull Request atau membuat Issue baru.
+Kontribusi dari komunitas sangat disukai! Silakan baca panduan lengkap alur kerja kontribusi pada **[docs/kontribusi/PANDUAN.md](docs/kontribusi/PANDUAN.md)** sebelum mengajukan Pull Request atau membuat Issue baru.
 
 ---
 
