@@ -204,3 +204,22 @@ func testNullObject(t *testing.T, obj object.Object) bool {
 	}
 	return true
 }
+
+func BenchmarkEvalProgram(b *testing.B) {
+	input := `
+taroi i = 1;
+taroi total = 0;
+siki (i <= 100) {
+    taroi total = total + i;
+    taroi i = i + 1;
+}
+`
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		l := lexer.New(input)
+		p := parser.New(l)
+		program := p.ParseProgram()
+		env := object.NewEnvironment()
+		Eval(program, env)
+	}
+}
