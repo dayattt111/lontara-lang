@@ -13,6 +13,7 @@ Dokumen ini berisi spesifikasi sintaks dan tata bahasa untuk `lontara-lang`. Bah
 | `true` | `tongeng` | `ᨈᨚᨂᨙ` | Nilai kebenaran true |
 | `false` | `banna` | `ᨅᨊ` | Nilai kebenaran false |
 | `return` | `lisu` | `ᨒᨗᨔᨘ` | Mengembalikan nilai dari fungsi |
+| `while / loop` | `siki` | `ᨔᨗᨀᨗ` | Perulangan berbasis kondisi |
 | `print` | `paui` | `ᨄᨕᨘᨕᨗ` | Cetak nilai ke konsol |
 
 ## 2. Tipe Data
@@ -73,7 +74,28 @@ Dalam Aksara Lontara:
 }
 ```
 
-## 5. Fungsi (`jamagau`)
+## 5. Perulangan (`siki` / `ᨔᨗᨀᨗ`)
+
+Perulangan `siki` mengevaluasi ekspresi kondisi. Selama kondisi bernilai `tongeng` (true), blok kode di dalam kurung kurawal akan terus dieksekusi.
+
+```lontara
+taroi i = 1;
+siki (i <= 3) {
+    paui("Perulangan ke-", i);
+    taroi i = i + 1;
+}
+```
+
+Dalam Aksara Lontara:
+```lontara
+ᨈᨑᨚᨕᨗ i = 1;
+ᨔᨗᨀᨗ (i <= 3) {
+    ᨄᨕᨘᨕᨗ("Perulangan ke-", i);
+    ᨈᨑᨚᨕᨗ i = i + 1;
+}
+```
+
+## 6. Fungsi (`jamagau`)
 
 Fungsi dalam `lontara-lang` bersifat first-class value. Fungsi dideklarasikan sebagai ekspresi dengan kata kunci `jamagau`, parameter dalam tanda kurung, dan badan fungsi di dalam kurung kurawal. Untuk mengembalikan nilai, gunakan `lisu`.
 
@@ -86,7 +108,7 @@ taroi hasil = kali(6, 7);
 paui(hasil);
 ```
 
-## 6. Fungsi Bawaan (Built-in)
+## 7. Fungsi Bawaan (Built-in)
 
 ### `paui` / `ᨄᨕᨘᨕᨗ`
 Menampilkan nilai argumen ke stdout.

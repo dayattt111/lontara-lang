@@ -29,8 +29,8 @@ Dokumen ini memuat rencana pengembangan jangka pendek, menengah, dan panjang unt
 - [ ] **Mesin WebAssembly (WASM)**:
   - Kompilasi biner `cmd/wasm` ke `lontara.wasm` agar interpreter dapat berjalan langsung di peramban web (*zero backend server execution*).
   - Pembuatan Web Playground interaktif di browser.
-- [ ] **Struktur Perulangan (Looping)**:
-  - Penambahan kata kunci perulangan Bugis Latin & Aksara Lontara (contoh: `siki` / `ᨔᨗᨀᨗ` untuk `while` / `for`).
+- [x] **Struktur Perulangan (Looping)**:
+  - Penambahan kata kunci perulangan Bugis Latin & Aksara Lontara (`siki` / `ᨔᨗᨀᨗ`).
 - [ ] **Fungsi Bawaan (Built-in) Tambahan**:
   - Penambahan fungsi pembacaan input konsol/pengukur panjang string.
 - [ ] **Penyempurnaan Pesan Kesalahan (Error Reporting)**:
