@@ -1,5 +1,9 @@
 package token
 
+import (
+	"github.com/dayattt111/lontara-lang/pkg/dictionary"
+)
+
 type TokenType string
 
 type Token struct {
@@ -54,33 +58,10 @@ const (
 	LISU       = "LISU"       // return
 )
 
-// Kamus kata kunci Bugis Latin & Aksara Lontara
-var keywords = map[string]TokenType{
-	// Versi Latin
-	"jamagau":    JAMAGAU,
-	"taroi":      TAROI,
-	"rekko":      REKKO,
-	"sangadinna": SANGADINNA,
-	"tongeng":    TONGENG,
-	"banna":      BANNA,
-	"paui":       PAUI,
-	"lisu":       LISU,
-
-	// Versi Aksara Lontara (Unicode U+1A00 - U+1A1F)
-	"ᨍᨆᨁᨕᨘ":  JAMAGAU,    // jamagau
-	"ᨈᨑᨚᨕᨗ":    TAROI,      // taroi
-	"ᨑᨙᨀᨚ":      REKKO,      // rekko
-	"ᨔᨂᨉᨗᨊ":    SANGADINNA, // sangadinna
-	"ᨈᨚᨂᨙ":      TONGENG,    // tongeng
-	"ᨅᨊ":        BANNA,      // banna
-	"ᨄᨕᨘᨕᨗ":    PAUI,       // paui
-	"ᨒᨗᨔᨘ":      LISU,       // lisu
-}
-
-// LookupIdent memeriksa apakah sebuah kata adalah keyword atau identifier biasa
+// LookupIdent memeriksa apakah sebuah kata adalah keyword (terdaftar di pkg/dictionary) atau identifier biasa
 func LookupIdent(ident string) TokenType {
-	if tok, ok := keywords[ident]; ok {
-		return tok
+	if tokType, ok := dictionary.LookupKeyword(ident); ok {
+		return TokenType(tokType)
 	}
 	return IDENT
 }
