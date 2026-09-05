@@ -3,6 +3,7 @@ package evaluator
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"unicode/utf8"
 
@@ -15,7 +16,20 @@ var (
 	NULL  = &object.Null{}
 	TRUE  = &object.Boolean{Value: true}
 	FALSE = &object.Boolean{Value: false}
+
+	outWriter io.Writer = os.Stdout
 )
+
+func SetOutput(w io.Writer) {
+	outWriter = w
+}
+
+func GetOutput() io.Writer {
+	if outWriter == nil {
+		return os.Stdout
+	}
+	return outWriter
+}
 
 func builtinPanjang(args ...object.Object) object.Object {
 	if len(args) != 1 {
@@ -51,18 +65,28 @@ func builtinTipe(args ...object.Object) object.Object {
 var builtins = map[string]*object.Builtin{
 	"paui": {
 		Fn: func(args ...object.Object) object.Object {
-			for _, arg := range args {
-				fmt.Println(arg.Inspect())
+			out := GetOutput()
+			for i, arg := range args {
+				if i > 0 {
+					fmt.Fprint(out, " ")
+				}
+				fmt.Fprint(out, arg.Inspect())
 			}
+			fmt.Fprintln(out)
 			return NULL
 		},
 	},
 	// Dukungan built-in aksara Lontara: ᨄᨕᨘᨕᨗ (paui)
 	"ᨄᨕᨘᨕᨗ": {
 		Fn: func(args ...object.Object) object.Object {
-			for _, arg := range args {
-				fmt.Println(arg.Inspect())
+			out := GetOutput()
+			for i, arg := range args {
+				if i > 0 {
+					fmt.Fprint(out, " ")
+				}
+				fmt.Fprint(out, arg.Inspect())
 			}
+			fmt.Fprintln(out)
 			return NULL
 		},
 	},
