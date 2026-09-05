@@ -3,8 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io"
-	"os"
 	"syscall/js"
 
 	"github.com/dayattt111/lontara-lang/pkg/evaluator"
@@ -19,26 +17,14 @@ func evaluateLontaraWrapper(this js.Value, args []js.Value) interface{} {
 	}
 	code := args[0].String()
 
-	// Tangkap luaran stdout (paui) sementara
-	oldStdout := os.Stdout
-	r, w, _ := os.Pipe()
-	os.Stdout = w
-
-	outC := make(chan string)
-	go func() {
-		var buf bytes.Buffer
-		io.Copy(&buf, r)
-		outC <- buf.String()
-	}()
+	var outBuf bytes.Buffer
+	evaluator.SetOutput(&outBuf)
 
 	l := lexer.New(code)
 	p := parser.New(l)
 	program := p.ParseProgram()
 
 	if len(p.Errors()) != 0 {
-		w.Close()
-		os.Stdout = oldStdout
-		<-outC
 		var errOut bytes.Buffer
 		errOut.WriteString("Kesalahan Sintaks (Parser Error):\n")
 		for _, msg := range p.Errors() {
@@ -50,12 +36,14 @@ func evaluateLontaraWrapper(this js.Value, args []js.Value) interface{} {
 	env := object.NewEnvironment()
 	evaluated := evaluator.Eval(program, env)
 
-	w.Close()
-	os.Stdout = oldStdout
-	printedOutput := <-outC
+	printedOutput := outBuf.String()
 
 	if evaluated != nil && evaluated.Type() == object.ERROR_OBJ {
 		return printedOutput + evaluated.Inspect() + "\n"
+	}
+
+	if printedOutput == "" && evaluated != nil && evaluated.Type() != object.NULL_OBJ {
+		return evaluated.Inspect()
 	}
 
 	return printedOutput
