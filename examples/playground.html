@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lontara-Lang Web Playground</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-hover: #0284c7;
+            --text-color: #f8fafc;
+            --text-dim: #94a3b8;
+            --border-color: #334155;
+            --term-bg: #020617;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .editor-container, .output-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background-color: rgba(15, 23, 42, 0.6);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dim);
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            color: var(--text-color);
+            border: none;
+            padding: 1rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+        }
+
+        .output-box {
+            flex: 1;
+            background-color: var(--term-bg);
+            color: #4ade80;
+            padding: 1rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+            color: #ffffff;
+        }
+
+        select {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        #status-indicator {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            background-color: #f59e0b;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        #status-indicator.ready {
+            background-color: #22c55e;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>ᨒᨚᨈᨑ Lontara-Lang Web Playground</h1>
+            <p>Bahasa Pemrograman Edukatif Berbasis Logika Bahasa Bugis dan Aksara Lontara</p>
+        </div>
+        <div id="status-indicator">Memuat Engine WASM...</div>
+    </header>
+
+    <main>
+        <!-- Editor Panel -->
+        <div class="editor-container">
+            <div class="panel-header">
+                <span class="panel-title">Editor Kode</span>
+                <div class="controls">
+                    <select id="sample-select" onchange="loadSample()">
+                        <option value="bugis">Sampel: Bugis Latin (Perulangan)</option>
+                        <option value="lontara">Sampel: Aksara Lontara (Kondisi)</option>
+                        <option value="builtin">Sampel: Fungsi Bawaan</option>
+                    </select>
+                    <button id="run-btn" onclick="runCode()" disabled>Jalankan Kode ▶</button>
+                </div>
+            </div>
+            <textarea id="code-editor" spellcheck="false"></textarea>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="output-container">
+            <div class="panel-header">
+                <span class="panel-title">Konsol Luaran (Output)</span>
+                <button style="background: transparent; color: var(--text-dim); border: 1px solid var(--border-color);" onclick="clearOutput()">Bersihkan</button>
+            </div>
+            <div id="output" class="output-box">Silakan tunggu, modul WebAssembly sedang dimuat...</div>
+        </div>
+    </main>
+
+    <script src="wasm_exec.js"></script>
+    <script>
+        const samples = {
+            bugis: `taroi i = 1;\ntaroi total = 0;\n\nsiki (i <= 5) {\n    paui("Iterasi baris ke-", i);\n    taroi total = total + i;\n    taroi i = i + 1;\n}\n\npaui("Total akumulasi:", total);`,
+            lontara: `ᨈᨑᨚᨕᨗ pesang = "Halo, Dunia!";\nᨄᨕᨘᨕᨗ(pesang);\n\nᨈᨑᨚᨕᨗ angka = 10;\nᨑᨙᨀᨚ (angka > 5) {\n    ᨄᨕᨘᨕᨗ("salama");\n}`,
+            builtin: `taroi teks = "Salama Lontara";\npaui("Teks:", teks);\npaui("Panjang teks:", panjang(teks));\npaui("Tipe data teks:", tipe(teks));`
+        };
+
+        const editor = document.getElementById("code-editor");
+        const output = document.getElementById("output");
+        const statusInd = document.getElementById("status-indicator");
+        const runBtn = document.getElementById("run-btn");
+
+        editor.value = samples.bugis;
+
+        function loadSample() {
+            const val = document.getElementById("sample-select").value;
+            editor.value = samples[val];
+        }
+
+        function clearOutput() {
+            output.textContent = "";
+        }
+
+        function runCode() {
+            if (typeof evaluateLontara !== "function") {
+                output.textContent = "Error: Engine WebAssembly belum siap.";
+                return;
+            }
+            const code = editor.value;
+            const res = evaluateLontara(code);
+            output.textContent = res || "(Eksekusi selesai tanpa luaran)";
+        }
+
+        // Memuat biner WASM Go
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("lontara.wasm"), go.importObject)
+            .then((result) => {
+                go.run(result.instance);
+                statusInd.textContent = "Engine WASM Siap";
+                statusInd.classList.add("ready");
+                runBtn.disabled = false;
+                output.textContent = "Modul WebAssembly berhasil dimuat. Klik 'Jalankan Kode ▶' untuk mengevaluasi.";
+            })
+            .catch((err) => {
+                statusInd.textContent = "Gagal Memuat WASM";
+                statusInd.style.backgroundColor = "#ef4444";
+                statusInd.style.color = "#fff";
+                output.textContent = "Gagal memuat file lontara.wasm: " + err;
+            });
+    </script>
+</body>
+</html>

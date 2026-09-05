@@ -8,7 +8,7 @@ Dokumen ini memuat rencana pengembangan jangka pendek, menengah, dan panjang unt
 
 ```text
 [v0.1.0 - Core Interpreter]  -->  [v0.2.0 - WASM & Loop]  -->  [v0.3.0 - Koleksi Data]  -->  [v1.0.0 - Ekosistem & Tooling]
-         (Selesai)                    (Dalam Proses)                 (Rencana)                    (Tujuan Akhir)
+         (Selesai)                      (Selesai)                    (Dalam Proses)                 (Tujuan Akhir)
 ```
 
 ---
@@ -24,11 +24,11 @@ Dokumen ini memuat rencana pengembangan jangka pendek, menengah, dan panjang unt
 
 ---
 
-## 🚧 Fase 2: Mesin WebAssembly & Fitur Sintaksis Tambahan (v0.2.0 - Dalam Pengembangan)
+## ✅ Fase 2: Mesin WebAssembly & Fitur Sintaksis Tambahan (v0.2.0 - Selesai)
 
-- [ ] **Mesin WebAssembly (WASM)**:
+- [x] **Mesin WebAssembly (WASM)**:
   - Kompilasi biner `cmd/wasm` ke `lontara.wasm` agar interpreter dapat berjalan langsung di peramban web (*zero backend server execution*).
-  - Pembuatan Web Playground interaktif di browser.
+  - Pembuatan Web Playground interaktif di browser ([examples/playground.html](../examples/playground.html)).
 - [x] **Struktur Perulangan (Looping)**:
   - Penambahan kata kunci perulangan Bugis Latin & Aksara Lontara (`siki` / `ᨔᨗᨀᨗ`).
 - [x] **Fungsi Bawaan (Built-in) Tambahan**:

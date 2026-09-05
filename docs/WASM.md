@@ -68,5 +68,5 @@ cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" .
 ## 5. Status Pengembangan WASM
 
 - [x] Pengaturan struktur direktori biner `cmd/wasm`.
-- [ ] Implementasi ekspor API JavaScript (`js.Global().Set("evaluateLontara", ...)`) untuk menghubungkan masukan teks dari textarea HTML langsung ke `lexer`, `parser`, dan `evaluator`.
-- [ ] Pengalihan keluaran `paui` (`stdout`) ke DOM elemen HTML atau konsol editor web.
+- [x] Implementasi ekspor API JavaScript (`js.Global().Set("evaluateLontara", ...)`) untuk menghubungkan masukan teks dari textarea HTML langsung ke `lexer`, `parser`, dan `evaluator`.
+- [x] Pengalihan keluaran `paui` (`stdout`) dan laporan kesalahan ke elemen konsol Web Playground ([examples/playground.html](../examples/playground.html)).
