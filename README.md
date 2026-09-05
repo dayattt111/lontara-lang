@@ -188,6 +188,7 @@ Penjelasan teknis mendalam mengenai arsitektur interpreter dapat dibaca di **[do
 | :--- | :--- | :--- |
 | **Model Belajar Algoritma** | **[docs/algorithm/](docs/algorithm/)** | Panduan bertahap (Print, Variabel, Percabangan, Perulangan, Fungsi, Built-in) |
 | **Spesifikasi & CLI** | **[docs/language/CLI.md](docs/language/CLI.md)** | Panduan instalasi `lontara`, setup `PATH`, CLI `run`, dan REPL |
+| **Keyboard & Cara Mengetik** | **[docs/language/KEYBOARD.md](docs/language/KEYBOARD.md)** | Panduan cara mengetik Aksara Lontara Unicode di Linux, Windows, Mac, & Web |
 | **Arsitektur Interpreter** | **[docs/architecture/](docs/architecture/)** | Penjelasan Pratt Parser, AST, Runtime Evaluator, & Error Reporting |
 | **Kamus & Aksara Lontara** | **[docs/dictionary/](docs/dictionary/)** | Tabel huruf Lontara Unicode (`U+1A00`–`U+1A1F`) & registri kata kunci |
 | **Peta Jalan & Rilis** | **[docs/roadmap/FASE2.md](docs/roadmap/FASE2.md)** | Milestone rilis & laporan lengkap pencapaian Rilis Fase 2 (v0.2.0) |
