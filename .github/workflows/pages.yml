@@ -31,7 +31,8 @@ jobs:
       - name: Build WASM & Prepare Pages Site
         run: |
           mkdir -p _site
-          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" _site/
+          WASM_EXEC=$(find "$(go env GOROOT)" -name "wasm_exec.js" | head -n 1)
+          cp "$WASM_EXEC" _site/
           GOOS=js GOARCH=wasm go build -o _site/lontara.wasm ./cmd/wasm
           cp examples/playground.html _site/index.html
 
