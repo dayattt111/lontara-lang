@@ -12,6 +12,16 @@
 
 **Bahasa Pemrograman Edukatif Berbasis Logika Bahasa Bugis dan Aksara Lontara.**
 
+<p align="center">
+    <img src="assets/benchmark/benchmark_dashboard.jpg" alt="Lontara-Lang Execution Performance Flame Graph & Call Graph Visual Dashboard" width="100%">
+</p>
+
+<p align="center">
+    <a href="docs/architecture/BENCHMARK.md"><strong>🔥 Flame Graph (CPU Profile)</strong></a> | 
+    <a href="docs/architecture/BENCHMARK.md"><strong>🕸️ Call Graph (Visual Execution)</strong></a> | 
+    <a href="docs/architecture/BENCHMARK.md"><strong>⚡ Baca Analisis Performa Lengkap</strong></a>
+</p>
+
 `lontara-lang` adalah bahasa pemrograman berjenis *tree-walking interpreter* yang dirancang untuk mengenalkan konsep ilmu komputer dan algoritma pemrograman melalui istilah lokal bahasa Bugis serta dukungan native Aksara Lontara Unicode (`U+1A00`–`U+1A1F`). Bahasa ini dikembangkan menggunakan Go (Golang) murni tanpa pustaka eksternal (*zero external dependencies*).
 
 ---
