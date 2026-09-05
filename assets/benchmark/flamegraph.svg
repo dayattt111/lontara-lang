@@ -1,95 +1,160 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="100%" height="100%">
-    <style>
-        .title { font: bold 16px 'Segoe UI', Ubuntu, sans-serif; fill: #f8fafc; }
-        .subtitle { font: 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
-        .label { font: bold 11px 'Fira Code', Consolas, monospace; fill: #ffffff; }
-        .time { font: 10px 'Fira Code', Consolas, monospace; fill: rgba(255,255,255,0.8); }
-        .bar { rx: 3px; ry: 3px; stroke: #0f172a; stroke-width: 1px; transition: opacity 0.2s; }
-        .bar:hover { opacity: 0.85; cursor: pointer; }
-    </style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 580" width="100%" height="100%">
+  <style>
+    .bg { fill: #0f172a; }
+    .header-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+    .header-sub { font-family: "Fira Code", monospace; font-size: 12px; fill: #94a3b8; }
+    .frame-text { font-family: "Fira Code", monospace; font-size: 11px; fill: #ffffff; font-weight: 500; text-anchor: middle; dominant-baseline: middle; }
+    .legend-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; fill: #cbd5e1; }
+    .axis-text { font-family: "Fira Code", monospace; font-size: 10px; fill: #64748b; }
+    rect { rx: 3px; ry: 3px; stroke-width: 1px; stroke: rgba(15, 23, 42, 0.4); }
+    rect:hover { filter: brightness(1.2); cursor: pointer; }
+  </style>
 
-    <!-- Background Card -->
-    <rect width="900" height="420" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <!-- Background -->
+  <rect class="bg" width="1000" height="580" rx="12" />
 
-    <!-- Header Section -->
-    <g transform="translate(25, 30)">
-        <text class="title" x="0" y="0">🔥 Flame Graph Performa Eksekusi (CPU Profiling)</text>
-        <text class="subtitle" x="0" y="20">Visualisasi Distribusi Waktu CPU Lontara-Lang (Lexer ➔ Parser ➔ Evaluator)</text>
-    </g>
+  <!-- Header -->
+  <text x="30" y="40" class="header-title">go tool pprof - Flame Graph (CPU Profile)</text>
+  <text x="30" y="62" class="header-sub">pkg: github.com/dayattt111/lontara-lang/pkg/evaluator | total duration: 3.12s (100.0%)</text>
 
-    <!-- Flame Graph Blocks (Bottom-Up Call Stack) -->
-    <!-- Level 0: Root Entry Point -->
-    <g transform="translate(25, 340)">
-        <rect class="bar" x="0" y="0" width="850" height="32" fill="#e11d48"/>
-        <text class="label" x="12" y="20">main / cmd/lontara</text>
-        <text class="time" x="770" y="20">100.0% (37.1µs)</text>
-    </g>
+  <!-- Legend -->
+  <g transform="translate(620, 30)">
+    <rect x="0" y="0" width="14" height="14" fill="#ef4444" rx="2"/>
+    <text x="22" y="11" class="legend-text">evaluator</text>
 
-    <!-- Level 1: Core Phases -->
-    <g transform="translate(25, 295)">
-        <!-- Lexer (5%) -->
-        <rect class="bar" x="0" y="0" width="50" height="32" fill="#f97316"/>
-        <text class="label" x="8" y="20">lexer</text>
+    <rect x="100" y="0" width="14" height="14" fill="#3b82f6" rx="2"/>
+    <text x="122" y="11" class="legend-text">parser/lexer</text>
 
-        <!-- Parser (15%) -->
-        <rect class="bar" x="55" y="0" width="135" height="32" fill="#f59e0b"/>
-        <text class="label" x="65" y="20">parser.ParseProgram</text>
+    <rect x="210" y="0" width="14" height="14" fill="#8b5cf6" rx="2"/>
+    <text x="232" y="11" class="legend-text">object</text>
 
-        <!-- Evaluator (80%) -->
-        <rect class="bar" x="195" y="0" width="655" height="32" fill="#ef4444"/>
-        <text class="label" x="205" y="20">evaluator.Eval</text>
-        <text class="time" x="780" y="20">80.2%</text>
-    </g>
+    <rect x="300" y="0" width="14" height="14" fill="#10b981" rx="2"/>
+    <text x="322" y="11" class="legend-text">runtime</text>
+  </g>
 
-    <!-- Level 2: Evaluator Functions -->
-    <g transform="translate(220, 250)">
-        <!-- evalSikiExpression (55%) -->
-        <rect class="bar" x="0" y="0" width="450" height="32" fill="#ea580c"/>
-        <text class="label" x="10" y="20">evalSikiExpression (Looping Engine)</text>
+  <!-- Flame Graph Stack Frames (Bottom to Top) -->
+  <!-- Base Level 0: testing.(*B).launch -->
+  <g>
+    <rect x="40" y="500" width="920" height="32" fill="#475569" />
+    <text x="500" y="516" class="header-sub" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">testing.(*B).launch (3.12s, 100%)</text>
+  </g>
 
-        <!-- evalInfixExpression (25%) -->
-        <rect class="bar" x="455" y="0" width="200" height="32" fill="#d97706"/>
-        <text class="label" x="465" y="20">evalInfixExpression</text>
-    </g>
+  <!-- Level 1: Benchmark Targets -->
+  <g>
+    <!-- BenchmarkLontaraLoop -->
+    <rect x="40" y="464" width="520" height="32" fill="#0284c7" />
+    <text x="300" y="480" class="frame-text">BenchmarkLontaraLoop (1.73s, 55.4%)</text>
 
-    <!-- Level 3: Inner Execution Details -->
-    <g transform="translate(220, 205)">
-        <!-- evalBlockStatement (30%) -->
-        <rect class="bar" x="0" y="0" width="250" height="32" fill="#fb923c"/>
-        <text class="label" x="10" y="20">evalBlockStatement</text>
+    <!-- BenchmarkLontaraFunction -->
+    <rect x="564" y="464" width="396" height="32" fill="#0369a1" />
+    <text x="762" y="480" class="frame-text">BenchmarkLontaraFunction (1.15s, 36.8%)</text>
+  </g>
 
-        <!-- evalIntegerInfix (20%) -->
-        <rect class="bar" x="255" y="0" width="190" height="32" fill="#fbbf24"/>
-        <text class="label" x="265" y="20">evalIntegerInfix</text>
+  <!-- Level 2: Program Evaluation & Parsing -->
+  <g>
+    <!-- Loop: evalProgram -->
+    <rect x="40" y="428" width="500" height="32" fill="#dc2626" />
+    <text x="290" y="444" class="frame-text">evaluator.evalProgram (1.73s, 55.4%)</text>
 
-        <!-- object.Environment (25%) -->
-        <rect class="bar" x="455" y="0" width="200" height="32" fill="#fb7185"/>
-        <text class="label" x="465" y="20">Environment.Set / Get</text>
-    </g>
+    <!-- Loop: ParseProgram -->
+    <rect x="544" y="428" width="16" height="32" fill="#2563eb" />
 
-    <!-- Level 4: Deep Leaf Operations -->
-    <g transform="translate(220, 160)">
-        <rect class="bar" x="0" y="0" width="150" height="32" fill="#fdba74"/>
-        <text class="label" x="10" y="20">Eval (Recursion)</text>
+    <!-- Func: evalProgram -->
+    <rect x="564" y="428" width="380" height="32" fill="#dc2626" />
+    <text x="754" y="444" class="frame-text">evaluator.evalProgram (1.07s, 34.3%)</text>
 
-        <rect class="bar" x="155" y="0" width="90" height="32" fill="#fde047"/>
-        <text class="label" x="165" y="20">nativeBool</text>
+    <!-- Func: ParseProgram -->
+    <rect x="948" y="428" width="12" height="32" fill="#2563eb" />
+  </g>
 
-        <rect class="bar" x="455" y="0" width="100" height="32" fill="#f43f5e"/>
-        <text class="label" x="465" y="20">map access</text>
-    </g>
+  <!-- Level 3: siki & applyFunction -->
+  <g>
+    <!-- sikiExpression -->
+    <rect x="40" y="392" width="500" height="32" fill="#ea580c" />
+    <text x="290" y="408" class="frame-text">evaluator.evalSikiExpression (1.73s, 55.4%)</text>
 
-    <!-- Footer Summary Legend -->
-    <g transform="translate(25, 395)">
-        <circle cx="6" cy="-4" r="5" fill="#ef4444"/>
-        <text class="subtitle" x="18" y="0">Evaluator AST: 80.2%</text>
+    <!-- applyFunction -->
+    <rect x="564" y="392" width="240" height="32" fill="#d97706" />
+    <text x="684" y="408" class="frame-text">evaluator.applyFunction (0.47s, 15.0%)</text>
 
-        <circle cx="180" cy="-4" r="5" fill="#f59e0b"/>
-        <text class="subtitle" x="192" y="0">Pratt Parser: 14.8%</text>
+    <!-- evalExpressions -->
+    <rect x="808" y="392" width="136" height="32" fill="#e11d48" />
+    <text x="876" y="408" class="frame-text">evalExpressions (0.24s, 7.7%)</text>
+  </g>
 
-        <circle cx="330" cy="-4" r="5" fill="#f97316"/>
-        <text class="subtitle" x="342" y="0">Lexer UTF-8: 5.0%</text>
+  <!-- Level 4: evalBlockStatement -->
+  <g>
+    <!-- Block Statement in siki -->
+    <rect x="40" y="356" width="500" height="32" fill="#b91c1c" />
+    <text x="290" y="372" class="frame-text">evaluator.evalBlockStatement (1.73s, 55.4%)</text>
 
-        <text class="subtitle" x="650" y="0">Kecepatan: ~37.1 µs / 100 iterasi</text>
-    </g>
+    <!-- EnclosedEnv in Function -->
+    <rect x="564" y="356" width="180" height="32" fill="#7c3aed" />
+    <text x="654" y="372" class="frame-text">object.NewEnclosedEnv (0.13s)</text>
+  </g>
+
+  <!-- Level 5: Core Eval Function -->
+  <g>
+    <!-- Core Eval inside Loop -->
+    <rect x="40" y="320" width="500" height="32" fill="#991b1b" />
+    <text x="290" y="336" class="frame-text">evaluator.Eval (0.63s flat, 1.73s cum)</text>
+
+    <!-- Core Eval inside Function -->
+    <rect x="564" y="320" width="380" height="32" fill="#991b1b" />
+    <text x="754" y="336" class="frame-text">evaluator.Eval (1.07s cum)</text>
+  </g>
+
+  <!-- Level 6: Expression Evaluation Breakdown -->
+  <g>
+    <!-- evalInfixExpression -->
+    <rect x="40" y="284" width="220" height="32" fill="#f43f5e" />
+    <text x="150" y="300" class="frame-text">evalInfixExpression (0.67s)</text>
+
+    <!-- runtime.mallocgc -->
+    <rect x="264" y="284" width="180" height="32" fill="#059669" />
+    <text x="354" y="300" class="frame-text">runtime.mallocgc (0.53s)</text>
+
+    <!-- Environment.Get / Set -->
+    <rect x="448" y="284" width="92" height="32" fill="#6d28d9" />
+    <text x="494" y="300" class="frame-text">Env.Get/Set (0.28s)</text>
+
+    <!-- Infix inside Func -->
+    <rect x="564" y="284" width="180" height="32" fill="#f43f5e" />
+    <text x="654" y="300" class="frame-text">evalInfixExpr (0.45s)</text>
+
+    <!-- runtime.mallocgc inside Func -->
+    <rect x="748" y="284" width="196" height="32" fill="#059669" />
+    <text x="846" y="300" class="frame-text">runtime.mallocgc (0.50s)</text>
+  </g>
+
+  <!-- Level 7: Low level operations & GC -->
+  <g>
+    <!-- evalIntegerInfixExpression -->
+    <rect x="40" y="248" width="140" height="32" fill="#fb7185" />
+    <text x="110" y="264" class="frame-text">evalIntegerInfix (0.46s)</text>
+
+    <!-- runtime.newobject -->
+    <rect x="184" y="248" width="150" height="32" fill="#10b981" />
+    <text x="259" y="264" class="frame-text">runtime.newobject (0.40s)</text>
+
+    <!-- runtime.mapaccess2_faststr -->
+    <rect x="338" y="248" width="106" height="32" fill="#047857" />
+    <text x="391" y="264" class="frame-text">mapaccess (0.28s)</text>
+
+    <!-- runtime.mapassign_faststr -->
+    <rect x="448" y="248" width="92" height="32" fill="#065f46" />
+    <text x="494" y="264" class="frame-text">mapassign (0.32s)</text>
+
+    <!-- runtime.newobject inside Func -->
+    <rect x="748" y="248" width="196" height="32" fill="#10b981" />
+    <text x="846" y="264" class="frame-text">runtime.newobject (0.54s)</text>
+  </g>
+
+  <!-- Axis & Metadata Footer -->
+  <line x1="40" y1="545" x2="960" y2="545" stroke="#334155" stroke-width="1"/>
+  <text x="40" y="562" class="axis-text">0.0s (0%)</text>
+  <text x="270" y="562" class="axis-text">0.78s (25%)</text>
+  <text x="500" y="562" class="axis-text">1.56s (50%)</text>
+  <text x="730" y="562" class="axis-text">2.34s (75%)</text>
+  <text x="940" y="562" class="axis-text">3.12s (100%)</text>
 </svg>

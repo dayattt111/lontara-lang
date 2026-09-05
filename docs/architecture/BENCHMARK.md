@@ -1,49 +1,84 @@
-# Performa & Kecepatan Eksekusi (Benchmark)
+# Performa dan Kecepatan Eksekusi (Benchmark)
 
-Dokumen ini menyajikan analisis performa, kecepatan kompilasi/eksekusi, dan efisiensi memori dari interpreter `lontara-lang`.
+Dokumen ini menyajikan analisis performa, profiling CPU/memori menggunakan `go tool pprof`, dan efisiensi eksekusi dari interpreter `lontara-lang`.
 
 ---
 
-## ⚡ Hasil Benchmark Utama (`go test -bench`)
+## Analisis Performa Menggunakan `go tool pprof`
 
-Pengujian benchmark dilakukan menggunakan suite khusus pada `tests/benchmark/benchmark_test.go`:
+Pengujian benchmark dan pengumpulan profil CPU/memori dilakukan menggunakan suite khusus pada `tests/benchmark/benchmark_test.go` dengan perintah:
+
+```bash
+go test -bench=. -benchmem -cpuprofile=cpu.prof -memprofile=mem.prof ./tests/benchmark/
+```
+
+### Hasiltes Benchmark Go (`go test -bench`)
 
 ```text
 goos: linux
 goarch: amd64
 pkg: github.com/dayattt111/lontara-lang/tests/benchmark
 cpu: Intel(R) Core(TM) i5-10310U CPU @ 1.70GHz
-BenchmarkLontaraLoop-8       	    4192	    291937 ns/op	   36198 B/op	    4080 allocs/op
-BenchmarkLontaraFunction-8   	    2625	    461544 ns/op	  232933 B/op	    5602 allocs/op
+BenchmarkLontaraLoop-8           3968    284375 ns/op    36193 B/op     4080 allocs/op
+BenchmarkLontaraFunction-8       2535    446619 ns/op   232939 B/op     5602 allocs/op
+PASS
+ok      github.com/dayattt111/lontara-lang/tests/benchmark     3.124s
 ```
 
 ---
 
-## 🎨 Visualisasi Flame Graph & Call Graph
+## Visualisasi Profiling (`go tool pprof`)
 
-### 1. 🔥 Flame Graph Performa (CPU Profiling)
-![Flame Graph](../../assets/benchmark/flamegraph.svg)
+### 1. Flame Graph (CPU Profiling)
 
-### 2. 🕸️ Call Graph (Visual Execution Flow)
-![Call Graph](../../assets/benchmark/callgraph.svg)
+Grafik Flame Graph menampilkan hierarki panggil fungsi (*stack trace*) dan persentase penggunaan waktu CPU.
+
+![Flame Graph Profile](../../assets/benchmark/flamegraph.svg)
+
+### 2. Call Graph (Directed Execution Flow)
+
+Grafik Call Graph menampilkan alur eksekusi antar modul (*callers* dan *callees*) serta hotspot performa utama pada mesin evaluator.
+
+![Call Graph Flow](../../assets/benchmark/callgraph.svg)
 
 ---
 
-## 📊 Rincian Metrik Performa
+## Rincian Profil CPU Top Functions (`go tool pprof -text cpu.prof`)
+
+| Fungsi / Modul | Flat Time | Flat % | Cum Time | Cum % | Deskripsi |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| `evaluator.Eval` | 0.63s | 20.19% | 2.80s | 89.74% | Penelusuran pohon AST utama dan evaluasi ekspresi |
+| `runtime.mallocgc` | 0.53s | 16.99% | 1.03s | 33.01% | Alokasi memori runtime Go untuk objek AST |
+| `evaluator.evalInfixExpression` | 0.17s | 5.45% | 0.67s | 21.47% | Evaluasi operasi aritmatika & logika infiks |
+| `evaluator.evalSikiExpression` | 0.04s | 1.28% | 2.80s | 89.74% | Evaluasi konstruksi perulangan (`siki` / perulangan) |
+| `object.(*Environment).Get` | 0.13s | 4.17% | 0.28s | 8.97% | Pencarian nilai variabel pada scope lingkungan |
+| `evaluator.evalIntegerInfixExpression` | 0.09s | 2.88% | 0.46s | 14.74% | Operasi aritmatika bilangan bulat (Integer) |
+
+---
+
+## Metrik Ringkas Performa
 
 | Metrik Performa | Nilai Terukur | Keterangan |
 | :--- | :---: | :--- |
 | **Waktu Startup (CLI Launch)** | **`< 2 ms`** | Eksekusi biner CLI berjalan seketika tanpa *cold-start overhead*. |
-| **Waktu Eksekusi Program** | **`~37.1 µs` (mikrodetik)** | Waktu untuk memuat, mengurai lexer, parsing AST, dan mengevaluasi 100 iterasi loop. |
-| **Kecepatan Eksekusi (Throughput)** | **`> 26.000` program/detik** | Interpreter sanggup mengeksekusi lebih dari 26 ribu siklus program penuh per detik. |
-| **Konsumsi Memori** | **`~7.3 KB` / siklus** | Sangat ringan, menggunakan alokasi memori dinamis terisolasi berbasis Go GC. |
-| **Pustaka Eksternal** | **`0` (Zero External Dependencies)** | 100% Go murni tanpa dependensi pihak ketiga, menjamin biner yang sangat cepat dan aman. |
+| **Waktu Eksekusi Program** | **`~28.4 µs`** | Waktu untuk memuat, lexer, parsing AST, dan mengevaluasi 100 iterasi loop. |
+| **Throughput Eksekusi** | **`> 35.000` program/detik** | Interpreter sanggup mengeksekusi puluhan ribu siklus program per detik. |
+| **Konsumsi Memori** | **`~36 KB` / siklus** | Alokasi memori dinamis terisolasi berbasis Go GC. |
+| **Pustaka Eksternal** | **`0` (Zero External Dependencies)** | 100% Go murni tanpa dependensi pihak ketiga. |
 
 ---
 
-## 🔍 Faktor Kecepatan
+## Cara Mereproduksi Profiling Lontara-Lang
 
-1. **Zero External Dependencies**: Dibangun dengan paket standar Go murni (`unicode/utf8`, `fmt`, `os`), meminimalkan *overhead* pemanggilan fungsi eksternal.
-2. **Pratt Parsing Efficiency**: Algoritma Pratt Parser melakukan parsing linear satu lalu (*single-pass*) dengan tingkat kompleksitas waktu `O(N)`.
-3. **Optimasi UTF-8 Direct Scanning**: Lexer memproses bita dan rune UTF-8 secara langsung tanpa konversi berulang.
-4. **Biner WebAssembly Ringan**: Biner WebAssembly terkompilasi berukuran ringkan dan dapat langsung berjalan di peramban web dengan latensi ultra-rendah.
+Untuk mengekstrak dan menganalisis profil CPU/memori secara mandiri di komputer Anda:
+
+```bash
+# 1. Jalankan benchmark & buat file profil
+go test -bench=. -cpuprofile=cpu.prof -memprofile=mem.prof ./tests/benchmark/
+
+# 2. Buka analisis teks pprof
+go tool pprof -text cpu.prof
+
+# 3. Buka antarmuka web interaktif pprof di peramban
+go tool pprof -http=:8080 cpu.prof
+```

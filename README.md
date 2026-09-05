@@ -14,16 +14,16 @@
 
 
 <p align="center">
-    <a href="docs/architecture/BENCHMARK.md"><strong>🔥 Flame Graph (CPU Profile)</strong></a> | 
-    <a href="docs/architecture/BENCHMARK.md"><strong>🕸️ Call Graph (Visual Execution Flow)</strong></a> | 
-    <a href="docs/architecture/BENCHMARK.md"><strong>⚡ Baca Analisis Performa Lengkap</strong></a>
+    <a href="docs/architecture/BENCHMARK.md"><strong>Flame Graph (CPU Profile)</strong></a> | 
+    <a href="docs/architecture/BENCHMARK.md"><strong>Call Graph (Visual Execution Flow)</strong></a> | 
+    <a href="docs/architecture/BENCHMARK.md"><strong>Baca Analisis Performa Lengkap (go tool pprof)</strong></a>
 </p>
 
 <p align="center">
-    <img src="assets/benchmark/flamegraph.svg" alt="Flame Graph Execution Profile" width="100%">
+    <img src="assets/benchmark/flamegraph.svg" alt="Flame Graph Execution Profile (go tool pprof)" width="100%">
 </p>
 <p align="center">
-    <img src="assets/benchmark/callgraph.svg" alt="Call Graph Visual Flow" width="100%">
+    <img src="assets/benchmark/callgraph.svg" alt="Call Graph Visual Execution Flow (go tool pprof)" width="100%">
 </p>
 
 `lontara-lang` adalah bahasa pemrograman berjenis *tree-walking interpreter* yang dirancang untuk mengenalkan konsep ilmu komputer dan algoritma pemrograman melalui istilah lokal bahasa Bugis serta dukungan native Aksara Lontara Unicode (`U+1A00`–`U+1A1F`). Bahasa ini dikembangkan menggunakan Go (Golang) murni tanpa pustaka eksternal (*zero external dependencies*).

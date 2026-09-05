@@ -1,92 +1,147 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" width="100%" height="100%">
-    <style>
-        .title { font: bold 16px 'Segoe UI', Ubuntu, sans-serif; fill: #f8fafc; }
-        .subtitle { font: 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
-        .node-box { rx: 8px; ry: 8px; stroke-width: 2px; transition: all 0.2s; }
-        .node-title { font: bold 12px 'Fira Code', Consolas, monospace; fill: #ffffff; }
-        .node-sub { font: 11px 'Segoe UI', sans-serif; fill: #cbd5e1; }
-        .arrow { stroke: #38bdf8; stroke-width: 2px; fill: none; stroke-dasharray: 4,4; animation: dash 20s linear infinite; }
-        .arrow-line { stroke: #38bdf8; stroke-width: 2px; fill: none; }
-        .badge { font: bold 10px sans-serif; fill: #0f172a; }
-    </style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%">
+  <style>
+    .bg { fill: #0f172a; }
+    .header-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+    .header-sub { font-family: "Fira Code", monospace; font-size: 12px; fill: #94a3b8; }
+    .node-title { font-family: "Fira Code", monospace; font-size: 12px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+    .node-stat { font-family: "Fira Code", monospace; font-size: 10px; fill: #e2e8f0; text-anchor: middle; }
+    .edge-label { font-family: "Fira Code", monospace; font-size: 10px; fill: #38bdf8; text-anchor: middle; }
+    .legend-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; fill: #cbd5e1; }
 
-    <!-- Background Container -->
-    <rect width="900" height="440" rx="12" fill="#020617" stroke="#1e293b" stroke-width="1.5"/>
+    rect.node { rx: 6px; ry: 6px; stroke-width: 1.5px; }
+    rect.eval-node { fill: #1e1b4b; stroke: #6366f1; }
+    rect.eval-hot { fill: #450a0a; stroke: #ef4444; }
+    rect.runtime-node { fill: #064e3b; stroke: #10b981; }
+    rect.parser-node { fill: #1e3a8a; stroke: #3b82f6; }
+    rect.test-node { fill: #334155; stroke: #94a3b8; }
 
-    <!-- Header Section -->
-    <g transform="translate(25, 30)">
-        <text class="title" x="0" y="0">🕸️ Call Graph Interaktif (Alur Pemanggilan Fungsi)</text>
-        <text class="subtitle" x="0" y="20">Pemetaan Node Pemanggilan Fungsi Interpreter Lontara-Lang (pProf Profiling)</text>
-    </g>
+    path.edge { fill: none; stroke: #475569; stroke-width: 1.5px; marker-end: url(#arrow); }
+    path.edge-hot { stroke: #ef4444; stroke-width: 2.5px; marker-end: url(#arrow-hot); }
+  </style>
 
-    <!-- Connecting Arrows -->
-    <defs>
-        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
-        </marker>
-    </defs>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" />
+    </marker>
+    <marker id="arrow-hot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+    </marker>
+  </defs>
 
-    <!-- Paths from Root Entry Point -->
-    <path class="arrow-line" d="M 450 115 L 180 170" marker-end="url(#arrowhead)"/>
-    <path class="arrow-line" d="M 450 115 L 450 170" marker-end="url(#arrowhead)"/>
-    <path class="arrow-line" d="M 450 115 L 720 170" marker-end="url(#arrowhead)"/>
+  <!-- Background -->
+  <rect class="bg" width="1000" height="620" rx="12" />
 
-    <!-- Paths from Evaluator to Sub-nodes -->
-    <path class="arrow-line" d="M 720 230 L 450 290" marker-end="url(#arrowhead)"/>
-    <path class="arrow-line" d="M 720 230 L 720 290" marker-end="url(#arrowhead)"/>
-    <path class="arrow-line" d="M 450 350 L 720 350" marker-end="url(#arrowhead)"/>
+  <!-- Header -->
+  <text x="30" y="40" class="header-title">go tool pprof - Call Graph (Execution Flow)</text>
+  <text x="30" y="62" class="header-sub">Profiling Target: lontara-lang interpreter execution | Nodes: 12, Edges: 14</text>
 
-    <!-- Root Node: Entry Point -->
-    <g transform="translate(365, 65)">
-        <rect class="node-box" width="170" height="50" fill="#1e1b4b" stroke="#6366f1"/>
-        <text class="node-title" x="15" y="22">cmd/lontara</text>
-        <text class="node-sub" x="15" y="38">main.main()</text>
-    </g>
+  <!-- Legend -->
+  <g transform="translate(640, 30)">
+    <rect x="0" y="0" width="14" height="14" fill="#ef4444" rx="2"/>
+    <text x="22" y="11" class="legend-text">Hot Path / Evaluator</text>
 
-    <!-- Stage 1: Lexer -->
-    <g transform="translate(80, 170)">
-        <rect class="node-box" width="200" height="60" fill="#064e3b" stroke="#10b981"/>
-        <text class="node-title" x="15" y="24">pkg/lexer</text>
-        <text class="node-sub" x="15" y="42">NextToken() [UTF-8]</text>
-    </g>
+    <rect x="150" y="0" width="14" height="14" fill="#10b981" rx="2"/>
+    <text x="172" y="11" class="legend-text">Runtime Memory Allocation</text>
 
-    <!-- Stage 2: Parser -->
-    <g transform="translate(350, 170)">
-        <rect class="node-box" width="200" height="60" fill="#78350f" stroke="#f59e0b"/>
-        <text class="node-title" x="15" y="24">pkg/parser</text>
-        <text class="node-sub" x="15" y="42">ParseProgram() [Pratt AST]</text>
-    </g>
+    <rect x="0" y="24" width="14" height="14" fill="#3b82f6" rx="2"/>
+    <text x="22" y="35" class="legend-text">Parser / Lexer</text>
 
-    <!-- Stage 3: Evaluator -->
-    <g transform="translate(620, 170)">
-        <rect class="node-box" width="200" height="60" fill="#881337" stroke="#f43f5e"/>
-        <text class="node-title" x="15" y="24">pkg/evaluator</text>
-        <text class="node-sub" x="15" y="42">Eval(Node, Env)</text>
-    </g>
+    <rect x="150" y="24" width="14" height="14" fill="#94a3b8" rx="2"/>
+    <text x="172" y="35" class="legend-text">Testing Runner</text>
+  </g>
 
-    <!-- Sub-node: Loop Engine -->
-    <g transform="translate(350, 290)">
-        <rect class="node-box" width="200" height="60" fill="#431407" stroke="#ea580c"/>
-        <text class="node-title" x="15" y="24">evalSikiExpression</text>
-        <text class="node-sub" x="15" y="42">Perulangan (siki / ᨔᨗᨀᨗ)</text>
-    </g>
+  <!-- Nodes (Layer 0: Entry Point) -->
+  <g transform="translate(410, 90)">
+    <rect class="node test-node" x="0" y="0" width="180" height="46" />
+    <text x="90" y="20" class="node-title">testing.(*B).runN</text>
+    <text x="90" y="36" class="node-stat">0s (0%) of 3.12s (100%)</text>
+  </g>
 
-    <!-- Sub-node: Infix Operator -->
-    <g transform="translate(620, 290)">
-        <rect class="node-box" width="200" height="60" fill="#581c87" stroke="#a855f7"/>
-        <text class="node-title" x="15" y="24">evalInfixExpression</text>
-        <text class="node-sub" x="15" y="42">Aritmetika &amp; Pembanding</text>
-    </g>
+  <!-- Edges to Benchmarks -->
+  <path class="edge-hot" d="M 460 136 L 310 180" />
+  <text x="365" y="150" class="edge-label">55.4%</text>
 
-    <!-- Sub-node: Environment Lookup -->
-    <g transform="translate(620, 370)">
-        <rect class="node-box" width="200" height="50" fill="#172554" stroke="#3b82f6"/>
-        <text class="node-title" x="15" y="22">pkg/object</text>
-        <text class="node-sub" x="15" y="38">Environment.Get/Set</text>
-    </g>
+  <path class="edge" d="M 540 136 L 690 180" />
+  <text x="635" y="150" class="edge-label">36.8%</text>
 
-    <!-- Legend -->
-    <g transform="translate(25, 410)">
-        <text class="subtitle" x="0" y="0">Metrik Profiling: 28,251 iterasi/detik | Memori: 7.3 KB/op | 0 External Dependencies</text>
-    </g>
+  <!-- Nodes (Layer 1: Benchmark Functions) -->
+  <g transform="translate(200, 180)">
+    <rect class="node eval-node" x="0" y="0" width="220" height="46" />
+    <text x="110" y="20" class="node-title">BenchmarkLontaraLoop</text>
+    <text x="110" y="36" class="node-stat">0s (0%) of 1.73s (55.4%)</text>
+  </g>
+
+  <g transform="translate(580, 180)">
+    <rect class="node eval-node" x="0" y="0" width="220" height="46" />
+    <text x="110" y="20" class="node-title">BenchmarkLontaraFunction</text>
+    <text x="110" y="36" class="node-stat">0s (0%) of 1.15s (36.8%)</text>
+  </g>
+
+  <!-- Edges to evalProgram -->
+  <path class="edge-hot" d="M 310 226 L 460 270" />
+  <path class="edge" d="M 690 226 L 540 270" />
+
+  <!-- Nodes (Layer 2: evalProgram) -->
+  <g transform="translate(400, 270)">
+    <rect class="node eval-hot" x="0" y="0" width="200" height="46" />
+    <text x="100" y="20" class="node-title">evaluator.evalProgram</text>
+    <text x="100" y="36" class="node-stat">0s (0%) of 2.80s (89.7%)</text>
+  </g>
+
+  <!-- Edge to evalSikiExpression -->
+  <path class="edge-hot" d="M 450 316 L 300 360" />
+  <text x="350" y="340" class="edge-label">55.4% (siki loop)</text>
+
+  <!-- Edge to applyFunction -->
+  <path class="edge" d="M 550 316 L 700 360" />
+  <text x="650" y="340" class="edge-label">15.0% (call func)</text>
+
+  <!-- Nodes (Layer 3: Constructs) -->
+  <g transform="translate(190, 360)">
+    <rect class="node eval-hot" x="0" y="0" width="220" height="46" />
+    <text x="110" y="20" class="node-title">evaluator.evalSikiExpression</text>
+    <text x="110" y="36" class="node-stat">0.04s (1.3%) of 1.73s (55.4%)</text>
+  </g>
+
+  <g transform="translate(590, 360)">
+    <rect class="node eval-node" x="0" y="0" width="220" height="46" />
+    <text x="110" y="20" class="node-title">evaluator.applyFunction</text>
+    <text x="110" y="36" class="node-stat">0s (0%) of 0.47s (15.0%)</text>
+  </g>
+
+  <!-- Edge from siki to Eval -->
+  <path class="edge-hot" d="M 300 406 L 460 450" />
+  <!-- Edge from applyFunction to Eval -->
+  <path class="edge" d="M 700 406 L 540 450" />
+
+  <!-- Nodes (Layer 4: Core Eval Engine) -->
+  <g transform="translate(400, 450)">
+    <rect class="node eval-hot" x="0" y="0" width="200" height="46" />
+    <text x="100" y="20" class="node-title">evaluator.Eval</text>
+    <text x="100" y="36" class="node-stat">0.63s (20.2%) of 2.80s (89.7%)</text>
+  </g>
+
+  <!-- Edges from Eval to Leaf Nodes -->
+  <path class="edge-hot" d="M 420 496 L 210 540" />
+  <path class="edge-hot" d="M 500 496 L 500 540" />
+  <path class="edge" d="M 580 496 L 790 540" />
+
+  <!-- Nodes (Layer 5: Leaf / Allocations) -->
+  <g transform="translate(100, 540)">
+    <rect class="node eval-hot" x="0" y="0" width="220" height="46" />
+    <text x="110" y="20" class="node-title">evalInfixExpression</text>
+    <text x="110" y="36" class="node-stat">0.17s (5.5%) of 0.67s (21.5%)</text>
+  </g>
+
+  <g transform="translate(400, 540)">
+    <rect class="node runtime-node" x="0" y="0" width="200" height="46" />
+    <text x="100" y="20" class="node-title">runtime.mallocgc</text>
+    <text x="100" y="36" class="node-stat">0.53s (17.0%) of 1.03s (33.0%)</text>
+  </g>
+
+  <g transform="translate(680, 540)">
+    <rect class="node eval-node" x="0" y="0" width="220" height="46" />
+    <text x="110" y="20" class="node-title">object.(*Environment).Get/Set</text>
+    <text x="110" y="36" class="node-stat">0.15s (4.8%) of 0.62s (19.9%)</text>
+  </g>
 </svg>
