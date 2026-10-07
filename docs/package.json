@@ -1,0 +1,9 @@
+{
+  "name": "lontara-lang-docs",
+  "version": "1.0.0",
+  "description": "Local server for Lontara-Lang documentation",
+  "scripts": {
+    "dev": "bun x serve . -l 3999",
+    "serve": "bun x serve . -l 3999"
+  }
+}
