@@ -6,6 +6,9 @@
     <title>LONTARA-LANG // NEO-BRUTALIST WEB PLAYGROUND & RUNTIME</title>
     <meta name="description" content="Playground WebAssembly Interaktif Lontara-Lang: Interpreter Bahasa Pemrograman Edukatif Berbasis Dialek Bugis dan Aksara Lontara Unicode.">
 
+    <!-- Tailwind CSS (CDN) for utility classes & ultra-solid responsive layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Google Typography Fonts: Space Grotesk, JetBrains Mono, Noto Sans Buginese -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,8 +50,6 @@
         /* Anti-Design Sharp Reset */
         *, *::before, *::after {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
             border-radius: 0 !important; /* Strictly 0px radii */
         }
 
@@ -57,9 +58,13 @@
             color: var(--ink-black);
             font-family: var(--font-display);
             min-height: 100vh;
+            width: 100%;
+            max-width: 100vw;
             overflow-x: clip; /* Prevent mobile horizontal shadow overflow */
             line-height: 1.4;
             -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
         }
 
         /* Grid Background Pattern */
@@ -86,36 +91,34 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 100%;
         }
 
         .brand-container {
             display: flex;
             align-items: center;
-            gap: 0.85rem;
+            gap: 0.75rem;
+            min-width: 0;
         }
 
-        .logo-box {
-            background-color: var(--pure-white);
-            border: var(--border-thick);
-            box-shadow: var(--shadow-sm);
-            padding: 0.35rem 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.1s ease;
-        }
-
-        .logo-box:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .logo-box img {
-            height: 38px;
-            width: auto;
+        /* Logo Bersih & Transparan (Hapus card background solid) */
+        .brand-logo {
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            object-fit: contain;
             display: block;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            transition: transform 0.15s ease;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.08) rotate(-4deg);
         }
 
         .brand-text h1 {
@@ -146,7 +149,7 @@
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.6rem;
             flex-wrap: wrap;
         }
 
@@ -164,6 +167,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
+            user-select: none;
         }
 
         .status-pill::before {
@@ -204,7 +208,7 @@
             font-size: 0.85rem;
             font-weight: 800;
             text-transform: uppercase;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.9rem;
             background-color: var(--pure-white);
             color: var(--ink-black);
             border: var(--border-thick);
@@ -216,6 +220,7 @@
             gap: 0.4rem;
             user-select: none;
             transition: transform 0.08s ease, box-shadow 0.08s ease;
+            white-space: nowrap;
         }
 
         .btn-brutal:hover:not(:disabled) {
@@ -252,7 +257,7 @@
         }
 
         /* ==========================================================================
-           MOBILE SEGMENTED TABS VIEW (< 768px)
+           MOBILE SEGMENTED TABS VIEW (< 860px)
            ========================================================================== */
         .mobile-view-tabs {
             display: none;
@@ -260,6 +265,8 @@
             padding: 0.35rem 0.5rem;
             border-bottom: var(--border-thick);
             gap: 0.4rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         @media (max-width: 860px) {
@@ -279,6 +286,7 @@
             border: 2px solid #444444;
             text-align: center;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .mobile-tab-btn.active {
@@ -288,24 +296,25 @@
         }
 
         /* ==========================================================================
-           MAIN PLAYGROUND WORKSPACE
+           MAIN PLAYGROUND WORKSPACE (RESPONSIVE GRID & STACKING)
            ========================================================================== */
         main.workspace-grid {
             flex: 1;
             padding: 1.25rem;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: 1.5rem;
             max-width: 1700px;
             margin: 0 auto;
             width: 100%;
+            min-width: 0;
         }
 
         @media (max-width: 960px) {
             main.workspace-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
                 gap: 1.25rem;
-                padding: 0.85rem;
+                padding: 0.75rem;
             }
         }
 
@@ -318,6 +327,18 @@
             flex-direction: column;
             min-height: 580px;
             position: relative;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .brutalist-panel {
+                min-height: auto;
+                box-shadow: 4px 4px 0px var(--ink-black) !important;
+                border: var(--border-thick) !important;
+            }
         }
 
         .panel-header {
@@ -329,6 +350,8 @@
             justify-content: space-between;
             align-items: center;
             gap: 0.6rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         .panel-title {
@@ -363,6 +386,8 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.5rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         .syntax-toggle-group {
@@ -370,17 +395,19 @@
             border: var(--border-thin);
             background-color: var(--pure-white);
             box-shadow: 2px 2px 0px var(--ink-black);
+            max-width: 100%;
         }
 
         .syntax-btn {
             font-family: var(--font-mono);
             font-size: 0.75rem;
             font-weight: 800;
-            padding: 0.35rem 0.75rem;
+            padding: 0.35rem 0.65rem;
             background: transparent;
             border: none;
             cursor: pointer;
             color: #666666;
+            white-space: nowrap;
         }
 
         .syntax-btn.active {
@@ -396,9 +423,10 @@
             color: var(--ink-black);
             border: var(--border-thin);
             box-shadow: 2px 2px 0px var(--ink-black);
-            padding: 0.35rem 0.65rem;
+            padding: 0.35rem 0.5rem;
             outline: none;
             cursor: pointer;
+            max-width: 100%;
         }
 
         /* ==========================================================================
@@ -407,11 +435,15 @@
         .lontara-keypad-drawer {
             background-color: #FFFDF0;
             border-bottom: var(--border-thick);
-            padding: 0.75rem 0.85rem;
+            padding: 0.65rem 0.85rem;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.5rem;
             transition: all 0.2s ease;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow-x: auto;
         }
 
         .lontara-keypad-drawer.collapsed {
@@ -422,7 +454,10 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.3rem;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
         }
 
         .keypad-label {
@@ -431,7 +466,14 @@
             font-weight: 800;
             text-transform: uppercase;
             color: #444444;
-            min-width: 90px;
+            min-width: 85px;
+        }
+
+        @media (max-width: 480px) {
+            .keypad-label {
+                width: 100%;
+                margin-bottom: 0.15rem;
+            }
         }
 
         .key-btn {
@@ -441,15 +483,16 @@
             color: var(--ink-black);
             border: var(--border-thin);
             box-shadow: 2px 2px 0px var(--ink-black);
-            min-width: 38px;
-            min-height: 38px;
-            padding: 0.15rem 0.45rem;
+            min-width: 36px;
+            min-height: 36px;
+            padding: 0.1rem 0.4rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
             transition: transform 0.05s ease, background 0.1s ease;
+            flex-shrink: 0;
         }
 
         .key-btn:hover {
@@ -469,10 +512,10 @@
 
         .key-btn.keyword-pill {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 800;
             background-color: #FFE6EE;
-            padding: 0.25rem 0.6rem;
+            padding: 0.25rem 0.55rem;
             min-width: auto;
             min-height: 32px;
         }
@@ -491,18 +534,24 @@
             flex-direction: column;
             background-color: var(--pure-white);
             position: relative;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
         }
 
         #code-editor {
             flex: 1;
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             min-height: 360px;
             border: none;
             outline: none;
-            padding: 1rem 1.25rem;
+            padding: 1rem;
             font-family: var(--font-mono);
-            font-size: 1rem;
-            line-height: 1.65;
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: #111111;
             background-color: transparent;
             resize: vertical;
@@ -510,19 +559,24 @@
             white-space: pre;
             word-wrap: normal;
             overflow-x: auto;
+            box-sizing: border-box;
         }
 
         .editor-footer-stats {
             background-color: #F0ECE4;
             border-top: var(--border-thin);
-            padding: 0.35rem 0.85rem;
+            padding: 0.35rem 0.75rem;
             font-family: var(--font-mono);
             font-size: 0.7rem;
             font-weight: 700;
             color: #444444;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            gap: 0.4rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         /* ==========================================================================
@@ -537,6 +591,8 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.6rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         .run-btn-main {
@@ -544,7 +600,7 @@
             font-size: 1.05rem;
             font-weight: 900;
             letter-spacing: 0.5px;
-            padding: 0.75rem 1.75rem;
+            padding: 0.7rem 1.6rem;
             background-color: var(--acid-lime);
             color: var(--ink-black);
             border: var(--border-thick);
@@ -554,6 +610,7 @@
             align-items: center;
             gap: 0.5rem;
             transition: transform 0.08s ease, box-shadow 0.08s ease;
+            user-select: none;
         }
 
         .run-btn-main:hover:not(:disabled) {
@@ -566,6 +623,12 @@
             box-shadow: 0px 0px 0px var(--ink-black);
         }
 
+        .run-btn-main:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #E5E5E5;
+        }
+
         /* ==========================================================================
            TERMINAL & CONSOLE OUTPUT (BRUTALIST STARK BLACK)
            ========================================================================== */
@@ -574,22 +637,29 @@
             color: var(--pure-white);
             border: var(--border-heavy);
             box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .terminal-header {
             background-color: #161616;
             border-bottom: 3px solid #000000;
-            padding: 0.5rem 0.85rem;
+            padding: 0.5rem 0.75rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             gap: 0.5rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         .terminal-tabs {
             display: flex;
             gap: 0.35rem;
+            flex-wrap: wrap;
         }
 
         .terminal-tab-btn {
@@ -599,9 +669,10 @@
             background: #262626;
             color: #888888;
             border: 2px solid #000000;
-            padding: 0.3rem 0.65rem;
+            padding: 0.3rem 0.6rem;
             cursor: pointer;
             user-select: none;
+            white-space: nowrap;
         }
 
         .terminal-tab-btn.active {
@@ -612,15 +683,20 @@
 
         .terminal-body {
             flex: 1;
-            padding: 1.25rem;
+            padding: 1rem 1.25rem;
             font-family: var(--font-mono);
             font-size: 0.95rem;
             line-height: 1.6;
             white-space: pre-wrap;
             word-break: break-word;
+            overflow-x: auto;
             overflow-y: auto;
             min-height: 320px;
             background-color: #0D0D0D;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         .terminal-stdout {
@@ -629,13 +705,16 @@
 
         /* Brutalist Error Callout Panel */
         .error-callout-panel {
-            margin-top: 1rem;
+            margin: 1rem;
             background-color: #240A10;
             border: 3px solid var(--hot-pink);
             box-shadow: 4px 4px 0px #000000;
-            padding: 1rem;
+            padding: 0.85rem;
             color: #FFB3C1;
             display: none;
+            max-width: 100%;
+            min-width: 0;
+            word-break: break-word;
         }
 
         .error-callout-panel.active {
@@ -647,13 +726,20 @@
             font-weight: 800;
             font-size: 0.85rem;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             display: flex;
             align-items: center;
             gap: 0.4rem;
         }
 
         /* Token Stream & AST Inspector View */
+        .inspector-table-container {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow-x: auto;
+        }
+
         .inspector-table {
             width: 100%;
             border-collapse: collapse;
@@ -751,6 +837,12 @@
             gap: 0.5rem;
         }
 
+        @media (max-width: 480px) {
+            .keyword-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .kw-item {
             background-color: #F8F6F0;
             border: 1px solid var(--ink-black);
@@ -773,7 +865,7 @@
         }
 
         /* ==========================================================================
-           STICKY MOBILE BOTTOM BAR (< 768px)
+           STICKY MOBILE BOTTOM BAR (< 860px)
            ========================================================================== */
         .mobile-bottom-bar {
             display: none;
@@ -785,6 +877,8 @@
             padding: 0.65rem 0.85rem;
             gap: 0.5rem;
             box-shadow: 0px -4px 0px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 100%;
         }
 
         @media (max-width: 860px) {
@@ -808,6 +902,8 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 0.75rem;
+            width: 100%;
+            max-width: 100%;
         }
 
         footer.brutalist-footer a {
@@ -820,14 +916,13 @@
         }
     </style>
 </head>
-<body>
+<body class="w-full max-w-full overflow-x-clip min-w-0">
 
     <!-- STICKY TOP NAVBAR -->
     <header class="brutalist-nav">
         <div class="brand-container">
-            <div class="logo-box">
-                <img src="assets/lontara.svg" onerror="this.src='../assets/lontara.svg'" alt="Lontara Logo">
-            </div>
+            <!-- Logo bersih & transparan tanpa container card solid -->
+            <img src="assets/lontara.svg" onerror="this.src='../assets/lontara.svg'" alt="Lontara Logo" class="brand-logo h-10 w-10">
             <div class="brand-text">
                 <h1>LONTARA-LANG <span class="lontara-glyph">ᨒᨚᨈᨑ</span></h1>
                 <p>Bahasa Pemrograman Bugis</p>
@@ -876,7 +971,7 @@
                     <span>SUMBER KODE</span>
                     <span id="active-file-badge" class="panel-badge">halo_dunia.lontara</span>
                 </div>
-                <div style="display: flex; gap: 0.4rem; align-items: center;">
+                <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
                     <!-- Keypad Drawer Toggle -->
                     <button id="keypad-toggle-btn" class="btn-brutal btn-yellow" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleKeypad()">
                         KEYPAD ᨒ [ON]
@@ -895,7 +990,7 @@
                     <button id="mode-bugis-btn" class="syntax-btn" onclick="setSyntaxMode('bugis')">.bugis (Latin)</button>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; max-width: 100%;">
                     <span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800;">PRESET:</span>
                     <select id="preset-selector" class="preset-select" onchange="loadSelectedPreset()">
                         <option value="halo_lontara">1. Halo Dunia (ᨒᨚᨈᨑ)</option>
@@ -976,7 +1071,7 @@
 
             <!-- Bottom Actions -->
             <div class="editor-action-strip">
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                     <button id="run-btn-desktop" class="run-btn-main" onclick="runLontaraCode()" disabled>
                         <span>RUN (ᨍᨒ)</span> ▶
                     </button>
@@ -985,7 +1080,7 @@
                     </button>
                 </div>
 
-                <div style="display: flex; gap: 0.4rem;">
+                <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
                     <button class="btn-brutal" onclick="downloadCurrentCode()">
                         UNDUH BERKAS 💾
                     </button>
@@ -1012,7 +1107,7 @@
                     </button>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                     <span id="exec-time-pill" class="panel-badge" style="background-color: #222222; color: var(--acid-lime);">
                         0.00 ms
                     </span>
@@ -1024,19 +1119,19 @@
 
             <!-- Terminal Tab 1: Standard Output Stream -->
             <div id="stdout-view" class="terminal-body terminal-stdout">
-                Inisialisasi sistem... Menunggu WebAssembly Engine siap.
+Inisialisasi sistem... Menunggu WebAssembly Engine siap.
             </div>
 
             <!-- Terminal Tab 2: Token Stream Table (Lexer) -->
             <div id="tokens-view" class="terminal-body" style="display: none;">
-                <p style="color: #888888; font-size: 0.85rem;">Token Stream dihasilkan langsung oleh Lexer lontara-lang (pkg/token):</p>
-                <div id="tokens-table-container"></div>
+                <p style="color: #888888; font-size: 0.85rem; margin-bottom: 0.5rem;">Token Stream dihasilkan langsung oleh Lexer lontara-lang (pkg/token):</p>
+                <div id="tokens-table-container" class="inspector-table-container"></div>
             </div>
 
             <!-- Terminal Tab 3: AST Structure (Parser) -->
             <div id="ast-view" class="terminal-body" style="display: none; color: #00F0FF;">
-                <p style="color: #888888; font-size: 0.85rem;">Struktur Abstract Syntax Tree (Pratt Parser Node Tree):</p>
-                <pre id="ast-json-container" style="font-family: var(--font-mono); font-size: 0.85rem; color: #8BE9FD;"></pre>
+                <p style="color: #888888; font-size: 0.85rem; margin-bottom: 0.5rem;">Struktur Abstract Syntax Tree (Pratt Parser Node Tree):</p>
+                <pre id="ast-json-container" style="font-family: var(--font-mono); font-size: 0.85rem; color: #8BE9FD; white-space: pre-wrap; word-break: break-all; max-width: 100%;"></pre>
             </div>
 
             <!-- Visual Error Callout Panel -->
@@ -1052,13 +1147,13 @@
 
     <!-- STICKY MOBILE BOTTOM EXECUTION BAR (< 860px) -->
     <div class="mobile-bottom-bar">
-        <button id="run-btn-mobile" class="btn-brutal btn-lime" style="flex: 2; font-size: 1rem; justify-content: center;" onclick="runLontaraCode()" disabled>
+        <button id="run-btn-mobile" class="btn-brutal btn-lime" style="flex: 2; font-size: 0.95rem; justify-content: center;" onclick="runLontaraCode()" disabled>
             RUN (ᨍᨒ) ▶
         </button>
-        <button class="btn-brutal btn-yellow" style="flex: 1; font-size: 0.8rem; justify-content: center;" onclick="toggleKeypad()">
+        <button class="btn-brutal btn-yellow" style="flex: 1; font-size: 0.78rem; justify-content: center;" onclick="toggleKeypad()">
             KEYPAD ᨒ
         </button>
-        <button class="btn-brutal btn-pink" style="flex: 1; font-size: 0.8rem; justify-content: center;" onclick="resetEditor()">
+        <button class="btn-brutal btn-pink" style="flex: 1; font-size: 0.78rem; justify-content: center;" onclick="resetEditor()">
             RESET
         </button>
     </div>
@@ -1285,7 +1380,10 @@ paui("Hasil:", x + y);`
                 statusPill.textContent = "[READY]";
                 runBtnDesktop.disabled = false;
                 runBtnMobile.disabled = false;
-                stdoutView.textContent = "Engine WebAssembly Lontara-Lang v0.2.0 berhasil dimuat.\nKlik 'RUN (ᨍᨒ)' untuk mengeksekusi kode.";
+                // PERBAIKAN: Hanya pasang teks sambutan saat pertama kali (jangan timpa hasil evaluasi)
+                if (message === "INITIAL_BOOT") {
+                    stdoutView.textContent = "Engine WebAssembly Lontara-Lang v0.2.0 berhasil dimuat.\nKlik 'RUN (ᨍᨒ)' untuk mengeksekusi kode.";
+                }
             } else if (state === "EVALUATING") {
                 statusPill.textContent = "[EVALUATING...]";
             } else if (state === "ERROR") {
@@ -1317,7 +1415,7 @@ paui("Hasil:", x + y);`
                 go.run(wasmModule.instance);
                 
                 isWasmReady = true;
-                setWasmStatus("READY");
+                setWasmStatus("READY", "INITIAL_BOOT");
                 triggerTokenize();
             } catch (err) {
                 console.error("WASM Boot error:", err);
@@ -1326,7 +1424,7 @@ paui("Hasil:", x + y);`
         }
 
         // --------------------------------------------------------------------------
-        // EXECUTION CONTROLLER
+        // EXECUTION CONTROLLER & BRIDGE FIX
         // --------------------------------------------------------------------------
         function runLontaraCode() {
             if (!isWasmReady || typeof evaluateLontara !== "function") {
@@ -1342,37 +1440,49 @@ paui("Hasil:", x + y);`
             let result = "";
 
             try {
+                // Evaluasi kode melalui binding Go Wasm
                 result = evaluateLontara(code);
                 const elapsed = (performance.now() - startTime).toFixed(2);
                 execTimePill.textContent = elapsed + " ms";
 
+                // Update teks terminal output dengan hasil sebenarnya
                 if (result === undefined || result === "") {
                     stdoutView.textContent = "(Eksekusi selesai tanpa teks keluaran paui)";
                 } else {
                     stdoutView.textContent = result;
                 }
 
-                // Check for Parser / Runtime errors in output
-                if (result.includes("Kesalahan Sintaks") || result.includes("Kesalahan Runtime") || result.includes("ERROR:")) {
+                // Deteksi parser error / runtime error
+                if (typeof result === "string" && (
+                    result.includes("Kesalahan Sintaks") || 
+                    result.includes("Kesalahan Runtime") || 
+                    result.includes("ERROR:") ||
+                    result.includes("Kesalahan:")
+                )) {
                     errorCallout.classList.add("active");
                     errorCalloutText.textContent = result;
                 }
 
-                // Update AST and Token Inspector
+                // Update AST & Token Inspector
                 triggerTokenize();
 
-                // On mobile, switch to console view automatically
+                // Pada layar mobile, alihkan tab tampilan langsung ke OUTPUT agar pengguna langsung melihat hasil
                 if (window.innerWidth <= 860) {
                     switchMobileView("console");
                 }
             } catch (runtimeErr) {
                 errorCallout.classList.add("active");
                 errorCalloutText.textContent = "Eksepsi Runtime: " + runtimeErr.message;
-                stdoutView.textContent = "Eksepsi tidak tertangani saat evaluasi.";
+                stdoutView.textContent = "Eksepsi tidak tertangani saat evaluasi: " + runtimeErr.message;
             } finally {
+                // PERBAIKAN: Kembalikan status ke READY tanpa menimpa stdoutView!
                 setWasmStatus("READY");
             }
         }
+
+        // Expose ke global scope agar dapat diakses oleh helper / testing
+        window.runLontaraCode = runLontaraCode;
+        window.runLontara = runLontaraCode;
 
         // --------------------------------------------------------------------------
         // VIRTUAL LONTARA KEYPAD: CURSOR MANAGEMENT
@@ -1395,7 +1505,9 @@ paui("Hasil:", x + y);`
             const btn = document.getElementById("keypad-toggle-btn");
             keypad.classList.toggle("collapsed");
             const isCollapsed = keypad.classList.contains("collapsed");
-            btn.textContent = isCollapsed ? "KEYPAD ᨒ [OFF]" : "KEYPAD ᨒ [ON]";
+            if (btn) {
+                btn.textContent = isCollapsed ? "KEYPAD ᨒ [OFF]" : "KEYPAD ᨒ [ON]";
+            }
         }
 
         // --------------------------------------------------------------------------
@@ -1499,34 +1611,65 @@ paui("Hasil:", x + y);`
         // MOBILE SEGMENTED VIEW SWITCHER
         // --------------------------------------------------------------------------
         function switchMobileView(view) {
-            document.getElementById("mtab-editor").classList.toggle("active", view === "editor");
-            document.getElementById("mtab-console").classList.toggle("active", view === "console");
-            document.getElementById("mtab-docs").classList.toggle("active", view === "docs");
+            const tabEd = document.getElementById("mtab-editor");
+            const tabCons = document.getElementById("mtab-console");
+            const tabDocs = document.getElementById("mtab-docs");
+
+            if (tabEd) tabEd.classList.toggle("active", view === "editor");
+            if (tabCons) tabCons.classList.toggle("active", view === "console");
+            if (tabDocs) tabDocs.classList.toggle("active", view === "docs");
 
             const editorSec = document.getElementById("panel-editor-section");
             const consoleSec = document.getElementById("panel-console-section");
 
-            if (view === "editor") {
-                editorSec.style.display = "flex";
-                consoleSec.style.display = "none";
-                toggleCheatsheet(false);
-            } else if (view === "console") {
-                editorSec.style.display = "none";
-                consoleSec.style.display = "flex";
-                toggleCheatsheet(false);
-            } else if (view === "docs") {
-                toggleCheatsheet(true);
+            if (window.innerWidth <= 860) {
+                if (view === "editor") {
+                    if (editorSec) editorSec.style.display = "flex";
+                    if (consoleSec) consoleSec.style.display = "none";
+                    toggleCheatsheet(false);
+                } else if (view === "console") {
+                    if (editorSec) editorSec.style.display = "none";
+                    if (consoleSec) consoleSec.style.display = "flex";
+                    toggleCheatsheet(false);
+                } else if (view === "docs") {
+                    toggleCheatsheet(true);
+                }
+            } else {
+                if (editorSec) editorSec.style.display = "flex";
+                if (consoleSec) consoleSec.style.display = "flex";
+                if (view === "docs") toggleCheatsheet(true);
             }
         }
 
         function toggleCheatsheet(open) {
             const drawer = document.getElementById("cheatsheet-drawer");
-            if (open) {
-                drawer.classList.add("open");
-            } else {
-                drawer.classList.remove("open");
+            if (drawer) {
+                if (open) {
+                    drawer.classList.add("open");
+                } else {
+                    drawer.classList.remove("open");
+                }
             }
         }
+
+        // Responsive resize listener
+        window.addEventListener("resize", () => {
+            const editorSec = document.getElementById("panel-editor-section");
+            const consoleSec = document.getElementById("panel-console-section");
+            if (window.innerWidth > 860) {
+                if (editorSec) editorSec.style.display = "flex";
+                if (consoleSec) consoleSec.style.display = "flex";
+            } else {
+                const activeTab = document.querySelector(".mobile-tab-btn.active");
+                if (activeTab && activeTab.id === "mtab-console") {
+                    if (editorSec) editorSec.style.display = "none";
+                    if (consoleSec) consoleSec.style.display = "flex";
+                } else {
+                    if (editorSec) editorSec.style.display = "flex";
+                    if (consoleSec) consoleSec.style.display = "none";
+                }
+            }
+        });
 
         // --------------------------------------------------------------------------
         // CLIENT-SIDE LEXER & AST VISUALIZER (INSPECTOR TABS)
@@ -1664,7 +1807,10 @@ paui("Hasil:", x + y);`
             }
 
             tableHtml += `</tbody></table>`;
-            document.getElementById("tokens-table-container").innerHTML = tableHtml;
+            const container = document.getElementById("tokens-table-container");
+            if (container) {
+                container.innerHTML = tableHtml;
+            }
 
             // Render Lightweight AST Preview
             const mockAst = {
@@ -1675,7 +1821,10 @@ paui("Hasil:", x + y);`
                     token: t.literal
                 }))
             };
-            document.getElementById("ast-json-container").textContent = JSON.stringify(mockAst, null, 2);
+            const astContainer = document.getElementById("ast-json-container");
+            if (astContainer) {
+                astContainer.textContent = JSON.stringify(mockAst, null, 2);
+            }
         }
 
         function escapeHtml(str) {
@@ -1684,6 +1833,9 @@ paui("Hasil:", x + y);`
 
         // Window Bootstrap
         window.addEventListener("DOMContentLoaded", () => {
+            if (window.innerWidth <= 860) {
+                switchMobileView("editor");
+            }
             bootstrapWasm();
         });
     </script>
