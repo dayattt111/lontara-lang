@@ -163,52 +163,152 @@
       transition: all 0.15s ease;
     }
 
-    /* Mobile Hamburger / Sidebar Toggle */
-    .sidebar-toggle {
-      background-color: #1c1c21 !important;
-      border: 2px solid var(--gold-accent) !important;
-      bottom: auto !important;
-      top: 12px !important;
-      left: 12px !important;
-      width: 44px !important;
-      height: 44px !important;
-      padding: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: center !important;
-      align-items: center !important;
-      gap: 5px !important;
-      z-index: 1001 !important;
-      cursor: pointer !important;
-      box-shadow: 2px 2px 0px #000000 !important;
-      transition: all 0.15s ease !important;
+    /* ============================================================
+       ANDROID-STYLE FLOATING BOTTOM PILL & DRAWER (MOBILE)
+       ============================================================ */
+    .mobile-nav-pill {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      background-color: #141417;
+      border: 2px solid var(--gold-accent);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 2px 2px 0px #000000;
+      padding: 6px 20px 8px 20px;
+      z-index: 1002;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), 
+                  background-color 0.2s ease, 
+                  border-color 0.2s ease,
+                  box-shadow 0.2s ease;
+      touch-action: manipulation;
     }
 
-    .sidebar-toggle span {
-      background-color: var(--gold-accent) !important;
-      height: 3px !important;
-      width: 22px !important;
-      margin: 0 !important;
-      display: block !important;
-      border-radius: 0 !important;
+    .pill-indicator {
+      width: 28px;
+      height: 3px;
+      background-color: var(--gold-accent);
+      margin: 0 auto 5px auto;
+      border-radius: 2px;
+      transition: transform 0.2s ease, background-color 0.2s ease;
     }
 
-    .sidebar-toggle:hover {
-      background-color: var(--gold-primary) !important;
+    .pill-body {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
     }
 
-    .sidebar-toggle:hover span {
-      background-color: #000000 !important;
+    .pill-icon {
+      color: var(--gold-accent);
+      font-size: 1.1rem;
+      line-height: 1;
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+
+    /* State 1: Docked (Setengah masuk ke bawah layar saat scroll) */
+    .mobile-nav-pill.docked {
+      transform: translateX(-50%) translateY(55%);
+      background-color: rgba(20, 20, 23, 0.95);
+      border-color: rgba(245, 158, 11, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .mobile-nav-pill.docked .pill-indicator {
+      transform: translateY(-2px) scaleX(1.3);
+      background-color: var(--gold-light);
+    }
+
+    /* State 2: Smooth popup animation when clicked from docked */
+    .mobile-nav-pill.popping {
+      animation: smoothPopup 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes smoothPopup {
+      0% {
+        transform: translateX(-50%) translateY(55%) scale(0.95);
+      }
+      60% {
+        transform: translateX(-50%) translateY(-6px) scale(1.08);
+      }
+      100% {
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+    }
+
+    /* State 3: Active when sidebar is open */
+    .mobile-nav-pill.active {
+      background-color: var(--panel-header);
+      border-color: #fb7185;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .mobile-nav-pill.active .pill-icon {
+      color: #fb7185;
+    }
+
+    .mobile-nav-pill.active .pill-indicator {
+      background-color: #fb7185;
     }
 
     /* Mobile-first Responsive Breakpoints */
     @media (max-width: 768px) {
+      .mobile-nav-pill {
+        display: block;
+      }
+
+      /* Sembunyikan default toggle bawaan Docsify */
+      .sidebar-toggle {
+        display: none !important;
+      }
+      
+      .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(2px);
+        z-index: 998;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      body.sidebar-open .sidebar-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      body.sidebar-open .sidebar {
+        transform: translateX(0) !important;
+      }
+      
+      .sidebar {
+        transform: translateX(-105%) !important;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        z-index: 1000 !important;
+        width: 82% !important;
+        max-width: 320px !important;
+        box-shadow: 8px 0px 0px rgba(0, 0, 0, 0.6) !important;
+      }
+
       .content {
-        padding-top: 50px !important;
+        padding-top: 20px !important;
+        padding-bottom: 70px !important; /* Space for bottom pill */
       }
       
       .markdown-section {
-        padding: 1.5rem 1rem !important;
+        padding: 1.5rem 1rem 5rem 1rem !important;
         max-width: 100% !important;
       }
 
@@ -222,13 +322,6 @@
         display: inline-block;
         margin-left: 0.35rem;
         margin-top: 0.25rem;
-      }
-
-      .sidebar {
-        z-index: 1000 !important;
-        width: 80% !important;
-        max-width: 300px !important;
-        box-shadow: 8px 0px 0px rgba(0, 0, 0, 0.5) !important;
       }
 
       .markdown-section table {
@@ -257,6 +350,17 @@
 </head>
 <body>
   <div id="app">Memuat dokumentasi Lontara-Lang...</div>
+
+  <!-- Android-Style Floating Bottom Pill & Backdrop for Mobile -->
+  <div id="mobile-nav-pill" class="mobile-nav-pill" aria-label="Menu Dokumentasi" onclick="handleMobilePillClick(event)">
+    <div class="pill-indicator"></div>
+    <div class="pill-body">
+      <span id="pill-icon" class="pill-icon">☰</span>
+      <span id="pill-text" class="pill-text">MENU</span>
+    </div>
+  </div>
+  <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeSidebarMobile()"></div>
+
   <script>
     window.$docsify = {
       name: 'Lontara-Lang',
@@ -285,5 +389,81 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+
+  <!-- Android Bottom Pill Interaction Controller -->
+  <script>
+    let isSidebarOpen = false;
+    const mobilePill = document.getElementById("mobile-nav-pill");
+    const pillIcon = document.getElementById("pill-icon");
+    const pillText = document.getElementById("pill-text");
+
+    function openSidebarMobile() {
+      isSidebarOpen = true;
+      document.body.classList.add("sidebar-open");
+      mobilePill.classList.remove("docked", "popping");
+      mobilePill.classList.add("active");
+      pillIcon.textContent = "✕";
+      pillText.textContent = "TUTUP";
+    }
+
+    function closeSidebarMobile() {
+      isSidebarOpen = false;
+      document.body.classList.remove("sidebar-open");
+      mobilePill.classList.remove("active");
+      pillIcon.textContent = "☰";
+      pillText.textContent = "MENU";
+    }
+
+    function handleMobilePillClick(e) {
+      if (e) e.stopPropagation();
+
+      // 1. Jika sidebar sedang terbuka: klik akan menutupnya
+      if (isSidebarOpen) {
+        closeSidebarMobile();
+        return;
+      }
+
+      // 2. Jika tombol sedang setengah masuk (docked) saat scroll:
+      if (mobilePill.classList.contains("docked")) {
+        // Efek popup smooth iconnya kembali ke posisi normal
+        mobilePill.classList.remove("docked");
+        mobilePill.classList.add("popping");
+        setTimeout(() => {
+          mobilePill.classList.remove("popping");
+        }, 400);
+        return; // Klik pertama: memunculkan kembali tombol secara smooth
+      }
+
+      // 3. Jika tombol sudah di posisi normal (sudah popup): klik berikutnya membuka sidebar
+      openSidebarMobile();
+    }
+
+    // Deteksi Scroll: Setengah masuk ke bawah layar saat scroll turun
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    window.addEventListener("scroll", () => {
+      if (isSidebarOpen) return;
+
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+      // Scroll ke bawah lebih dari 50px: setengah masuk ke fixed bottom
+      if (currentScrollY > 60 && currentScrollY > lastScrollY) {
+        mobilePill.classList.add("docked");
+        mobilePill.classList.remove("popping");
+      } else if (currentScrollY < lastScrollY - 15 || currentScrollY <= 25) {
+        // Scroll ke atas: naik kembali ke posisi normal
+        mobilePill.classList.remove("docked");
+      }
+
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+
+    // Tutup sidebar otomatis saat link di sidebar diklik di layar HP
+    document.addEventListener("click", (e) => {
+      if (isSidebarOpen && e.target.closest(".sidebar-nav a")) {
+        closeSidebarMobile();
+      }
+    });
+  </script>
 </body>
 </html>
