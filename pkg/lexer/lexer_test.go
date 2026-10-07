@@ -197,3 +197,37 @@ func TestEOFIdentifiersAndNumbers(t *testing.T) {
 		}
 	}
 }
+
+func TestSingleLineComments(t *testing.T) {
+	input := `// Ini komentar baris tunggal
+taroi x = 10; // komentar di akhir baris
+paui(x);`
+
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.TAROI, "taroi"},
+		{token.IDENT, "x"},
+		{token.ASSIGN, "="},
+		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
+		{token.PAUI, "paui"},
+		{token.LPAREN, "("},
+		{token.IDENT, "x"},
+		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
+		{token.EOF, ""},
+	}
+
+	l := New(input)
+	for i, tt := range tests {
+		tok := l.NextToken()
+		if tok.Type != tt.expectedType {
+			t.Fatalf("tests[%d] - tipe token salah. diharapkan=%q, didapat=%q", i, tt.expectedType, tok.Type)
+		}
+		if tok.Literal != tt.expectedLiteral {
+			t.Fatalf("tests[%d] - literal salah. diharapkan=%q, didapat=%q", i, tt.expectedLiteral, tok.Literal)
+		}
+	}
+}
