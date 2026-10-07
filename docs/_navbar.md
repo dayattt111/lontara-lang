@@ -1,2 +1,2 @@
-* [🎮 Web Playground](../)
-* [⭐ GitHub](https://github.com/dayattt111/lontara-lang)
+* [Web Playground ↗](../)
+* [GitHub](https://github.com/dayattt111/lontara-lang)

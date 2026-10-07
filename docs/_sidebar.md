@@ -1,5 +1,5 @@
-* [🏠 **Beranda**](README.md)
-* [🎮 **Web Playground**](../)
+* [**Beranda**](README.md)
+* [**Web Playground ↗**](../)
 
 * **Modul Belajar Algoritma**
   * [1. Cetak Konsol](algorithm/01_PRINT.md)
