@@ -289,17 +289,23 @@
         pointer-events: auto;
       }
 
-      body.sidebar-open .sidebar {
+      body.sidebar-open .sidebar,
+      body.close .sidebar {
         transform: translateX(0) !important;
+        box-shadow: 8px 0px 0px rgba(0, 0, 0, 0.6) !important;
       }
       
       .sidebar {
+        left: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        visibility: visible !important;
+        display: block !important;
         transform: translateX(-105%) !important;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
         z-index: 1000 !important;
         width: 82% !important;
         max-width: 320px !important;
-        box-shadow: 8px 0px 0px rgba(0, 0, 0, 0.6) !important;
       }
 
       .content {
@@ -371,6 +377,10 @@
       loadNavbar: true,
       subMaxLevel: 3,
       auto2top: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/.*/_navbar.md': '/_navbar.md'
+      },
       search: {
         placeholder: 'Cari panduan / kata kunci...',
         noData: 'Tidak ditemukan hasil yang cocok.',
@@ -399,7 +409,7 @@
 
     function openSidebarMobile() {
       isSidebarOpen = true;
-      document.body.classList.add("sidebar-open");
+      document.body.classList.add("sidebar-open", "close");
       mobilePill.classList.remove("docked", "popping");
       mobilePill.classList.add("active");
       pillIcon.textContent = "✕";
@@ -408,7 +418,7 @@
 
     function closeSidebarMobile() {
       isSidebarOpen = false;
-      document.body.classList.remove("sidebar-open");
+      document.body.classList.remove("sidebar-open", "close");
       mobilePill.classList.remove("active");
       pillIcon.textContent = "☰";
       pillText.textContent = "MENU";
