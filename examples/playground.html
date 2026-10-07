@@ -2,386 +2,1690 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lontara-Lang Web Playground | Powered by Hikaruu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>LONTARA-LANG // NEO-BRUTALIST WEB PLAYGROUND & RUNTIME</title>
+    <meta name="description" content="Playground WebAssembly Interaktif Lontara-Lang: Interpreter Bahasa Pemrograman Edukatif Berbasis Dialek Bugis dan Aksara Lontara Unicode.">
+
+    <!-- Google Typography Fonts: Space Grotesk, JetBrains Mono, Noto Sans Buginese -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+Buginese&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+
     <style>
+        /* ==========================================================================
+           NEO-BRUTALIST DESIGN SYSTEM & TOKENS
+           ========================================================================== */
         :root {
-            --bg-dark: #09090b;
-            --panel-bg: #141417;
-            --panel-header: #1c1c21;
-            --gold-primary: #d97706;
-            --gold-accent: #f59e0b;
-            --gold-light: #fbbf24;
-            --border-color: #27272a;
-            --border-highlight: #b45309;
-            --text-main: #fafafa;
-            --text-muted: #a1a1aa;
-            --term-bg: #030304;
-            --term-green: #34d399;
+            --bg-paper: #F4F0EA;
+            --bg-card: #FFFDF5;
+            --ink-black: #000000;
+            --pure-white: #FFFFFF;
+            
+            /* High-Contrast Brutalist Accents */
+            --acid-lime: #CCFF00;
+            --electric-cyan: #00F0FF;
+            --cyber-yellow: #FACC15;
+            --hot-pink: #FF3366;
+            --lontara-gold: #FF9900;
+            --terminal-bg: #0A0A0A;
+            --terminal-border: #222222;
+
+            /* Brutalist Outlines & Hard Shadows */
+            --border-thick: 3px solid var(--ink-black);
+            --border-heavy: 4px solid var(--ink-black);
+            --border-thin: 2px solid var(--ink-black);
+            --shadow-sm: 3px 3px 0px var(--ink-black);
+            --shadow-md: 5px 5px 0px var(--ink-black);
+            --shadow-lg: 8px 8px 0px var(--ink-black);
+
+            /* Typography */
+            --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-lontara: 'Noto Sans Buginese', 'JetBrains Mono', monospace;
         }
 
-        * {
+        /* Anti-Design Sharp Reset */
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            border-radius: 0 !important; /* Sharp IDE aesthetic (Anti-round) */
+            border-radius: 0 !important; /* Strictly 0px radii */
         }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
+        html, body {
+            background-color: var(--bg-paper);
+            color: var(--ink-black);
+            font-family: var(--font-display);
             min-height: 100vh;
+            overflow-x: clip; /* Prevent mobile horizontal shadow overflow */
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Grid Background Pattern */
+        body {
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+            background-size: 24px 24px;
             display: flex;
             flex-direction: column;
         }
 
-        header {
-            background-color: var(--panel-bg);
-            padding: 0.85rem 1.25rem;
-            border-bottom: 2px solid var(--border-highlight);
+        /* ==========================================================================
+           HEADER & BRANDING (STICKY NAVBAR)
+           ========================================================================== */
+        header.brutalist-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border-bottom: var(--border-heavy);
+            padding: 0.75rem 1.25rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
+            box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.15);
         }
 
         .brand-container {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
         }
 
-        .brand-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--gold-accent);
-            letter-spacing: 0.5px;
+        .logo-box {
+            background-color: var(--pure-white);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-sm);
+            padding: 0.35rem 0.5rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            transition: transform 0.1s ease;
         }
 
-        .brand-sub {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-top: 0.15rem;
+        .logo-box:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-md);
         }
 
-        .nav-docs-btn {
+        .logo-box img {
+            height: 38px;
+            width: auto;
+            display: block;
+        }
+
+        .brand-text h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .brand-text h1 span.lontara-glyph {
+            font-family: var(--font-lontara);
+            color: var(--hot-pink);
+            font-weight: normal;
+        }
+
+        .brand-text p {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #555555;
+            letter-spacing: 0.25px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Wasm Lifecycle Status Pill */
+        .status-pill {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.4rem 0.85rem;
+            border: var(--border-thick);
+            box-shadow: var(--shadow-sm);
+            background-color: var(--electric-cyan);
+            color: var(--ink-black);
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            background-color: var(--gold-primary);
-            color: #000000 !important;
-            text-decoration: none;
-            padding: 0.35rem 0.85rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border: 1px solid var(--gold-accent);
-            letter-spacing: 0.5px;
+        }
+
+        .status-pill::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: currentColor;
+            border: 1px solid var(--ink-black);
+        }
+
+        .status-pill.loading {
+            background-color: var(--cyber-yellow);
+        }
+
+        .status-pill.ready {
+            background-color: var(--acid-lime);
+        }
+
+        .status-pill.evaluating {
+            background-color: var(--electric-cyan);
+            animation: pulse-eval 0.8s infinite alternate;
+        }
+
+        .status-pill.error {
+            background-color: var(--hot-pink);
+            color: var(--pure-white);
+        }
+
+        @keyframes pulse-eval {
+            from { transform: scale(1); }
+            to { transform: scale(1.04); }
+        }
+
+        /* Button & Link Primitives */
+        .btn-brutal {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            background-color: var(--pure-white);
+            color: var(--ink-black);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-sm);
             cursor: pointer;
-            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            user-select: none;
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
         }
 
-        .nav-docs-btn:hover {
-            background-color: var(--gold-accent);
-            color: #000000 !important;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        .btn-brutal:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-md);
         }
 
-        .powered-badge {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
-            color: var(--gold-light);
-            background: rgba(217, 119, 6, 0.15);
-            border: 1px solid var(--gold-primary);
-            padding: 0.35rem 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        .btn-brutal:active:not(:disabled) {
+            transform: translate(3px, 3px);
+            box-shadow: 0px 0px 0px var(--ink-black);
         }
 
-        #status-indicator {
-            font-size: 0.8rem;
-            padding: 0.35rem 0.85rem;
-            background-color: #78350f;
-            color: var(--gold-light);
-            border: 1px solid var(--gold-primary);
-            font-weight: 600;
-            font-family: monospace;
+        .btn-brutal:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #E5E5E5;
         }
 
-        #status-indicator.ready {
-            background-color: #064e3b;
-            color: #6ee7b7;
-            border-color: #059669;
+        .btn-brutal.btn-lime {
+            background-color: var(--acid-lime);
         }
 
-        /* Mobile-First Layout: Stacked by default */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
+        .btn-brutal.btn-cyan {
+            background-color: var(--electric-cyan);
         }
 
-        /* Desktop Layout Expansion */
-        @media (min-width: 900px) {
-            main {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.25rem;
-                padding: 1.25rem;
+        .btn-brutal.btn-yellow {
+            background-color: var(--cyber-yellow);
+        }
+
+        .btn-brutal.btn-pink {
+            background-color: var(--hot-pink);
+            color: var(--pure-white);
+        }
+
+        /* ==========================================================================
+           MOBILE SEGMENTED TABS VIEW (< 768px)
+           ========================================================================== */
+        .mobile-view-tabs {
+            display: none;
+            background-color: var(--ink-black);
+            padding: 0.35rem 0.5rem;
+            border-bottom: var(--border-thick);
+            gap: 0.4rem;
+        }
+
+        @media (max-width: 860px) {
+            .mobile-view-tabs {
+                display: flex;
             }
         }
 
-        .editor-container, .output-container {
-            background-color: var(--panel-bg);
-            border: 1px solid var(--border-color);
+        .mobile-tab-btn {
+            flex: 1;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.45rem 0.25rem;
+            background-color: #222222;
+            color: #CCCCCC;
+            border: 2px solid #444444;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .mobile-tab-btn.active {
+            background-color: var(--acid-lime);
+            color: var(--ink-black);
+            border-color: var(--ink-black);
+        }
+
+        /* ==========================================================================
+           MAIN PLAYGROUND WORKSPACE
+           ========================================================================== */
+        main.workspace-grid {
+            flex: 1;
+            padding: 1.25rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 1700px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 960px) {
+            main.workspace-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+                padding: 0.85rem;
+            }
+        }
+
+        /* Panel Container */
+        .brutalist-panel {
+            background-color: var(--bg-card);
+            border: var(--border-heavy);
+            box-shadow: var(--shadow-lg);
             display: flex;
             flex-direction: column;
-            min-height: 380px;
+            min-height: 580px;
+            position: relative;
         }
 
         .panel-header {
-            background-color: var(--panel-header);
-            padding: 0.6rem 0.85rem;
-            border-bottom: 1px solid var(--border-color);
+            background-color: var(--pure-white);
+            border-bottom: var(--border-thick);
+            padding: 0.65rem 0.85rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .panel-title {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--gold-light);
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.75px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
-        .controls {
+        .panel-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 800;
+            background-color: var(--ink-black);
+            color: var(--pure-white);
+            padding: 0.2rem 0.4rem;
+        }
+
+        /* ==========================================================================
+           EDITOR CONTROLS & PRESET SELECTOR
+           ========================================================================== */
+        .editor-toolbar {
+            background-color: #EFECE6;
+            border-bottom: var(--border-thick);
+            padding: 0.5rem 0.85rem;
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
             gap: 0.5rem;
-            width: 100%;
         }
 
-        @media (min-width: 600px) {
-            .controls {
-                width: auto;
-            }
+        .syntax-toggle-group {
+            display: flex;
+            border: var(--border-thin);
+            background-color: var(--pure-white);
+            box-shadow: 2px 2px 0px var(--ink-black);
         }
 
-        select {
-            flex: 1;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.45rem 0.65rem;
-            font-size: 0.85rem;
+        .syntax-btn {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.35rem 0.75rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #666666;
+        }
+
+        .syntax-btn.active {
+            background-color: var(--electric-cyan);
+            color: var(--ink-black);
+        }
+
+        .preset-select {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            background-color: var(--pure-white);
+            color: var(--ink-black);
+            border: var(--border-thin);
+            box-shadow: 2px 2px 0px var(--ink-black);
+            padding: 0.35rem 0.65rem;
             outline: none;
             cursor: pointer;
         }
 
-        select:focus {
-            border-color: var(--gold-primary);
+        /* ==========================================================================
+           VIRTUAL LONTARA QUICK-KEY TOOLBAR
+           ========================================================================== */
+        .lontara-keypad-drawer {
+            background-color: #FFFDF0;
+            border-bottom: var(--border-thick);
+            padding: 0.75rem 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            transition: all 0.2s ease;
         }
 
-        button {
-            background-color: var(--gold-primary);
-            color: #000000;
-            border: 1px solid var(--gold-accent);
-            padding: 0.45rem 1rem;
-            font-weight: 700;
-            font-size: 0.85rem;
+        .lontara-keypad-drawer.collapsed {
+            display: none;
+        }
+
+        .keypad-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .keypad-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #444444;
+            min-width: 90px;
+        }
+
+        .key-btn {
+            font-family: var(--font-lontara);
+            font-size: 1.15rem;
+            background-color: var(--pure-white);
+            color: var(--ink-black);
+            border: var(--border-thin);
+            box-shadow: 2px 2px 0px var(--ink-black);
+            min-width: 38px;
+            min-height: 38px;
+            padding: 0.15rem 0.45rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: background 0.15s ease-in-out;
+            user-select: none;
+            transition: transform 0.05s ease, background 0.1s ease;
         }
 
-        button:hover:not(:disabled) {
-            background-color: var(--gold-accent);
-            color: #000000;
+        .key-btn:hover {
+            background-color: var(--cyber-yellow);
+            transform: translate(-1px, -1px);
         }
 
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .key-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px var(--ink-black);
         }
 
-        textarea {
+        .key-btn.vowel-key {
+            background-color: #E6F7FF;
+            font-weight: bold;
+        }
+
+        .key-btn.keyword-pill {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 800;
+            background-color: #FFE6EE;
+            padding: 0.25rem 0.6rem;
+            min-width: auto;
+            min-height: 32px;
+        }
+
+        .key-btn.keyword-pill:hover {
+            background-color: var(--hot-pink);
+            color: var(--pure-white);
+        }
+
+        /* ==========================================================================
+           TEXTAREA CODE EDITOR
+           ========================================================================== */
+        .editor-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--pure-white);
+            position: relative;
+        }
+
+        #code-editor {
             flex: 1;
             width: 100%;
-            min-height: 320px;
-            background: var(--bg-dark);
-            color: #f4f4f5;
+            min-height: 360px;
             border: none;
-            padding: 1rem;
-            font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+            outline: none;
+            padding: 1rem 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            line-height: 1.65;
+            color: #111111;
+            background-color: transparent;
+            resize: vertical;
+            tab-size: 4;
+            white-space: pre;
+            word-wrap: normal;
+            overflow-x: auto;
+        }
+
+        .editor-footer-stats {
+            background-color: #F0ECE4;
+            border-top: var(--border-thin);
+            padding: 0.35rem 0.85rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #444444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ==========================================================================
+           EXECUTION CTA & ACTIONS
+           ========================================================================== */
+        .editor-action-strip {
+            padding: 0.75rem 0.85rem;
+            background-color: var(--pure-white);
+            border-top: var(--border-thick);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+        }
+
+        .run-btn-main {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            padding: 0.75rem 1.75rem;
+            background-color: var(--acid-lime);
+            color: var(--ink-black);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
+        }
+
+        .run-btn-main:hover:not(:disabled) {
+            transform: translate(-3px, -3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .run-btn-main:active:not(:disabled) {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px var(--ink-black);
+        }
+
+        /* ==========================================================================
+           TERMINAL & CONSOLE OUTPUT (BRUTALIST STARK BLACK)
+           ========================================================================== */
+        .terminal-panel {
+            background-color: var(--terminal-bg);
+            color: var(--pure-white);
+            border: var(--border-heavy);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .terminal-header {
+            background-color: #161616;
+            border-bottom: 3px solid #000000;
+            padding: 0.5rem 0.85rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .terminal-tabs {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .terminal-tab-btn {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 800;
+            background: #262626;
+            color: #888888;
+            border: 2px solid #000000;
+            padding: 0.3rem 0.65rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .terminal-tab-btn.active {
+            background: var(--acid-lime);
+            color: var(--ink-black);
+            border-color: #000000;
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 1.25rem;
+            font-family: var(--font-mono);
             font-size: 0.95rem;
             line-height: 1.6;
-            resize: vertical;
-            outline: none;
-        }
-
-        .output-box {
-            flex: 1;
-            min-height: 320px;
-            background-color: var(--term-bg);
-            color: var(--term-green);
-            padding: 1rem;
-            font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
             white-space: pre-wrap;
             word-break: break-word;
             overflow-y: auto;
-            border-top: 1px solid var(--border-color);
+            min-height: 320px;
+            background-color: #0D0D0D;
         }
 
-        footer {
-            background-color: var(--panel-bg);
-            border-top: 1px solid var(--border-color);
-            padding: 0.75rem 1.25rem;
-            text-align: center;
+        .terminal-stdout {
+            color: var(--acid-lime);
+        }
+
+        /* Brutalist Error Callout Panel */
+        .error-callout-panel {
+            margin-top: 1rem;
+            background-color: #240A10;
+            border: 3px solid var(--hot-pink);
+            box-shadow: 4px 4px 0px #000000;
+            padding: 1rem;
+            color: #FFB3C1;
+            display: none;
+        }
+
+        .error-callout-panel.active {
+            display: block;
+        }
+
+        .error-callout-title {
+            color: var(--hot-pink);
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Token Stream & AST Inspector View */
+        .inspector-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: #E0E0E0;
+            margin-top: 0.5rem;
+        }
+
+        .inspector-table th, .inspector-table td {
+            border: 1px solid #333333;
+            padding: 0.4rem 0.6rem;
+            text-align: left;
+        }
+
+        .inspector-table th {
+            background-color: #1F1F1F;
+            color: var(--electric-cyan);
+            font-weight: bold;
+        }
+
+        .token-tag {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--ink-black);
+            background-color: var(--cyber-yellow);
+        }
+
+        /* ==========================================================================
+           CHEATSHEET & DOCS MODAL / DRAWER
+           ========================================================================== */
+        .cheatsheet-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 520px;
+            height: 100vh;
+            background-color: var(--bg-card);
+            border-left: var(--border-heavy);
+            box-shadow: -8px 0px 0px rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(105%);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+
+        .cheatsheet-drawer.open {
+            transform: translateX(0%);
+        }
+
+        .drawer-header {
+            background-color: var(--pure-white);
+            border-bottom: var(--border-thick);
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .drawer-content {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .ref-card {
+            background-color: var(--pure-white);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-sm);
+            padding: 0.85rem;
+        }
+
+        .ref-card h4 {
+            font-size: 0.95rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--ink-black);
+            border-bottom: var(--border-thin);
+            padding-bottom: 0.35rem;
+        }
+
+        .keyword-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .kw-item {
+            background-color: #F8F6F0;
+            border: 1px solid var(--ink-black);
+            padding: 0.4rem 0.6rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.1s ease;
+        }
+
+        .kw-item:hover {
+            background-color: var(--acid-lime);
+        }
+
+        .kw-item .lontara-txt {
+            font-family: var(--font-lontara);
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #C026D3;
+        }
+
+        /* ==========================================================================
+           STICKY MOBILE BOTTOM BAR (< 768px)
+           ========================================================================== */
+        .mobile-bottom-bar {
+            display: none;
+            position: sticky;
+            bottom: 0;
+            z-index: 90;
+            background-color: var(--pure-white);
+            border-top: var(--border-thick);
+            padding: 0.65rem 0.85rem;
+            gap: 0.5rem;
+            box-shadow: 0px -4px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 860px) {
+            .mobile-bottom-bar {
+                display: flex;
+            }
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer.brutalist-footer {
+            background-color: var(--pure-white);
+            border-top: var(--border-heavy);
+            padding: 1rem 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
-        footer a {
-            color: var(--gold-accent);
-            text-decoration: none;
-        }
-
-        footer a:hover {
+        footer.brutalist-footer a {
+            color: var(--ink-black);
             text-decoration: underline;
+        }
+
+        footer.brutalist-footer a:hover {
+            background-color: var(--cyber-yellow);
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- STICKY TOP NAVBAR -->
+    <header class="brutalist-nav">
         <div class="brand-container">
-            <img src="assets/lontara.svg" onerror="this.src='../assets/lontara.svg'" alt="Logo Lontara-Lang" height="38" style="display: block;">
-            <div>
-                <div class="brand-title">
-                    <span>ᨒᨚᨈᨑ</span> Lontara-Lang Playground
-                </div>
-                <div class="brand-sub">Interpreter Berbasis Bahasa Bugis & Aksara Lontara</div>
+            <div class="logo-box">
+                <img src="assets/lontara.svg" onerror="this.src='../assets/lontara.svg'" alt="Lontara Logo">
+            </div>
+            <div class="brand-text">
+                <h1>LONTARA-LANG <span class="lontara-glyph">ᨒᨚᨈᨑ</span></h1>
+                <p>ESOLANG // TREE-WALKING INTERPRETER // GO WASM</p>
             </div>
         </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-            <a href="docs/" target="_blank" class="nav-docs-btn" title="Buka Dokumentasi Lengkap Lontara-Lang">
-                Dokumentasi ↗
+
+        <div class="nav-actions">
+            <!-- WASM Lifecycle State Badge -->
+            <div id="status-pill" class="status-pill loading" title="Status Engine WebAssembly">
+                [LOADING RUNTIME]
+            </div>
+
+            <!-- Docs Portal Link -->
+            <a href="docs/" target="_blank" class="btn-brutal btn-yellow" title="Buka Dokumentasi Lengkap">
+                DOKUMENTASI ↗
             </a>
-            <div class="powered-badge">POWERED BY HIKARUU</div>
-            <div id="status-indicator">Memuat WASM Engine...</div>
+
+            <!-- Cheatsheet Drawer Toggle -->
+            <button class="btn-brutal btn-cyan" onclick="toggleCheatsheet(true)" title="Buka Kamus Kata Kunci">
+                KAMUS ᨒ
+            </button>
+
+            <!-- GitHub Repo Link -->
+            <a href="https://github.com/dayattt111/lontara-lang" target="_blank" class="btn-brutal" title="Buka Repositori GitHub">
+                GITHUB
+            </a>
         </div>
     </header>
 
-    <main>
-        <!-- Editor Panel -->
-        <div class="editor-container">
+    <!-- MOBILE SEGMENTED TABS VIEW (< 860px) -->
+    <div class="mobile-view-tabs">
+        <button id="mtab-editor" class="mobile-tab-btn active" onclick="switchMobileView('editor')">[01. EDITOR]</button>
+        <button id="mtab-console" class="mobile-tab-btn" onclick="switchMobileView('console')">[02. OUTPUT]</button>
+        <button id="mtab-docs" class="mobile-tab-btn" onclick="switchMobileView('docs')">[03. KAMUS]</button>
+    </div>
+
+    <!-- MAIN PLAYGROUND WORKSPACE -->
+    <main class="workspace-grid">
+
+        <!-- ====================================================================
+             LEFT PANEL: SOURCE CODE EDITOR
+             ==================================================================== -->
+        <section id="panel-editor-section" class="brutalist-panel">
             <div class="panel-header">
-                <span class="panel-title">Editor Kode</span>
-                <div class="controls">
-                    <select id="sample-select" onchange="loadSample()">
-                        <option value="loop_bugis">Perulangan siki (Bugis Latin)</option>
-                        <option value="loop_lontara">Perulangan ᨔᨗᨀᨗ (Aksara Lontara)</option>
-                        <option value="cond_bugis">Percabangan rekko & sangadinna (Latin)</option>
-                        <option value="cond_lontara">Percabangan ᨑᨙᨀᨚ & ᨔᨂᨉᨗᨊ (Lontara)</option>
-                        <option value="func_bugis">Fungsi jamagau & lisu (Latin)</option>
-                        <option value="func_lontara">Fungsi ᨍᨆᨁᨕᨘ & ᨒᨗᨔᨘ (Lontara)</option>
-                        <option value="builtin_bugis">Fungsi Bawaan (panjang, tipe, paui)</option>
-                        <option value="builtin_lontara">Fungsi Bawaan (ᨄᨍ, ᨈᨗᨄᨙ, ᨄᨕᨘᨕᨗ)</option>
-                    </select>
-                    <button id="run-btn" onclick="runCode()" disabled>Jalankan Kode ▶</button>
+                <div class="panel-title">
+                    <span>SUMBER KODE</span>
+                    <span id="active-file-badge" class="panel-badge">halo_dunia.lontara</span>
+                </div>
+                <div style="display: flex; gap: 0.4rem; align-items: center;">
+                    <!-- Keypad Drawer Toggle -->
+                    <button id="keypad-toggle-btn" class="btn-brutal btn-yellow" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleKeypad()">
+                        KEYPAD ᨒ [ON]
+                    </button>
+                    <!-- Copy Code Button -->
+                    <button class="btn-brutal" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="copyEditorCode()">
+                        SALIN
+                    </button>
                 </div>
             </div>
-            <textarea id="code-editor" spellcheck="false" placeholder="Tulis kode Lontara-Lang di sini..."></textarea>
-        </div>
 
-        <!-- Output Panel -->
-        <div class="output-container">
-            <div class="panel-header">
-                <span class="panel-title">Konsol Luaran (Output)</span>
-                <button style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color);" onclick="clearOutput()">Bersihkan</button>
+            <!-- Toolbar: Syntax Switcher & Presets -->
+            <div class="editor-toolbar">
+                <div class="syntax-toggle-group">
+                    <button id="mode-lontara-btn" class="syntax-btn active" onclick="setSyntaxMode('lontara')">.lontara (Unicode)</button>
+                    <button id="mode-bugis-btn" class="syntax-btn" onclick="setSyntaxMode('bugis')">.bugis (Latin)</button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800;">PRESET:</span>
+                    <select id="preset-selector" class="preset-select" onchange="loadSelectedPreset()">
+                        <option value="halo_lontara">1. Halo Dunia (ᨒᨚᨈᨑ)</option>
+                        <option value="halo_bugis">2. Halo Dunia (Latin)</option>
+                        <option value="loop_lontara">3. Perulangan ᨔᨗᨀᨗ (ᨒᨚᨈᨑ)</option>
+                        <option value="loop_bugis">4. Perulangan siki (Latin)</option>
+                        <option value="func_lontara">5. Fungsi ᨍᨆᨁᨕᨘ (ᨒᨚᨈᨑ)</option>
+                        <option value="func_bugis">6. Fungsi jamagau (Latin)</option>
+                        <option value="builtin_bugis">7. Fungsi Bawaan (panjang, tipe)</option>
+                        <option value="error_demo">8. Contoh Uji Error Handling</option>
+                    </select>
+                </div>
             </div>
-            <div id="output" class="output-box">Memuat engine WebAssembly Lontara-Lang...</div>
-        </div>
+
+            <!-- VIRTUAL LONTARA QUICK-KEY TOOLBAR (ON-SCREEN KEYPAD) -->
+            <div id="lontara-keypad" class="lontara-keypad-drawer">
+                <!-- Baris 1: Konsonan (Inang Sure') -->
+                <div class="keypad-row">
+                    <span class="keypad-label">Inang Sure':</span>
+                    <button class="key-btn" onclick="insertAtCursor('ᨀ')">ᨀ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨁ')">ᨁ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨂ')">ᨂ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨃ')">ᨃ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨄ')">ᨄ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨅ')">ᨅ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨆ')">ᨆ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨇ')">ᨇ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨈ')">ᨈ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨉ')">ᨉ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨊ')">ᨊ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨋ')">ᨋ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨌ')">ᨌ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨍ')">ᨍ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨎ')">ᨎ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨏ')">ᨏ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨐ')">ᨐ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨑ')">ᨑ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨒ')">ᨒ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨓ')">ᨓ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨔ')">ᨔ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨕ')">ᨕ</button>
+                    <button class="key-btn" onclick="insertAtCursor('ᨖ')">ᨖ</button>
+                </div>
+
+                <!-- Baris 2: Vokal (Ana' Sure') & Tanda Baca -->
+                <div class="keypad-row">
+                    <span class="keypad-label">Ana' Sure':</span>
+                    <button class="key-btn vowel-key" onclick="insertAtCursor('ᨗ')" title="Tetteng (vokal i)">◌ᨗ (i)</button>
+                    <button class="key-btn vowel-key" onclick="insertAtCursor('ᨘ')" title="Pucu' (vokal u)">◌ᨘ (u)</button>
+                    <button class="key-btn vowel-key" onclick="insertAtCursor('ᨙ')" title="Kelling (vokal e)">ᨙ◌ (e)</button>
+                    <button class="key-btn vowel-key" onclick="insertAtCursor('ᨚ')" title="Doping (vokal o)">◌ᨚ (o)</button>
+                    <button class="key-btn vowel-key" onclick="insertAtCursor('ᨛ')" title="Kecce' (vokal ae)">◌ᨛ (ae)</button>
+                    <button class="key-btn" onclick="insertAtCursor('᨞')" title="Pallawa (pemisah kalimat)">᨞</button>
+                    <button class="key-btn" onclick="insertAtCursor('᨟')" title="End of Section (titik)">᨟</button>
+                </div>
+
+                <!-- Baris 3: Kata Kunci Lontara Cepat -->
+                <div class="keypad-row">
+                    <span class="keypad-label">Kata Kunci:</span>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨈᨑᨚᨕᨗ ')">ᨈᨑᨚᨕᨗ (let)</button>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨄᨕᨘᨕᨗ()')">ᨄᨕᨘᨕᨗ (print)</button>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨑᨙᨀᨚ () {}')">ᨑᨙᨀᨚ (if)</button>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨔᨂᨉᨗᨊ {}')">ᨔᨂᨉᨗᨊ (else)</button>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨍᨆᨁᨕᨘ() {}')">ᨍᨆᨁᨕᨘ (func)</button>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨒᨗᨔᨘ ')">ᨒᨗᨔᨘ (return)</button>
+                    <button class="key-btn keyword-pill" onclick="insertAtCursor('ᨔᨗᨀᨗ () {}')">ᨔᨗᨀᨗ (loop)</button>
+                </div>
+            </div>
+
+            <!-- Code Editor Textarea -->
+            <div class="editor-wrapper">
+                <textarea id="code-editor" spellcheck="false" placeholder="Tulis instruksi kode Lontara-Lang di sini..."></textarea>
+                <div class="editor-footer-stats">
+                    <span id="editor-line-stats">BARIS: 1 | KARAKTER: 0</span>
+                    <span>PINTASAN: CTRL+ENTER / CMD+ENTER (JALANKAN)</span>
+                </div>
+            </div>
+
+            <!-- Bottom Actions -->
+            <div class="editor-action-strip">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button id="run-btn-desktop" class="run-btn-main" onclick="runLontaraCode()" disabled>
+                        <span>RUN (ᨍᨒ)</span> ▶
+                    </button>
+                    <button class="btn-brutal btn-pink" onclick="resetEditor()">
+                        RESET
+                    </button>
+                </div>
+
+                <div style="display: flex; gap: 0.4rem;">
+                    <button class="btn-brutal" onclick="downloadCurrentCode()">
+                        UNDUH BERKAS 💾
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             RIGHT PANEL: TERMINAL OUTPUT & TOKEN/AST INSPECTOR
+             ==================================================================== -->
+        <section id="panel-console-section" class="brutalist-panel terminal-panel">
+            <div class="terminal-header">
+                <!-- Inspector Tabs -->
+                <div class="terminal-tabs">
+                    <button id="tab-stdout-btn" class="terminal-tab-btn active" onclick="switchTerminalTab('stdout')">
+                        [01. STDOUT KONSOL]
+                    </button>
+                    <button id="tab-tokens-btn" class="terminal-tab-btn" onclick="switchTerminalTab('tokens')">
+                        [02. TOKEN STREAM]
+                    </button>
+                    <button id="tab-ast-btn" class="terminal-tab-btn" onclick="switchTerminalTab('ast')">
+                        [03. AST POHON]
+                    </button>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span id="exec-time-pill" class="panel-badge" style="background-color: #222222; color: var(--acid-lime);">
+                        0.00 ms
+                    </span>
+                    <button class="btn-brutal" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; background: #222; color: #fff; border-color: #444;" onclick="clearTerminalOutput()">
+                        BERSIHKAN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Terminal Tab 1: Standard Output Stream -->
+            <div id="stdout-view" class="terminal-body terminal-stdout">
+                Inisialisasi sistem... Menunggu WebAssembly Engine siap.
+            </div>
+
+            <!-- Terminal Tab 2: Token Stream Table (Lexer) -->
+            <div id="tokens-view" class="terminal-body" style="display: none;">
+                <p style="color: #888888; font-size: 0.85rem;">Token Stream dihasilkan langsung oleh Lexer lontara-lang (pkg/token):</p>
+                <div id="tokens-table-container"></div>
+            </div>
+
+            <!-- Terminal Tab 3: AST Structure (Parser) -->
+            <div id="ast-view" class="terminal-body" style="display: none; color: #00F0FF;">
+                <p style="color: #888888; font-size: 0.85rem;">Struktur Abstract Syntax Tree (Pratt Parser Node Tree):</p>
+                <pre id="ast-json-container" style="font-family: var(--font-mono); font-size: 0.85rem; color: #8BE9FD;"></pre>
+            </div>
+
+            <!-- Visual Error Callout Panel -->
+            <div id="error-callout" class="error-callout-panel">
+                <div class="error-callout-title">
+                    <span>⚠️</span> LAPORAN KESALAHAN RUNTIME / SINTAKS
+                </div>
+                <div id="error-callout-text" style="font-family: var(--font-mono); font-size: 0.85rem;"></div>
+            </div>
+        </section>
+
     </main>
 
-    <footer>
-        <div>Lontara-Lang v0.2.0 • Lisensi MIT • <a href="docs/" target="_blank">Dokumentasi ↗</a></div>
-        <div>Engine WASM • <strong>Powered by Hikaruu</strong></div>
+    <!-- STICKY MOBILE BOTTOM EXECUTION BAR (< 860px) -->
+    <div class="mobile-bottom-bar">
+        <button id="run-btn-mobile" class="btn-brutal btn-lime" style="flex: 2; font-size: 1rem; justify-content: center;" onclick="runLontaraCode()" disabled>
+            RUN (ᨍᨒ) ▶
+        </button>
+        <button class="btn-brutal btn-yellow" style="flex: 1; font-size: 0.8rem; justify-content: center;" onclick="toggleKeypad()">
+            KEYPAD ᨒ
+        </button>
+        <button class="btn-brutal btn-pink" style="flex: 1; font-size: 0.8rem; justify-content: center;" onclick="resetEditor()">
+            RESET
+        </button>
+    </div>
+
+    <!-- ====================================================================
+         CHEATSHEET & DOCUMENTATION DRAWER
+         ==================================================================== -->
+    <aside id="cheatsheet-drawer" class="cheatsheet-drawer">
+        <div class="drawer-header">
+            <h3 style="font-size: 1.1rem; font-weight: 900; text-transform: uppercase;">
+                KAMUS SINTAKSIS LONTARA
+            </h3>
+            <button class="btn-brutal btn-pink" style="padding: 0.3rem 0.65rem;" onclick="toggleCheatsheet(false)">
+                ✕ TUTUP
+            </button>
+        </div>
+
+        <div class="drawer-content">
+            <div class="ref-card">
+                <h4>Kata Kunci Dasar (Keywords)</h4>
+                <p style="font-size: 0.75rem; color: #666; margin-bottom: 0.6rem;">
+                    Klik salah satu entri di bawah untuk memasukkan potongan kode ke editor:
+                </p>
+                <div class="keyword-grid">
+                    <div class="kw-item" onclick="insertAtCursor('taroi x = 10;\n')">
+                        <strong>taroi</strong> / <span class="lontara-txt">ᨈᨑᨚᨕᨗ</span>
+                        <div>Deklarasi variabel (let)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('paui(\x22Salama\x22);\n')">
+                        <strong>paui</strong> / <span class="lontara-txt">ᨄᨕᨘᨕᨗ</span>
+                        <div>Cetak output (print)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('rekko (x > 5) {\n    paui(\x22Benar\x22);\n}\n')">
+                        <strong>rekko</strong> / <span class="lontara-txt">ᨑᨙᨀᨚ</span>
+                        <div>Kondisi (if)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('sangadinna {\n    paui(\x22Salah\x22);\n}\n')">
+                        <strong>sangadinna</strong> / <span class="lontara-txt">ᨔᨂᨉᨗᨊ</span>
+                        <div>Alternatif kondisi (else)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('taroi fn = jamagau(a, b) {\n    lisu a + b;\n};\n')">
+                        <strong>jamagau</strong> / <span class="lontara-txt">ᨍᨆᨁᨕᨘ</span>
+                        <div>Deklarasi fungsi (func)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('lisu hasil;\n')">
+                        <strong>lisu</strong> / <span class="lontara-txt">ᨒᨗᨔᨘ</span>
+                        <div>Pengembalian nilai (return)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('siki (i < 5) {\n    taroi i = i + 1;\n}\n')">
+                        <strong>siki</strong> / <span class="lontara-txt">ᨔᨗᨀᨗ</span>
+                        <div>Perulangan (while / loop)</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('taroi status = tongeng;\n')">
+                        <strong>tongeng / banna</strong>
+                        <div>Boolean (true / false)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ref-card">
+                <h4>Fungsi Bawaan (Built-ins)</h4>
+                <div class="keyword-grid">
+                    <div class="kw-item" onclick="insertAtCursor('panjang(\x22Lontara\x22)')">
+                        <strong>panjang(teks)</strong> / <span class="lontara-txt">ᨄᨍ</span>
+                        <div>Hitung panjang string</div>
+                    </div>
+                    <div class="kw-item" onclick="insertAtCursor('tipe(100)')">
+                        <strong>tipe(nilai)</strong> / <span class="lontara-txt">ᨈᨗᨄᨙ</span>
+                        <div>Mengecek tipe data objek</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ref-card">
+                <h4>Dokumentasi Lengkap</h4>
+                <p style="font-size: 0.8rem; margin-bottom: 0.75rem;">
+                    Baca panduan belajar algoritma terstruktur dari bab 01 sampai 06 di portal online:
+                </p>
+                <a href="docs/" target="_blank" class="btn-brutal btn-yellow" style="width: 100%; justify-content: center;">
+                    BUKA PORTAL DOKUMENTASI ↗
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- FOOTER -->
+    <footer class="brutalist-footer">
+        <div>
+            LONTARA-LANG v0.2.0 • LISENSI MIT • POWERED BY HIKARUU
+        </div>
+        <div>
+            <a href="docs/" target="_blank">PORTAL DOKUMENTASI</a> | 
+            <a href="https://github.com/dayattt111/lontara-lang" target="_blank">GITHUB REPO</a>
+        </div>
     </footer>
 
+    <!-- ====================================================================
+         JAVASCRIPT RUNTIME & WASM INTEGRATION
+         ==================================================================== -->
     <script src="wasm_exec.js"></script>
     <script>
-        const samples = {
-            loop_bugis: `// Perulangan siki (Bugis Latin)\ntaroi i = 1;\ntaroi total = 0;\n\nsiki (i <= 5) {\n    paui("Iterasi baris ke-", i);\n    taroi total = total + i;\n    taroi i = i + 1;\n}\n\npaui("Total akumulasi perulangan:", total);`,
-            loop_lontara: `// Perulangan ᨔᨗᨀᨗ (Aksara Lontara Unicode)\nᨈᨑᨚᨕᨗ ᨕᨗ = 1;\nᨈᨑᨚᨕᨗ total = 0;\n\nᨔᨗᨀᨗ (ᨕᨗ <= 5) {\n    ᨄᨕᨘᨕᨗ("Iterasi ke-", ᨕᨗ);\n    ᨈᨑᨚᨕᨗ total = total + ᨕᨗ;\n    ᨈᨑᨚᨕᨗ ᨕᨗ = ᨕᨗ + 1;\n}\n\nᨄᨕᨘᨕᨗ("Hasil:", total);`,
-            cond_bugis: `// Percabangan rekko & sangadinna\ntaroi angka = 15;\n\nrekko (angka >= 10) {\n    paui("Nilai angka sitinaja (>= 10):", angka);\n} sangadinna {\n    paui("Nilai angka kurang dari 10");\n}`,
-            cond_lontara: `// Percabangan ᨑᨙᨀᨚ & ᨔᨂᨉᨗᨊ\nᨈᨑᨚᨕᨗ angka = 20;\n\nᨑᨙᨀᨚ (angka > 10) {\n    ᨄᨕᨘᨕᨗ("salama - angka battu (", angka, ")");\n} ᨔᨂᨉᨗᨊ {\n    ᨄᨕᨘᨕᨗ("angka caddi");\n}`,
-            func_bugis: `// Fungsi jamagau & lisu (Latin)\ntaroi faktorial = jamagau(n) {\n    rekko (n <= 1) {\n        lisu 1;\n    }\n    lisu n * faktorial(n - 1);\n};\n\npaui("Faktorial dari 5:", faktorial(5));`,
-            func_lontara: `// Fungsi ᨍᨆᨁᨕᨘ & ᨒᨗᨔᨘ (Lontara)\nᨈᨑᨚᨕᨗ tambah = ᨍᨆᨁᨕᨘ(x, y) {\n    ᨒᨗᨔᨘ x + y;\n};\n\nᨈᨑᨚᨕᨗ hasil = tambah(12, 8);\nᨄᨕᨘᨕᨗ("Hasil pencumlahan:", hasil);`,
-            builtin_bugis: `// Fungsi Bawaan (panjang, tipe, paui)\ntaroi teks = "Salama Lontara-Lang";\npaui("Teks masukan:", teks);\npaui("Panjang teks:", panjang(teks));\npaui("Tipe data:", tipe(teks));`,
-            builtin_lontara: `// Fungsi Bawaan Lontara (ᨄᨍ, ᨈᨗᨄᨙ, ᨄᨕᨘᨕᨗ)\nᨈᨑᨚᨕᨗ teks = "ᨒᨚᨈᨑ";\nᨄᨕᨘᨕᨗ("Teks:", teks);\nᨄᨕᨘᨕᨗ("Panjang:", ᨄᨍ(teks));\nᨄᨕᨘᨕᨗ("Tipe:", ᨈᨗᨄᨙ(teks));`
+        // Preset Code Repository matching examples/
+        const PRESETS = {
+            halo_lontara: `// Halo Dunia versi Aksara Lontara (examples/halo_dunia.lontara)
+ᨈᨑᨚᨕᨗ pesang = "Halo, Dunia dari Lontara-Lang!";
+ᨄᨕᨘᨕᨗ(pesang);
+
+ᨈᨑᨚᨕᨗ angka = 10;
+ᨑᨙᨀᨚ (angka > 5) {
+    ᨄᨕᨘᨕᨗ("salama - angka sitinaja!");
+}`,
+
+            halo_bugis: `// Halo Dunia versi Bugis Latin (examples/halo_dunia.bugis)
+taroi pesang = "Halo, Dunia!";
+paui(pesang);
+
+taroi lima = 5;
+taroi sepulo = 10;
+
+taroi tambah = jamagau(x, y) {
+    lisu x + y;
+};
+
+taroi hasil = tambah(lima, sepulo);
+rekko (hasil >= 15) {
+    paui("Hasil pencumlahan sitinaja (>= 15):", hasil);
+} sangadinna {
+    paui("Hasil pencumlahan kurang dari 15");
+}`,
+
+            loop_lontara: `// Perulangan siki Aksara Lontara (examples/perulangan.lontara)
+ᨈᨑᨚᨕᨗ i = 1;
+ᨈᨑᨚᨕᨗ total = 0;
+
+ᨔᨗᨀᨗ (i <= 5) {
+    ᨄᨕᨘᨕᨗ("Iterasi baris ke-", i);
+    ᨈᨑᨚᨕᨗ total = total + i;
+    ᨈᨑᨚᨕᨗ i = i + 1;
+}
+
+ᨄᨕᨘᨕᨗ("Total akumulasi perulangan:", total);`,
+
+            loop_bugis: `// Perulangan siki Bugis Latin (examples/perulangan.bugis)
+taroi i = 1;
+taroi total = 0;
+
+siki (i <= 5) {
+    paui("Iterasi baris ke-", i);
+    taroi total = total + i;
+    taroi i = i + 1;
+}
+
+paui("Total akumulasi:", total);`,
+
+            func_lontara: `// Fungsi jamagau & lisu (Aksara Lontara)
+ᨈᨑᨚᨕᨗ faktorial = ᨍᨆᨁᨕᨘ(n) {
+    ᨑᨙᨀᨚ (n <= 1) {
+        ᨒᨗᨔᨘ 1;
+    }
+    ᨒᨗᨔᨘ n * faktorial(n - 1);
+};
+
+ᨄᨕᨘᨕᨗ("Faktorial dari 5:", faktorial(5));`,
+
+            func_bugis: `// Fungsi jamagau & lisu (Bugis Latin)
+taroi faktorial = jamagau(n) {
+    rekko (n <= 1) {
+        lisu 1;
+    }
+    lisu n * faktorial(n - 1);
+};
+
+paui("Faktorial dari 5 adalah:", faktorial(5));`,
+
+            builtin_bugis: `// Fungsi Bawaan (examples/fungsi_bawaan.bugis)
+taroi teks = "Salama Lontara";
+
+paui("Teks masukan:", teks);
+paui("Panjang teks:", panjang(teks));
+paui("Tipe data teks:", tipe(teks));
+
+taroi angka = 2026;
+paui("Tipe data angka:", tipe(angka));`,
+
+            error_demo: `// Uji coba penanganan kesalahan sintaks & tipe
+taroi x = 10;
+taroi y = "dua puluh";
+
+// Operasi tipe data tidak kompatibel memicu runtime error
+paui("Hasil:", x + y);`
         };
 
+        // DOM Element References
         const editor = document.getElementById("code-editor");
-        const output = document.getElementById("output");
-        const statusInd = document.getElementById("status-indicator");
-        const runBtn = document.getElementById("run-btn");
+        const stdoutView = document.getElementById("stdout-view");
+        const tokensView = document.getElementById("tokens-view");
+        const astView = document.getElementById("ast-view");
+        const statusPill = document.getElementById("status-pill");
+        const runBtnDesktop = document.getElementById("run-btn-desktop");
+        const runBtnMobile = document.getElementById("run-btn-mobile");
+        const execTimePill = document.getElementById("exec-time-pill");
+        const errorCallout = document.getElementById("error-callout");
+        const errorCalloutText = document.getElementById("error-callout-text");
+        const lineStats = document.getElementById("editor-line-stats");
+        const activeFileBadge = document.getElementById("active-file-badge");
 
-        editor.value = samples.loop_bugis;
+        let currentSyntax = "lontara"; // "lontara" or "bugis"
+        let isWasmReady = false;
 
-        function loadSample() {
-            const val = document.getElementById("sample-select").value;
-            if (samples[val]) {
-                editor.value = samples[val];
+        // Initialize default code
+        editor.value = PRESETS.halo_lontara;
+        updateEditorStats();
+
+        // --------------------------------------------------------------------------
+        // WASM LIFECYCLE MANAGEMENT
+        // --------------------------------------------------------------------------
+        function setWasmStatus(state, message = "") {
+            statusPill.className = "status-pill " + state.toLowerCase();
+            if (state === "LOADING") {
+                statusPill.textContent = "[LOADING RUNTIME]";
+                runBtnDesktop.disabled = true;
+                runBtnMobile.disabled = true;
+            } else if (state === "READY") {
+                statusPill.textContent = "[READY]";
+                runBtnDesktop.disabled = false;
+                runBtnMobile.disabled = false;
+                stdoutView.textContent = "Engine WebAssembly Lontara-Lang v0.2.0 berhasil dimuat.\nKlik 'RUN (ᨍᨒ)' untuk mengeksekusi kode.";
+            } else if (state === "EVALUATING") {
+                statusPill.textContent = "[EVALUATING...]";
+            } else if (state === "ERROR") {
+                statusPill.textContent = "[RUNTIME_ERROR]";
+                stdoutView.textContent = "Gagal memuat WebAssembly engine:\n" + message;
             }
         }
 
-        function clearOutput() {
-            output.textContent = "";
+        // Bootstrap Go WebAssembly Instance
+        async function bootstrapWasm() {
+            setWasmStatus("LOADING");
+            try {
+                if (typeof Go === "undefined") {
+                    throw new Error("File wasm_exec.js tidak ditemukan.");
+                }
+                const go = new Go();
+                
+                // Fetch Wasm binary with fallback path support
+                let response = await fetch("lontara.wasm");
+                if (!response.ok) {
+                    response = await fetch("../examples/lontara.wasm");
+                }
+                if (!response.ok) {
+                    throw new Error("File lontara.wasm tidak dapat diunduh (HTTP " + response.status + ")");
+                }
+
+                const wasmBytes = await response.arrayBuffer();
+                const wasmModule = await WebAssembly.instantiate(wasmBytes, go.importObject);
+                go.run(wasmModule.instance);
+                
+                isWasmReady = true;
+                setWasmStatus("READY");
+                triggerTokenize();
+            } catch (err) {
+                console.error("WASM Boot error:", err);
+                setWasmStatus("ERROR", err.message);
+            }
         }
 
-        function runCode() {
-            if (typeof evaluateLontara !== "function") {
-                output.textContent = "Error: Engine WebAssembly belum siap.";
+        // --------------------------------------------------------------------------
+        // EXECUTION CONTROLLER
+        // --------------------------------------------------------------------------
+        function runLontaraCode() {
+            if (!isWasmReady || typeof evaluateLontara !== "function") {
+                stdoutView.textContent = "Kesalahan: Engine WebAssembly belum siap.";
                 return;
             }
+
             const code = editor.value;
-            const res = evaluateLontara(code);
-            output.textContent = res !== undefined ? res : "(Eksekusi selesai tanpa luaran)";
+            setWasmStatus("EVALUATING");
+            errorCallout.classList.remove("active");
+
+            const startTime = performance.now();
+            let result = "";
+
+            try {
+                result = evaluateLontara(code);
+                const elapsed = (performance.now() - startTime).toFixed(2);
+                execTimePill.textContent = elapsed + " ms";
+
+                if (result === undefined || result === "") {
+                    stdoutView.textContent = "(Eksekusi selesai tanpa teks keluaran paui)";
+                } else {
+                    stdoutView.textContent = result;
+                }
+
+                // Check for Parser / Runtime errors in output
+                if (result.includes("Kesalahan Sintaks") || result.includes("Kesalahan Runtime") || result.includes("ERROR:")) {
+                    errorCallout.classList.add("active");
+                    errorCalloutText.textContent = result;
+                }
+
+                // Update AST and Token Inspector
+                triggerTokenize();
+
+                // On mobile, switch to console view automatically
+                if (window.innerWidth <= 860) {
+                    switchMobileView("console");
+                }
+            } catch (runtimeErr) {
+                errorCallout.classList.add("active");
+                errorCalloutText.textContent = "Eksepsi Runtime: " + runtimeErr.message;
+                stdoutView.textContent = "Eksepsi tidak tertangani saat evaluasi.";
+            } finally {
+                setWasmStatus("READY");
+            }
         }
 
-        // Memuat biner WASM Go
-        const go = new Go();
-        WebAssembly.instantiateStreaming(fetch("lontara.wasm"), go.importObject)
-            .then((result) => {
-                go.run(result.instance);
-                statusInd.textContent = "WASM Ready";
-                statusInd.classList.add("ready");
-                runBtn.disabled = false;
-                output.textContent = "Modul WebAssembly berhasil dimuat. Klik 'Jalankan Kode ▶' untuk mengevaluasi.";
-            })
-            .catch((err) => {
-                statusInd.textContent = "Gagal WASM";
-                statusInd.style.backgroundColor = "#991b1b";
-                statusInd.style.color = "#ffffff";
-                output.textContent = "Gagal memuat file lontara.wasm: " + err;
+        // --------------------------------------------------------------------------
+        // VIRTUAL LONTARA KEYPAD: CURSOR MANAGEMENT
+        // --------------------------------------------------------------------------
+        function insertAtCursor(text) {
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const currentVal = editor.value;
+
+            editor.value = currentVal.substring(0, start) + text + currentVal.substring(end);
+            editor.selectionStart = editor.selectionEnd = start + text.length;
+            editor.focus();
+
+            updateEditorStats();
+            triggerTokenize();
+        }
+
+        function toggleKeypad() {
+            const keypad = document.getElementById("lontara-keypad");
+            const btn = document.getElementById("keypad-toggle-btn");
+            keypad.classList.toggle("collapsed");
+            const isCollapsed = keypad.classList.contains("collapsed");
+            btn.textContent = isCollapsed ? "KEYPAD ᨒ [OFF]" : "KEYPAD ᨒ [ON]";
+        }
+
+        // --------------------------------------------------------------------------
+        // EDITOR HELPERS: PRESETS, STATS, TABS & DOWNLOAD
+        // --------------------------------------------------------------------------
+        function updateEditorStats() {
+            const val = editor.value;
+            const lines = val.split("\n").length;
+            const chars = val.length;
+            lineStats.textContent = `BARIS: ${lines} | KARAKTER: ${chars} | MODE: ${currentSyntax.toUpperCase()}`;
+        }
+
+        editor.addEventListener("input", () => {
+            updateEditorStats();
+            triggerTokenize();
+        });
+
+        // Tab Key & Execution Shortcuts
+        editor.addEventListener("keydown", function(e) {
+            if (e.key === "Tab") {
+                e.preventDefault();
+                insertAtCursor("    ");
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                e.preventDefault();
+                runLontaraCode();
+            }
+        });
+
+        function setSyntaxMode(mode) {
+            currentSyntax = mode;
+            document.getElementById("mode-lontara-btn").classList.toggle("active", mode === "lontara");
+            document.getElementById("mode-bugis-btn").classList.toggle("active", mode === "bugis");
+            activeFileBadge.textContent = mode === "lontara" ? "program.lontara" : "program.bugis";
+            updateEditorStats();
+        }
+
+        function loadSelectedPreset() {
+            const val = document.getElementById("preset-selector").value;
+            if (PRESETS[val]) {
+                editor.value = PRESETS[val];
+                if (val.includes("bugis")) {
+                    setSyntaxMode("bugis");
+                } else if (val.includes("lontara")) {
+                    setSyntaxMode("lontara");
+                }
+                updateEditorStats();
+                triggerTokenize();
+            }
+        }
+
+        function resetEditor() {
+            if (confirm("Reset isi editor ke program awal?")) {
+                editor.value = PRESETS.halo_lontara;
+                setSyntaxMode("lontara");
+                document.getElementById("preset-selector").value = "halo_lontara";
+                updateEditorStats();
+                clearTerminalOutput();
+                triggerTokenize();
+            }
+        }
+
+        function copyEditorCode() {
+            navigator.clipboard.writeText(editor.value).then(() => {
+                alert("Kode berhasil disalin ke clipboard!");
             });
+        }
+
+        function downloadCurrentCode() {
+            const ext = currentSyntax === "lontara" ? ".lontara" : ".bugis";
+            const filename = "program" + ext;
+            const blob = new Blob([editor.value], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function clearTerminalOutput() {
+            stdoutView.textContent = "";
+            errorCallout.classList.remove("active");
+            errorCalloutText.textContent = "";
+        }
+
+        // --------------------------------------------------------------------------
+        // TERMINAL TAB SWITCHER (STDOUT, TOKENS, AST)
+        // --------------------------------------------------------------------------
+        function switchTerminalTab(tab) {
+            document.getElementById("tab-stdout-btn").classList.toggle("active", tab === "stdout");
+            document.getElementById("tab-tokens-btn").classList.toggle("active", tab === "tokens");
+            document.getElementById("tab-ast-btn").classList.toggle("active", tab === "ast");
+
+            stdoutView.style.display = tab === "stdout" ? "block" : "none";
+            tokensView.style.display = tab === "tokens" ? "block" : "none";
+            astView.style.display = tab === "ast" ? "block" : "none";
+        }
+
+        // --------------------------------------------------------------------------
+        // MOBILE SEGMENTED VIEW SWITCHER
+        // --------------------------------------------------------------------------
+        function switchMobileView(view) {
+            document.getElementById("mtab-editor").classList.toggle("active", view === "editor");
+            document.getElementById("mtab-console").classList.toggle("active", view === "console");
+            document.getElementById("mtab-docs").classList.toggle("active", view === "docs");
+
+            const editorSec = document.getElementById("panel-editor-section");
+            const consoleSec = document.getElementById("panel-console-section");
+
+            if (view === "editor") {
+                editorSec.style.display = "flex";
+                consoleSec.style.display = "none";
+                toggleCheatsheet(false);
+            } else if (view === "console") {
+                editorSec.style.display = "none";
+                consoleSec.style.display = "flex";
+                toggleCheatsheet(false);
+            } else if (view === "docs") {
+                toggleCheatsheet(true);
+            }
+        }
+
+        function toggleCheatsheet(open) {
+            const drawer = document.getElementById("cheatsheet-drawer");
+            if (open) {
+                drawer.classList.add("open");
+            } else {
+                drawer.classList.remove("open");
+            }
+        }
+
+        // --------------------------------------------------------------------------
+        // CLIENT-SIDE LEXER & AST VISUALIZER (INSPECTOR TABS)
+        // --------------------------------------------------------------------------
+        const KEYWORDS = {
+            "jamagau": "JAMAGAU", "ᨍᨆᨁᨕᨘ": "JAMAGAU",
+            "taroi": "TAROI", "ᨈᨑᨚᨕᨗ": "TAROI",
+            "rekko": "REKKO", "ᨑᨙᨀᨚ": "REKKO",
+            "sangadinna": "SANGADINNA", "ᨔᨂᨉᨗᨊ": "SANGADINNA",
+            "tongeng": "TONGENG", "ᨈᨚᨂᨙ": "TONGENG",
+            "banna": "BANNA", "ᨅᨊ": "BANNA",
+            "paui": "PAUI", "ᨄᨕᨘᨕᨗ": "PAUI",
+            "lisu": "LISU", "ᨒᨗᨔᨘ": "LISU",
+            "siki": "SIKI", "ᨔᨗᨀᨗ": "SIKI"
+        };
+
+        function tokenizeCode(input) {
+            const tokens = [];
+            let i = 0;
+            let line = 1, col = 0;
+
+            function isLetter(ch) {
+                const code = ch.charCodeAt(0);
+                return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || ch === '_' || (code >= 0x1A00 && code <= 0x1A1F);
+            }
+
+            function isDigit(ch) {
+                return ch >= '0' && ch <= '9';
+            }
+
+            while (i < input.length) {
+                const ch = input[i];
+
+                if (ch === '\n') {
+                    line++;
+                    col = 0;
+                    i++;
+                    continue;
+                }
+                if (ch === ' ' || ch === '\t' || ch === '\r') {
+                    col++;
+                    i++;
+                    continue;
+                }
+
+                // Single line comments: //
+                if (ch === '/' && input[i + 1] === '/') {
+                    while (i < input.length && input[i] !== '\n') i++;
+                    continue;
+                }
+
+                // String literal
+                if (ch === '"') {
+                    const startCol = col;
+                    let str = "";
+                    i++; col++;
+                    while (i < input.length && input[i] !== '"') {
+                        str += input[i];
+                        i++; col++;
+                    }
+                    if (i < input.length && input[i] === '"') { i++; col++; }
+                    tokens.push({ type: "STRING", literal: `"${str}"`, line, col: startCol });
+                    continue;
+                }
+
+                // Operators & Delimiters
+                const twoChar = input.substr(i, 2);
+                if (["==", "!=", "<=", ">="].includes(twoChar)) {
+                    tokens.push({ type: twoChar, literal: twoChar, line, col });
+                    i += 2; col += 2;
+                    continue;
+                }
+
+                if (["=", "+", "-", "*", "/", "!", "<", ">", ";", ",", "(", ")", "{", "}"].includes(ch)) {
+                    tokens.push({ type: ch, literal: ch, line, col });
+                    i++; col++;
+                    continue;
+                }
+
+                // Numbers
+                if (isDigit(ch)) {
+                    const startCol = col;
+                    let num = "";
+                    while (i < input.length && isDigit(input[i])) {
+                        num += input[i];
+                        i++; col++;
+                    }
+                    tokens.push({ type: "INT", literal: num, line, col: startCol });
+                    continue;
+                }
+
+                // Identifiers & Keywords
+                if (isLetter(ch)) {
+                    const startCol = col;
+                    let word = "";
+                    while (i < input.length && isLetter(input[i])) {
+                        word += input[i];
+                        i++; col++;
+                    }
+                    const tokType = KEYWORDS[word] || "IDENT";
+                    tokens.push({ type: tokType, literal: word, line, col: startCol });
+                    continue;
+                }
+
+                tokens.push({ type: "ILLEGAL", literal: ch, line, col });
+                i++; col++;
+            }
+
+            tokens.push({ type: "EOF", literal: "", line, col });
+            return tokens;
+        }
+
+        function triggerTokenize() {
+            const code = editor.value;
+            const tokens = tokenizeCode(code);
+
+            // Render Tokens Table
+            let tableHtml = `<table class="inspector-table">
+                <thead>
+                    <tr><th>#</th><th>TIPE TOKEN</th><th>LITERAL</th><th>POSISI</th></tr>
+                </thead>
+                <tbody>`;
+
+            tokens.slice(0, 50).forEach((tok, idx) => {
+                tableHtml += `<tr>
+                    <td>${idx + 1}</td>
+                    <td><span class="token-tag">${tok.type}</span></td>
+                    <td><code>${escapeHtml(tok.literal)}</code></td>
+                    <td>${tok.line}:${tok.col}</td>
+                </tr>`;
+            });
+
+            if (tokens.length > 50) {
+                tableHtml += `<tr><td colspan="4" style="color: #888;">... ${tokens.length - 50} token lainnya</td></tr>`;
+            }
+
+            tableHtml += `</tbody></table>`;
+            document.getElementById("tokens-table-container").innerHTML = tableHtml;
+
+            // Render Lightweight AST Preview
+            const mockAst = {
+                type: "Program",
+                statementsCount: tokens.filter(t => t.type === ";").length,
+                statements: tokens.filter(t => ["TAROI", "REKKO", "JAMAGAU", "PAUI", "SIKI"].includes(t.type)).map(t => ({
+                    node: t.type === "TAROI" ? "LetStatement" : t.type === "PAUI" ? "PrintStatement" : t.type + "Statement",
+                    token: t.literal
+                }))
+            };
+            document.getElementById("ast-json-container").textContent = JSON.stringify(mockAst, null, 2);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Window Bootstrap
+        window.addEventListener("DOMContentLoaded", () => {
+            bootstrapWasm();
+        });
     </script>
 </body>
 </html>

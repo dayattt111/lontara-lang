@@ -163,6 +163,86 @@
       transition: all 0.15s ease;
     }
 
+    /* Mobile Hamburger / Sidebar Toggle */
+    .sidebar-toggle {
+      background-color: #1c1c21 !important;
+      border: 2px solid var(--gold-accent) !important;
+      bottom: auto !important;
+      top: 12px !important;
+      left: 12px !important;
+      width: 44px !important;
+      height: 44px !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 5px !important;
+      z-index: 1001 !important;
+      cursor: pointer !important;
+      box-shadow: 2px 2px 0px #000000 !important;
+      transition: all 0.15s ease !important;
+    }
+
+    .sidebar-toggle span {
+      background-color: var(--gold-accent) !important;
+      height: 3px !important;
+      width: 22px !important;
+      margin: 0 !important;
+      display: block !important;
+      border-radius: 0 !important;
+    }
+
+    .sidebar-toggle:hover {
+      background-color: var(--gold-primary) !important;
+    }
+
+    .sidebar-toggle:hover span {
+      background-color: #000000 !important;
+    }
+
+    /* Mobile-first Responsive Breakpoints */
+    @media (max-width: 768px) {
+      .content {
+        padding-top: 50px !important;
+      }
+      
+      .markdown-section {
+        padding: 1.5rem 1rem !important;
+        max-width: 100% !important;
+      }
+
+      .app-nav {
+        position: static !important;
+        margin: 0.75rem 1rem !important;
+        text-align: right;
+      }
+
+      .app-nav a {
+        display: inline-block;
+        margin-left: 0.35rem;
+        margin-top: 0.25rem;
+      }
+
+      .sidebar {
+        z-index: 1000 !important;
+        width: 80% !important;
+        max-width: 300px !important;
+        box-shadow: 8px 0px 0px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      .markdown-section table {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+      }
+
+      .markdown-section pre {
+        overflow-x: auto !important;
+        font-size: 0.85rem !important;
+      }
+    }
+
     .app-name img {
       max-height: 48px;
       margin: 0 auto 0.5rem auto;
@@ -180,7 +260,7 @@
   <script>
     window.$docsify = {
       name: 'Lontara-Lang',
-      logo: '../assets/lontara.svg',
+      logo: 'assets/lontara.svg',
       repo: 'https://github.com/dayattt111/lontara-lang',
       homepage: 'README.md',
       loadSidebar: true,

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../assets/lontara.svg" alt="Logo Lontara-Lang" width="220">
+  <img src="assets/lontara.svg" onerror="this.src='../assets/lontara.svg'" alt="Logo Lontara-Lang" width="220">
 </p>
 
 # Dokumentasi Resmi Lontara-Lang
