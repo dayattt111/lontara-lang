@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Dokumentasi Resmi Lontara-Lang</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Dokumentasi Resmi Lontara-Lang - Bahasa Pemrograman Edukatif Berbasis Bahasa Bugis & Aksara Lontara">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  
+  <!-- Theme Docsify Dark -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css">
+  
+  <style>
+    :root {
+      --theme-color: #f59e0b;
+      --gold-primary: #d97706;
+      --gold-accent: #f59e0b;
+      --gold-light: #fbbf24;
+      --bg-dark: #09090b;
+      --panel-bg: #141417;
+      --panel-header: #1c1c21;
+      --border-color: #27272a;
+      --text-main: #fafafa;
+      --text-muted: #a1a1aa;
+    }
+
+    * {
+      border-radius: 0 !important; /* Sharp IDE aesthetic */
+    }
+
+    body {
+      background-color: var(--bg-dark) !important;
+      color: var(--text-main) !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      background-color: var(--panel-bg) !important;
+      border-right: 1px solid var(--border-color) !important;
+      color: var(--text-muted) !important;
+    }
+
+    .sidebar-nav li a {
+      color: var(--text-muted) !important;
+      font-size: 0.9rem;
+      transition: color 0.15s ease;
+    }
+
+    .sidebar-nav li a:hover, 
+    .sidebar-nav li.active > a {
+      color: var(--gold-accent) !important;
+      font-weight: 600;
+      border-right: 2px solid var(--gold-accent);
+    }
+
+    .sidebar-nav strong {
+      color: var(--gold-light) !important;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .app-name-link {
+      color: var(--gold-accent) !important;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Search Input */
+    .search input {
+      background-color: var(--bg-dark) !important;
+      color: var(--text-main) !important;
+      border: 1px solid var(--border-color) !important;
+    }
+
+    .search input:focus {
+      border-color: var(--gold-accent) !important;
+    }
+
+    /* Markdown Section Content */
+    .markdown-section h1, 
+    .markdown-section h2, 
+    .markdown-section h3, 
+    .markdown-section h4 {
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .markdown-section a {
+      color: var(--gold-accent);
+      text-decoration: underline;
+    }
+
+    .markdown-section a:hover {
+      color: var(--gold-light);
+    }
+
+    .markdown-section code {
+      background-color: #1a1a20 !important;
+      color: #34d399 !important;
+      font-family: 'Fira Code', Consolas, monospace;
+      padding: 2px 6px;
+    }
+
+    .markdown-section pre {
+      background-color: #030304 !important;
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+    }
+
+    .markdown-section pre > code {
+      background-color: transparent !important;
+      color: #e4e4e7 !important;
+      padding: 0;
+    }
+
+    /* Tables */
+    .markdown-section table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1.5rem 0;
+    }
+
+    .markdown-section table th {
+      background-color: var(--panel-header) !important;
+      color: var(--gold-light) !important;
+      border: 1px solid var(--border-color) !important;
+      padding: 0.6rem 0.8rem;
+    }
+
+    .markdown-section table td {
+      border: 1px solid var(--border-color) !important;
+      padding: 0.5rem 0.8rem;
+    }
+
+    .markdown-section table tr:nth-child(2n) {
+      background-color: #0e0e11;
+    }
+
+    /* Blockquotes */
+    .markdown-section blockquote {
+      border-left: 4px solid var(--gold-accent);
+      background-color: rgba(217, 119, 6, 0.08);
+      color: #d4d4d8;
+      padding: 0.75rem 1rem;
+    }
+
+    /* Navbar styling */
+    .app-nav {
+      margin: 1rem 1.5rem;
+    }
+
+    .app-nav a {
+      color: var(--gold-accent) !important;
+      border: 1px solid var(--gold-primary);
+      background: rgba(217, 119, 6, 0.15);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none !important;
+      transition: all 0.15s ease;
+    }
+
+    .app-nav a:hover {
+      background: var(--gold-accent);
+      color: #000000 !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">Memuat dokumentasi Lontara-Lang...</div>
+  <script>
+    window.$docsify = {
+      name: 'ᨒᨚᨈᨑ Lontara-Lang',
+      repo: 'https://github.com/dayattt111/lontara-lang',
+      homepage: 'README.md',
+      loadSidebar: true,
+      loadNavbar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      search: {
+        placeholder: 'Cari panduan / kata kunci...',
+        noData: 'Tidak ditemukan hasil yang cocok.',
+        depth: 3
+      },
+      copyCode: {
+        buttonText: 'Salin',
+        errorText: 'Gagal',
+        successText: 'Tersalin'
+      }
+    };
+  </script>
+  <!-- Docsify v4 Core & Plugins -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+</body>
+</html>

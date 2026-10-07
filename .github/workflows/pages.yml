@@ -40,6 +40,8 @@ jobs:
           cp "$WASM_EXEC" _site/
           GOOS=js GOARCH=wasm go build -o _site/lontara.wasm ./cmd/wasm
           cp examples/playground.html _site/index.html
+          cp -r docs _site/docs
+          cp -r assets _site/assets
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
