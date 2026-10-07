@@ -69,6 +69,28 @@
             margin-top: 0.15rem;
         }
 
+        .nav-docs-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background-color: var(--gold-primary);
+            color: #000000 !important;
+            text-decoration: none;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid var(--gold-accent);
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .nav-docs-btn:hover {
+            background-color: var(--gold-accent);
+            color: #000000 !important;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        }
+
         .powered-badge {
             font-family: 'Fira Code', monospace;
             font-size: 0.75rem;
@@ -256,7 +278,10 @@
                 <div class="brand-sub">Interpreter Berbasis Bahasa Bugis & Aksara Lontara</div>
             </div>
         </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="docs/" target="_blank" class="nav-docs-btn" title="Buka Dokumentasi Lengkap Lontara-Lang">
+                <span>📖</span> Dokumentasi
+            </a>
             <div class="powered-badge">POWERED BY HIKARUU</div>
             <div id="status-indicator">Memuat WASM Engine...</div>
         </div>
@@ -295,7 +320,7 @@
     </main>
 
     <footer>
-        <div>Lontara-Lang v0.2.0 • Lisensi MIT</div>
+        <div>Lontara-Lang v0.2.0 • Lisensi MIT • <a href="docs/" target="_blank">Buka Dokumentasi 📖</a></div>
         <div>Engine WASM • <strong>Powered by Hikaruu</strong></div>
     </footer>
 
